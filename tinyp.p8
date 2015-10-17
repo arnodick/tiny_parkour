@@ -151,6 +151,7 @@ function _draw()
 	--debug
 	print(stat(0),10,-30)
 	print(p.x,mw-30,-20)
+	print(p.y,mw-15,-20)
 	print(stat(1),mw-30,-30)
 	--print(mget(p.x,p.y),10,-20)
 	print(fall,10,-20)
