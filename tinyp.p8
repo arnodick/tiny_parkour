@@ -13,20 +13,23 @@ ground=0
 --dead=0
 
 function items_i()
-	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0)
-	makeitem(23,25,-2,1,8,9,4,4,5,0)
-	makeitem(37,15,-3,1,8,9,4,6,7,0)
-	makeitem(49,36,-9,1,8,9,4,7,0,0)
-	makeitem(71,35,-4,1,8,9,4)
+	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,15)--mid 1
+	makeitem(23,25,-2,1,8,9,4,4,5,0)--mid 2
+	makeitem(37,15,-3,1,8,9,4,6,7,0)--mid h 1
+	makeitem(49,36,-9,1,8,9,4,7,14,0)--mid 3
+	makeitem(71,35,-4,1,10,11,4)--mid secret 
 	makeitem(49,14,-13,1,8,9,4)
 	makeitem(61,15,-10,1,8,9,4,0,0,0)
+	makeitem(25,0,-5,1,8,9,4,9,13)--top route1
+	makeitem(60,0,-13,1,8,9,4,10)--top route2
+	makeitem(76,11,-5,1,8,9,4,11)--top route3
+	makeitem(111,15,-5,1,8,9,4,12)--top route4
+	makeitem(10,0,-9,1,8,9,4)--top route end?
+	makeitem(47,1,-5,1,8,9,4,7)--top detour
+	makeitem(71,35,-4,1,10,8,9)--mid 4
+	makeitem(68,11,-10,1,10,11,12)--secret!
 	--makeitem(12,28,-4,1,8,9,4)--bot route1
-	--makeitem(25,0,-5,1,8,9,4)--top route1
-	--makeitem(60,0,-13,1,8,9,4)--top route2
-	--makeitem(76,11,-5,1,8,9,4)--top route3
-	--makeitem(111,15,-5,1,8,9,4)--top route4
-	--makeitem(10,0,-9,1,8,9,4)--top route end?
-	--makeitem(68,11,-10,1,10,11,12)--secret!
+
 end
 
 function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
@@ -101,10 +104,14 @@ function getitem(i)
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		sfx(4,-1)
 		p.xs=i.xs p.ys=i.ys
-		add(items,item_list[i.ic1])
-		add(items,item_list[i.ic2])
-		add(items,item_list[i.ic3])
-		del(items,i)
+		local ic1=i.ic1
+		local ic2=i.ic2
+		local ic3=i.ic3
+		for v in all(items) do del(items,v) end
+		add(items,item_list[ic1])
+		add(items,item_list[ic2])
+		add(items,item_list[ic3])
+		--del(items,i)
 	end
 end
 
@@ -152,6 +159,7 @@ function _init()
 	camera(0,-mh/2)
 	items_i()
 	add(items,item_list[1])
+	add(items,item_list[8])
 	--add(items,item_list[7])
 end
 
