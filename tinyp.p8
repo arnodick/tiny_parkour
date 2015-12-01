@@ -12,7 +12,24 @@ fall=0
 ground=0
 --dead=0
 
-function makeitem(x,y,z,w,c1,c2,b)
+function items_i()
+	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0)
+	makeitem(23,25,-2,1,8,9,4,4,5,0)
+	makeitem(37,15,-3,1,8,9,4,6,7,0)
+	makeitem(49,36,-9,1,8,9,4,7,0,0)
+	makeitem(71,35,-4,1,8,9,4)
+	makeitem(49,14,-13,1,8,9,4)
+	makeitem(61,15,-10,1,8,9,4,0,0,0)
+	--makeitem(12,28,-4,1,8,9,4)--bot route1
+	--makeitem(25,0,-5,1,8,9,4)--top route1
+	--makeitem(60,0,-13,1,8,9,4)--top route2
+	--makeitem(76,11,-5,1,8,9,4)--top route3
+	--makeitem(111,15,-5,1,8,9,4)--top route4
+	--makeitem(10,0,-9,1,8,9,4)--top route end?
+	--makeitem(68,11,-10,1,10,11,12)--secret!
+end
+
+function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
 	local i={}
 	i.x=x
 	i.y=y
@@ -22,12 +39,15 @@ function makeitem(x,y,z,w,c1,c2,b)
 	i.c2=c2
 	i.xs=x i.ys=y
 	i.b=b
-	add(items,i)
+	i.ic1=ic1
+	i.ic2=ic2
+	i.ic3=ic3
+	add(item_list,i)
 	return i
 end
 
-function makeitem_s(x,y,z,w,c1,c2,xs,ys,b)
-	local is=makeitem(x,y,z,w,c1,c2,b)
+function makeitem_s(x,y,z,w,c1,c2,xs,ys,b,ic1,ic2,ic3)
+	local is=makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
 	is.xs=xs
 	is.ys=ys
 end
@@ -81,6 +101,9 @@ function getitem(i)
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		sfx(4,-1)
 		p.xs=i.xs p.ys=i.ys
+		add(items,item_list[i.ic1])
+		add(items,item_list[i.ic2])
+		add(items,item_list[i.ic3])
 		del(items,i)
 	end
 end
@@ -123,23 +146,13 @@ function _init()
 	timer=0
 	actor={}
 	splat={}
+	item_list={}
 	items={}
 	p=makeplayer(17,1,10,1,14,3,ps) --0.5
 	camera(0,-mh/2)
-	--makeitem(px+1,p.y+1,-5,1,8,9)
-	makeitem(37,15,-3,1,8,9,4)
-	makeitem_s(16,14,-7,1,8,9,12,14,6)
-	makeitem(23,25,-2,1,8,9,4)
-	makeitem(49,36,-9,1,8,9,4)
-	makeitem(25,0,-5,1,8,9,4)
-	makeitem(60,0,-13,1,8,9,4)
-	makeitem(76,11,-5,1,8,9,4)
-	makeitem(71,35,-4,1,8,9,4)
-	makeitem(12,28,-4,1,8,9,4)
-	makeitem(10,0,-9,1,8,9,4)
-	makeitem(68,11,-10,1,10,11,12)
-	makeitem(49,14,-13,1,8,9,4)
-	makeitem(111,15,-5,1,8,9,4)
+	items_i()
+	add(items,item_list[1])
+	--add(items,item_list[7])
 end
 
 function _draw()
