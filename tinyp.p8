@@ -22,13 +22,14 @@ function items_i()
 	makeitem(61,15,-10,1,8,9,4,0,0,0)
 	makeitem(25,0,-5,1,8,9,4,9,13)--top route1
 	makeitem(60,0,-13,1,8,9,4,10,16)--top route2
-	makeitem(76,11,-5,1,8,9,4,11)--top route3
+	makeitem(76,11,-5,1,8,9,4,11,17)--top route3
 	makeitem(111,15,-5,1,8,9,4,12)--top route4
 	makeitem(10,0,-9,1,8,9,4)--top route end?
 	makeitem(47,1,-5,1,8,9,4,7)--top detour
 	makeitem(71,35,-4,1,10,8,9)--mid 4
 	makeitem(68,11,-10,1,10,11,12,10)--secret!
 	makeitem(84,1,-13,1,8,9,4,0)--top route2
+	makeitem(79,14,-10,1,10,11,12,12)--secret!
 	--makeitem(12,28,-4,1,8,9,4)--bot route1
 	
 
@@ -162,7 +163,7 @@ function _init()
 	items_i()
 	add(items,item_list[1])
 	add(items,item_list[8])
-	--add(items,item_list[7])
+	add(items,item_list[17])
 end
 
 function _draw()
