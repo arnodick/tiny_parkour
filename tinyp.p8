@@ -13,24 +13,24 @@ ground=0
 --dead=0
 
 function items_i()
-	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,15)--1 mid 1
-	makeitem(23,25,-2,1,8,9,4,4,0,0)--2 mid 2
-	makeitem(37,15,-3,1,8,9,4,6,7,0)--3 mid h 1
-	makeitem(49,36,-9,1,8,9,4,7,14,0)--4 mid 3
-	makeitem(71,35,-4,1,10,11,4)--5 mid secret 
-	makeitem(49,14,-13,1,8,9,4)--6
-	makeitem(61,15,-10,1,8,9,4,0,0,0)--7
-	makeitem(24,0,-5,1,8,9,4,9,13)--8 top route1
-	makeitem(60,0,-13,1,8,9,4,10,16)--9 top route2
-	makeitem(76,11,-5,1,8,9,4,11,17)--10 top route3
-	makeitem(111,15,-5,1,8,9,4,12)--11 top route4
-	makeitem(10,0,-9,1,8,9,4)--12 top route end?
+	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3)--1 stairs top left
+	makeitem(23,25,-2,1,8,9,4,4,5,0)--2 crossroad
+	makeitem(37,15,-3,1,8,9,4,6,7,0)--3 pilings
+	makeitem(49,36,-9,1,8,9,4,7,14,6)--4 arches middle
+	makeitem(71,35,-4,1,10,11,4)--5 arches secret! 
+	makeitem(49,14,-13,1,8,9,4)--6 on top of the wall
+	makeitem(61,15,-10,1,8,9,4,0,0,0)--7 leap of faith
+	makeitem(24,0,-5,1,8,9,4,9,13,7)--8 top curve jump
+	makeitem(60,0,-13,1,8,9,4,10,16)--9 top long jump
+	makeitem(76,11,-5,1,8,9,4,11,17)--10 back to mid jump
+	makeitem(111,15,-5,1,8,9,4,12)--11 far right hazards
+	makeitem(10,0,-9,1,8,9,4)--12 weird top left secret
 	makeitem(44,2,-5,1,8,9,4,7)--13 top detour
-	makeitem(71,35,-4,1,10,8,9)--14 mid 4
-	makeitem(68,11,-10,1,10,11,12,10)--15 secret!
-	makeitem(84,1,-13,1,8,9,4,0)--16 top route2
-	makeitem(79,14,-10,1,10,11,12,12)--17 secret!
-	makeitem(28,11,-2,1,0,0,20,15)--18 secret!
+	makeitem(71,35,-4,1,10,8,9)--14 false leap of faith
+	makeitem(68,11,-10,1,10,11,12,10)--15 secret reveal!
+	makeitem(84,1,-13,1,8,9,4,0)--16 top hook jumps
+	makeitem(79,14,-10,1,10,11,12,12)--17 pillar climb
+	makeitem(28,11,-2,1,0,0,20,15)--18 invisible checkpoint
 	--makeitem(12,28,-4,1,8,9,4)--bot route1
 	
 
@@ -49,6 +49,7 @@ function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
 	i.ic1=ic1
 	i.ic2=ic2
 	i.ic3=ic3
+	i.n=#item_list
 	add(item_list,i)
 	return i
 end
@@ -191,6 +192,7 @@ function drawitem(i)
  pset(i.x,i.y+i.z,i.c1)
  pset(i.x,i.y-1+i.z,i.c1)
  pset(i.x,i.y-2+i.z,i.c2)
+ print(i.n+1,i.x,i.y,4)
 end
 
 function _init()
