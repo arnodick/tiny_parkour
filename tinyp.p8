@@ -2,15 +2,10 @@ pico-8 cartridge // http://www.pico-8.com
 version 4
 __lua__
 mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
---home base
---px=24 py=55 --tower entry
---px=16 py=50 --the logs
---px=50 py=0 --the lonely spire
 ps=0.5
 
 fall=0
 ground=0
---dead=0
 
 function items_i()
 	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3)--1 stairs top left
@@ -38,34 +33,6 @@ function items_i()
 	makeitem(12,22,-3,1,8,9,4,0,0,0)--23 s route
 	makeitem(14,0,-10,1,10,11,24)--24 secret get!
 	makeitem(27,25,-3,1,8,9,4,4,5)--25 crossroad
-	
-	--makeitem(12,28,-4,1,8,9,4)--bot route1
-	
-
-end
-
-function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
-	local i={}
-	i.x=x
-	i.y=y
-	i.z=z
-	i.w=w
-	i.c1=c1
-	i.c2=c2
-	i.xs=x i.ys=y
-	i.b=b
-	i.ic1=ic1
-	i.ic2=ic2
-	i.ic3=ic3
-	i.n=#item_list
-	add(item_list,i)
-	return i
-end
-
-function makeitem_s(x,y,z,w,c1,c2,xs,ys,b,ic1,ic2,ic3)
-	local is=makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
-	is.xs=xs
-	is.ys=ys
 end
 
 function makeactor(x,y,z,w,c1,c2)
@@ -78,6 +45,24 @@ function makeactor(x,y,z,w,c1,c2)
 	a.c2=c2
 	add(actor,a)
 	return a
+end
+
+function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
+	local i=makeactor(x,y,z,w,c1,c2)
+	i.xs=x i.ys=y--spawn point is where checkpoint is
+	i.b=b--bounce height
+	i.ic1=ic1--checkpoints spawned by get
+	i.ic2=ic2
+	i.ic3=ic3
+	i.n=#item_list
+	add(item_list,i)
+	return i
+end
+
+function makeitem_s(x,y,z,w,c1,c2,xs,ys,b,ic1,ic2,ic3)
+	local is=makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
+	is.xs=xs--spawn point is customized
+	is.ys=ys
 end
 
 function makeplayer(x,y,z,w,c1,c2,s)
@@ -108,42 +93,6 @@ function makebutton(x,y,z,px,py,pz,pzs,c1,c2,spd,dir)
 	b.h=0
 	add(buttons,b)
 	--return b
-end
-
-function pressbutton(b)
-	if b.x==flr(p.x) and b.y==flr(p.y) and (flr(b.z)==flr(p.z)) then
-		b.pressed=true
-		b.z+=1
-		sfx(6,-1)
-	end
-	if b.pressed==true then
-		if b.dir==true then
-			if timer%b.spd==0 then
-				if b.h<b.pz then
-					b.h+=1
-					mset(b.px,b.py,b.pzs+b.h)
-					--del(buttons,b)
-					sfx(5,-1)
-				end
-			end
-		else
-			if timer%b.spd==0 then
-				if mget(b.px,b.py)>b.pz then
-					b.h-=1
-					mset(b.px,b.py,b.pzs+b.h)
-					--del(buttons,b)
-					sfx(5,-1)
-				end
-			end
-		end
-	end
-end
-
-function drawbutton(b)
-	pset(b.x,b.y+b.z-1,b.c1)
-	if b.pressed==false then
-		pset(b.x,b.y+b.z,b.c2)
-	end
 end
 
 function makedead(x,y,z,w,c1,c2)
@@ -197,6 +146,13 @@ function drawactor(a)
  pset(a.x,a.y-mget(a.x,a.y),5)
  pset(a.x,a.y+a.z,a.c2)
  pset(a.x,a.y-1+a.z,a.c1)
+end
+
+function drawbutton(b)
+	pset(b.x,b.y+b.z-1,b.c1)
+	if b.pressed==false then
+		pset(b.x,b.y+b.z,b.c2)
+	end
 end
 
 function drawsplat(s)
