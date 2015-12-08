@@ -47,6 +47,29 @@ function makeactor(x,y,z,w,c1,c2)
 	return a
 end
 
+function makeplayer(x,y,z,w,c1,c2,s)
+	local p=makeactor(x,y,z,w,c1,c2)
+	p.speedi=s
+	p.speed=s
+	p.xspeed=0
+	p.yspeed=0
+	p.zspeed=0
+	p.xs=17 p.ys=1
+	return p
+end
+
+function makedead(x,y,z,w,c1,c2)
+	local d=makeactor(x,y,z,w,c1,c2)
+	d.x=x
+	d.y=y
+	d.z=z
+	d.w=w
+	d.c1=c1
+	d.c2=c2
+	add(actor,d)
+	return d
+end
+
 function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
 	local i=makeactor(x,y,z,w,c1,c2)
 	i.xs=x i.ys=y--spawn point is where checkpoint is
@@ -63,17 +86,6 @@ function makeitem_s(x,y,z,w,c1,c2,xs,ys,b,ic1,ic2,ic3)
 	local is=makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
 	is.xs=xs--spawn point is customized
 	is.ys=ys
-end
-
-function makeplayer(x,y,z,w,c1,c2,s)
-	local p=makeactor(x,y,z,w,c1,c2)
-	p.speedi=s
-	p.speed=s
-	p.xspeed=0
-	p.yspeed=0
-	p.zspeed=0
-	p.xs=17 p.ys=1
-	return p
 end
 
 function makebutton(x,y,z,px,py,pz,pzs,c1,c2,spd,dir)
@@ -95,18 +107,6 @@ function makebutton(x,y,z,px,py,pz,pzs,c1,c2,spd,dir)
 	--return b
 end
 
-function makedead(x,y,z,w,c1,c2)
-	local d=makeactor(x,y,z,w,c1,c2)
-	d.x=x
-	d.y=y
-	d.z=z
-	d.w=w
-	d.c1=c1
-	d.c2=c2
-	add(actor,d)
-	return d
-end
-
 function makesplat(x,y,xs,ys)
 	local s={}
 	s.x=x
@@ -117,7 +117,62 @@ function makesplat(x,y,xs,ys)
 	return s
 end
 
-function getitem(i)
+function doplayer()
+	p.xspeed=0 p.yspeed=0
+	local ph=mget(p.x,p.y)
+	if(btn (5) or btn(4)) then
+		if btn(5) then p.speed=0.34 else p.speed=0.5 end
+		if(btn (0))then p.xspeed=-p.speed end
+		if(btn (1))then p.xspeed=p.speed end
+ 	if(btn (2))then p.yspeed=-p.speed end
+		if(btn (3))then p.yspeed=p.speed end
+	else p.x=flr(p.x) p.y=flr(p.y)
+	end
+	--if on the ground then
+	if p.z==-ph then fall=0 ground+=1
+	 --can jump while
+	 if ground>2 then
+			if(btnp(4)) then p.zspeed=p.speed sfx(3,1) end
+		end
+		--die if it is bottom z level
+		if flc!=13 then
+			if ph==0 then p.x=p.xs p.y=p.ys end
+		end
+	end	
+	--if not next to a wall, move
+	if(p.z-1<=-mget(p.x+p.xspeed,p.y+p.yspeed)) then
+		p.x+=p.xspeed p.y+=p.yspeed
+	end
+
+	--if(btn (4)) and p.z<mget(p.x,p.y) then p.zspeed=p.speed*2 end
+	p.z-=p.zspeed
+	
+	--if in the air, fall
+	--make this an else of above func?
+	if(p.z<-mget(p.x,p.y)) then p.zspeed-=0.09 ground=0
+		if p.zspeed<0 then fall+=1 p.speed=0.5 end
+	--if not, stand at map's height
+	else p.z=-mget(p.x,p.y) --fall=0
+	end
+	
+	--if hit ground, die
+	if ph==0 then
+	 if p.z==0 then
+	 	del(actor,dead)
+	 	dead=makeactor(p.x,p.y,p.z,1,2,8)
+	 	if fall>10 then
+	 		del(splat,s)
+	 		s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
+	 	end
+	 	--pset(p.x,p.y,7)
+	 	sfx(2,2)
+	 end --fall==12 or
+	end
+	timer+=1
+	--if p.zspeed < 0 then sfx(2,1) end
+end
+
+function doitem(i)
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		sfx(4,-1)
 		p.xs=i.xs p.ys=i.ys
@@ -129,17 +184,43 @@ function getitem(i)
 		add(items,item_list[ic2])
 		add(items,item_list[ic3])
 		--del(items,i)
+	else
+		i.z=(-abs(cos(timer*1/40))*i.b)-mget(i.x,i.y)
+		if timer%30==0 then
+			local col1=i.c1 local col2=i.c2
+			i.c1=col2
+			i.c2=col1
+		end
 	end
 end
 
-function moveitem(i)
-	--i.z+=cos(timer/70)/11
-	i.z=(-abs(cos(timer*1/40))*i.b)-mget(i.x,i.y)
-end
-
-function drawwall(x,y,w,c1,c2)
-	rectfill(x,y,x+w,y+w,c1)
- rectfill(x,y+w+1,x+w,y+w+1,c2)
+function dobutton(b)
+	if b.x==flr(p.x) and b.y==flr(p.y) and (flr(b.z)==flr(p.z)) then
+		b.pressed=true
+		b.z+=1
+		sfx(6,-1)
+	end
+	if b.pressed==true then
+		if b.dir==true then
+			if timer%b.spd==0 then
+				if b.h<b.pz then
+					b.h+=1
+					mset(b.px,b.py,b.pzs+b.h)
+					--del(buttons,b)
+					sfx(5,-1)
+				end
+			end
+		else
+			if timer%b.spd==0 then
+				if mget(b.px,b.py)>b.pz then
+					b.h-=1
+					mset(b.px,b.py,b.pzs+b.h)
+					--del(buttons,b)
+					sfx(5,-1)
+				end
+			end
+		end
+	end
 end
 
 function drawactor(a)
@@ -161,11 +242,6 @@ function drawsplat(s)
 end
 
 function drawitem(i)
-	if timer%30==0 then
-		local col1=i.c1 local col2=i.c2
-		i.c1=col2
-		i.c2=col1
-	end
  pset(i.x,i.y-mget(i.x,i.y),5)
  pset(i.x,i.y+i.z,i.c1)
  pset(i.x,i.y-1+i.z,i.c1)
@@ -177,9 +253,9 @@ function _init()
 	--mgen()
 	timer=0
 	actor={}
-	splat={}
 	item_list={}
 	items={}
+	splat={}
 	buttons={}
 	p=makeplayer(17,1,10,1,14,3,ps) --0.5
 	camera(0,-mh/2)
@@ -244,64 +320,9 @@ function _draw()
 end
 
 function _update()
-	p.xspeed=0 p.yspeed=0
-	local ph=mget(p.x,p.y)
-	if(btn (5) or btn(4)) then
-		if btn(5) then p.speed=0.34 else p.speed=0.5 end
-		if(btn (0))then p.xspeed=-p.speed end
-		if(btn (1))then p.xspeed=p.speed end
- 	if(btn (2))then p.yspeed=-p.speed end
-		if(btn (3))then p.yspeed=p.speed end
-	else p.x=flr(p.x) p.y=flr(p.y)
-	end
-	--if on the ground then
-	if p.z==-ph then fall=0 ground+=1
-	 --can jump while
-	 if ground>2 then
-			if(btnp(4)) then p.zspeed=p.speed sfx(3,1) end
-		end
-		--die if it is bottom z level
-		if flc!=13 then
-			if ph==0 then p.x=p.xs p.y=p.ys end
-		end
-	end	
-	--if not next to a wall, move
-	if(p.z-1<=-mget(p.x+p.xspeed,p.y+p.yspeed)) then
-		p.x+=p.xspeed p.y+=p.yspeed
-	end
-
-	--if(btn (4)) and p.z<mget(p.x,p.y) then p.zspeed=p.speed*2 end
-	p.z-=p.zspeed
-	
-	--if in the air, fall
-	--make this an else of above func?
-	if(p.z<-mget(p.x,p.y)) then p.zspeed-=0.09 ground=0
-		if p.zspeed<0 then fall+=1 p.speed=0.5 end
-	--if not, stand at map's height
-	else p.z=-mget(p.x,p.y) --fall=0
-	end
-
-	--make gets floaty
-	foreach(items,moveitem)
-	--if touch item, get
-	foreach(items,getitem)
-	foreach(buttons,pressbutton)
-	
-	--if hit ground, die
-	if ph==0 then
-	 if p.z==0 then
-	 	del(actor,dead)
-	 	dead=makeactor(p.x,p.y,p.z,1,2,8)
-	 	if fall>10 then
-	 		del(splat,s)
-	 		s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
-	 	end
-	 	--pset(p.x,p.y,7)
-	 	sfx(2,2)
-	 end --fall==12 or
-	end
-	timer+=1
-	--if p.zspeed < 0 then sfx(2,1) end
+	doplayer()
+	foreach(items,doitem)
+	foreach(buttons,dobutton)
 end
 __gfx__
 00000600000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000
