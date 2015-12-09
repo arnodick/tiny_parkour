@@ -43,7 +43,7 @@ function makeactor(x,y,z,w,c1,c2)
 	a.w=w
 	a.c1=c1
 	a.c2=c2
-	add(actor,a)
+	--add(actor,a)
 	return a
 end
 
@@ -237,7 +237,7 @@ end
 
 function _init()
 	timer=0
-	actor={}
+	--actor={}
 	item_list={}
 	items={}
 	splat={}
