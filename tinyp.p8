@@ -67,7 +67,7 @@ function makedead(x,y,z,w,c1,c2)
 	d.c1=c1
 	d.c2=c2
 	add(actor,d)
-	return d
+	--return d
 end
 
 function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3)
@@ -101,7 +101,7 @@ function makebutton(x,y,z,px,py,pz,pzs,c1,c2,spd,dir)
 	b.c2=c2
 	b.pressed=false
 	b.spd=spd
-	b.dir=dir--true=up false=down
+	b.dir=dir
 	b.h=0
 	add(buttons,b)
 	--return b
@@ -164,9 +164,8 @@ function doplayer()
 	 		del(splat,s)
 	 		s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
 	 	end
-	 	--pset(p.x,p.y,7)
 	 	sfx(2,2)
-	 end --fall==12 or
+	 end
 	end
 	timer+=1
 	--if p.zspeed < 0 then sfx(2,1) end
@@ -183,7 +182,6 @@ function doitem(i)
 		add(items,item_list[ic1])
 		add(items,item_list[ic2])
 		add(items,item_list[ic3])
-		--del(items,i)
 	else
 		i.z=(-abs(cos(timer*1/40))*i.b)-mget(i.x,i.y)
 		if timer%30==0 then
@@ -201,23 +199,11 @@ function dobutton(b)
 		sfx(6,-1)
 	end
 	if b.pressed==true then
-		if b.dir==true then
-			if timer%b.spd==0 then
-				if b.h<b.pz then
-					b.h+=1
-					mset(b.px,b.py,b.pzs+b.h)
-					--del(buttons,b)
-					sfx(5,-1)
-				end
-			end
-		else
-			if timer%b.spd==0 then
-				if mget(b.px,b.py)>b.pz then
-					b.h-=1
-					mset(b.px,b.py,b.pzs+b.h)
-					--del(buttons,b)
-					sfx(5,-1)
-				end
+		if timer%b.spd==0 then
+			local h=mget(b.px,b.py)
+			if h!=b.pz then
+				mset(b.px,b.py,h+b.dir)
+				sfx(5,-1)
 			end
 		end
 	end
@@ -250,7 +236,6 @@ function drawitem(i)
 end
 
 function _init()
-	--mgen()
 	timer=0
 	actor={}
 	item_list={}
@@ -265,12 +250,12 @@ function _init()
 	add(items,item_list[18])
 	add(items,item_list[20])
 	add(items,item_list[21])
-	makebutton(45,2,-mget(45,2),49,2,mget(49,0),mget(49,2),13,5,15,true)
-	makebutton(45,2,-mget(45,2),49,1,4,mget(49,1),13,5,15,true)
-	makebutton(91,15,-mget(91,15),91,15,0,mget(91,15),13,5,10,false)
-	makebutton(97,15,-mget(97,15),97,15,0,mget(97,15),13,5,10,false)
-	makebutton(103,15,-mget(103,15),103,15,0,mget(103,15),13,5,10,false)
-	makebutton(107,15,-mget(107,15),107,15,0,mget(107,15),13,5,10,false)
+	makebutton(45,2,-mget(45,2),49,2,mget(49,0),mget(49,2),13,5,15,1)
+	makebutton(45,2,-mget(45,2),49,1,4,mget(49,1),13,5,15,1)
+	makebutton(91,15,-mget(91,15),91,15,0,mget(91,15),13,5,10,-1)
+	makebutton(97,15,-mget(97,15),97,15,0,mget(97,15),13,5,10,-1)
+	makebutton(103,15,-mget(103,15),103,15,0,mget(103,15),13,5,10,-1)
+	makebutton(107,15,-mget(107,15),107,15,0,mget(107,15),13,5,10,-1)
 end
 
 function _draw()
@@ -283,24 +268,11 @@ function _draw()
 		 --draw each map cell
 		 local h=mget(x,y)
 			if h>0 then
-			 --wall shadows
-				--line(x,y,x+h/2,y,5)
 				--floor
-				--wall
 				pset(x,y-h,mc1+h%2)
+				--wall
 				line(x,y-h+1,x,y,(mc2+(y%2)))
-				--line(x,y-h+1,x,y,(mc2+(y%2))) --+(y%2)*12
-				--if (x!=flr(p.x) or y<=flr(p.y) or y>flr(p.y+3)) then
-				--	pset(x,y-h,mc1+h%2)
-				-- line(x,y-h+1,x,y,(mc2+(y%2)))
-				--end
 			end
-			--draw actors
-			--for a=1,count(actor) do
-				--if (flr(actor[a].x)==x and flr(actor[a].y)==y) then
-					--drawactor(actor[a])
-				--end
-			--end
 			if (flr(p.x)==x and flr(p.y)==y) then
 				drawactor(p)
    end
@@ -309,6 +281,7 @@ function _draw()
 
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
+	--foreach(actor,drawactor)
 
 	--debug
 	print(stat(0),10,-30)
