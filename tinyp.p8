@@ -158,6 +158,10 @@ function doplayer()
 	--if hit ground, die
 	if ph==0 then
 	 if p.z==0 then
+	 	reload(0x2000,0x2000,4096)
+	 	for x=1,#buttons do
+	 		buttons[x].pressed=false
+	 	end
 	 	del(actor,dead)
 	 	dead=makeactor(p.x,p.y,p.z,1,2,8)
 	 	if fall>10 then
