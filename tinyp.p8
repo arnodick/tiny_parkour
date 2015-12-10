@@ -46,7 +46,9 @@ function buttons_i()
 	makebutton(97, 14,-mget(97,14), 1,13,5,97, 14,0,20,-1)
 	makebutton(103,14,-mget(103,14),1,13,5,103,14,0,20,-1)
 	makebutton(107,14,-mget(107,14),1,13,5,107,14,0,20,-1)
-
+	makebutton(81,35,-mget(81,35),1,13,5,81,35,0,10,-1)
+	makebutton(90,35,-mget(90,35),1,13,5,90,35,0,10,-1)
+	makebutton(97,35,-mget(97,35),1,13,5,97,35,0,10,-1)
 end
 
 function makeactor(x,y,z,w,c1,c2)
@@ -143,7 +145,25 @@ function doplayer()
 		end
 		--die if it is bottom z level
 		if flc!=13 then
-			if ph==0 then p.x=p.xs p.y=p.ys end
+			--if hit ground, die
+			if ph==0 then
+	 		if p.z==0 then
+	 			del(actor,dead)
+	 			dead=makeactor(p.x,p.y,p.z,1,2,8)
+	 			if fall>10 then
+	 				del(splat,s)
+	 				s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
+	 			end
+	 			p.x=p.xs p.y=p.ys
+	 			for x=1,#buttons do
+	 				buttons[x].pressed=false
+	 			end
+	 			sfx(2,2)
+	 			reload(0x1000,0x1000,8192)
+	 			for b in all(buttons) do del(buttons,b) end
+	 			buttons_i()
+	 		end
+			end
 		end
 	end	
 	--if not next to a wall, move
@@ -160,27 +180,6 @@ function doplayer()
 		if p.zspeed<0 then fall+=1 p.speed=0.5 end
 	--if not, stand at map's height
 	else p.z=-mget(p.x,p.y) --fall=0
-	end
-	
-	--if hit ground, die
-	if ph==0 then
-	 if p.z==0 then
-	 	reload(0x1000,0x1000,8192)
-	 	for b in all(buttons) do del(buttons,b) end
-	 	buttons_i()
-	 	--reload(0x1000,0x3000,4096)
-	 	--reload(0x1000,flr(rnd(15000)),4096)
-	 	for x=1,#buttons do
-	 		buttons[x].pressed=false
-	 	end
-	 	del(actor,dead)
-	 	dead=makeactor(p.x,p.y,p.z,1,2,8)
-	 	if fall>10 then
-	 		del(splat,s)
-	 		s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
-	 	end
-	 	sfx(2,2)
-	 end
 	end
 	timer+=1
 	--if p.zspeed < 0 then sfx(2,1) end
