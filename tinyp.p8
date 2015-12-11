@@ -128,7 +128,7 @@ end
 
 function doplayer()
 	p.xspeed=0 p.yspeed=0
-	local ph=mget(p.x,p.y)
+	local gh=mget(p.x,p.y)
 	if(btn (5) or btn(4)) then
 		if btn(5) then p.speed=0.34 else p.speed=0.5 end
 		if(btn (0))then p.xspeed=-p.speed end
@@ -138,40 +138,35 @@ function doplayer()
 	else p.x=flr(p.x) p.y=flr(p.y)
 	end
 	--if on the ground then
-	if p.z==-ph then fall=0 ground+=1
+	if p.z>=-gh then
 	 --can jump while
-	 if ground>2 then
+	 if ground>0 then
 			if(btnp(4)) then p.zspeed=p.speed sfx(3,1) end
 		end
-		--die if it is bottom z level
+		--if hit ground, die
 		if flc!=13 then
-			--if hit ground, die
-			if ph==0 then
-	 		if p.z==0 then
-	 			del(actor,dead)
-	 			dead=makeactor(p.x,p.y,p.z,1,2,8)
-	 			if fall>10 then
-	 				del(splat,s)
-	 				s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
-	 			end
-	 			p.x=p.xs p.y=p.ys
-	 			for x=1,#buttons do
-	 				buttons[x].pressed=false
-	 			end
-	 			sfx(2,2)
-	 			reload(0x1000,0x1000,8192)
-	 			for b in all(buttons) do del(buttons,b) end
-	 			buttons_i()
+			if gh==0 then
+	 		del(actor,dead)
+	 		dead=makeactor(p.x,p.y,p.z,1,2,8)
+	 		if fall>10 then
+	 			del(splat,s)
+	 			s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
 	 		end
+	 		--todo: maybe delete and reinit player here?
+	 		p.x=p.xs p.y=p.ys
+	 		sfx(2,2)
+	 		reload(0x1000,0x1000,8192)
+	 		for b in all(buttons) do del(buttons,b) end
+	 		buttons_i()
 			end
 		end
+		fall=0 ground+=1
 	end	
+	
 	--if not next to a wall, move
 	if(p.z-1<=-mget(p.x+p.xspeed,p.y+p.yspeed)) then
 		p.x+=p.xspeed p.y+=p.yspeed
 	end
-
-	--if(btn (4)) and p.z<mget(p.x,p.y) then p.zspeed=p.speed*2 end
 	p.z-=p.zspeed
 	
 	--if in the air, fall
@@ -181,8 +176,6 @@ function doplayer()
 	--if not, stand at map's height
 	else p.z=-mget(p.x,p.y) --fall=0
 	end
-	timer+=1
-	--if p.zspeed < 0 then sfx(2,1) end
 end
 
 function doitem(i)
@@ -250,7 +243,7 @@ function drawitem(i)
  pset(i.x,i.y+i.z,i.c1)
  pset(i.x,i.y-1+i.z,i.c1)
  pset(i.x,i.y-2+i.z,i.c2)
-	print(i.n+1,i.x,i.y,4)
+	--print(i.n+1,i.x,i.y,4)
 end
 
 function _init()
@@ -294,7 +287,6 @@ function _draw()
 
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
-	--foreach(actor,drawactor)
 
 	--debug
 	print(stat(0),10,-30)
@@ -309,6 +301,7 @@ function _update()
 	doplayer()
 	foreach(items,doitem)
 	foreach(buttons,dobutton)
+	timer+=1
 end
 
 __gfx__
