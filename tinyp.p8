@@ -78,13 +78,13 @@ end
 
 function makedead(x,y,z,w,c1,c2)
 	local d=makeactor(x,y,z,w,c1,c2)
-	d.x=x
-	d.y=y
-	d.z=z
-	d.w=w
-	d.c1=c1
-	d.c2=c2
-	add(actor,d)
+	--d.x=x
+	--d.y=y
+	--d.z=z
+	--d.w=w
+	--d.c1=c1
+	--d.c2=c2
+	add(dead,d)
 	--return d
 end
 
@@ -148,8 +148,8 @@ function doplayer(p)
 		--if hit ground, die
 		if flc!=13 then
 			if gh==0 then
-	 		del(actor,dead)
-	 		dead=makeactor(p.x,p.y,p.z,1,2,8)
+	 		for d in all(dead) do del(dead,d) end
+	 		makedead(p.x,p.y,p.z,1,p.c2,8)
 	 		if p.fall>10 then
 	 			del(splat,s)
 	 			s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
@@ -257,9 +257,10 @@ function _init()
 	camera(0,-mh/2)
 	--actor={}
 	player={}
+	dead={}
+	splat={}
 	item_list={}
 	items={}
-	splat={}
 	buttons={}
 	
 	makeplayer(17,1,10,1,14,3,ps) --0.5
@@ -278,6 +279,7 @@ function _draw()
 	cls()
 	rectfill(0,0,mw,mh,flc)
 	foreach(splat,drawsplat)
+	foreach(dead,drawactor)
 	--loop through every map cell
 	for y=0,mh do
 		for x=0,mw do
@@ -300,7 +302,6 @@ function _draw()
 
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
-	foreach(dead)
 
 	--debug
 	print(stat(0),10,-30)
