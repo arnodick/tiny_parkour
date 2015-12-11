@@ -1,12 +1,6 @@
 pico-8 cartridge // http://www.pico-8.com
 version 4
 __lua__
-mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
-ps=0.5
-
-fall=0
-ground=0
-
 function items_i()
 	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3)--1 stairs top left
 	makeitem(23,25,-2,1,8,9,4,25,23)--2 crossroad
@@ -33,6 +27,10 @@ function items_i()
 	makeitem(12,22,-3,1,8,9,4,0,0,0)--23 s route
 	makeitem(14,0,-10,1,10,11,24)--24 secret get!
 	makeitem(27,25,-3,1,8,9,4,4,5)--25 crossroad
+	add(items,item_list[8])
+	add(items,item_list[18])
+	add(items,item_list[20])
+	add(items,item_list[21])
 end
 
 function buttons_i()
@@ -71,7 +69,11 @@ function makeplayer(x,y,z,w,c1,c2,s)
 	p.yspeed=0
 	p.zspeed=0
 	p.xs=17 p.ys=1
-	return p
+	p.fall=0
+	p.ground=0
+	p.id=#player
+	add(player,p)
+	--return p
 end
 
 function makedead(x,y,z,w,c1,c2)
@@ -126,29 +128,29 @@ function makesplat(x,y,xs,ys)
 	return s
 end
 
-function doplayer()
+function doplayer(p)
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(p.x,p.y)
-	if(btn (5) or btn(4)) then
-		if btn(5) then p.speed=0.34 else p.speed=0.5 end
-		if(btn (0))then p.xspeed=-p.speed end
-		if(btn (1))then p.xspeed=p.speed end
- 	if(btn (2))then p.yspeed=-p.speed end
-		if(btn (3))then p.yspeed=p.speed end
+	if(btn (5,p.id) or btn(4,p.id)) then
+		if btn(5,p.id) then p.speed=0.34 else p.speed=0.5 end
+		if(btn (0,p.id))then p.xspeed=-p.speed end
+		if(btn (1,p.id))then p.xspeed=p.speed end
+ 	if(btn (2,p.id))then p.yspeed=-p.speed end
+		if(btn (3,p.id))then p.yspeed=p.speed end
 	else p.x=flr(p.x) p.y=flr(p.y)
 	end
 	--if on the ground then
 	if p.z>=-gh then
 	 --can jump while
-	 if ground>0 then
-			if(btnp(4)) then p.zspeed=p.speed sfx(3,1) end
+	 if p.ground>0 then
+			if(btnp(4,p.id)) then p.zspeed=p.speed sfx(3,1) end
 		end
 		--if hit ground, die
 		if flc!=13 then
 			if gh==0 then
 	 		del(actor,dead)
 	 		dead=makeactor(p.x,p.y,p.z,1,2,8)
-	 		if fall>10 then
+	 		if p.fall>10 then
 	 			del(splat,s)
 	 			s=makesplat(p.x,p.y,p.xspeed,p.yspeed)
 	 		end
@@ -160,7 +162,7 @@ function doplayer()
 	 		buttons_i()
 			end
 		end
-		fall=0 ground+=1
+		p.fall=0 p.ground+=1
 	end	
 	
 	--if not next to a wall, move
@@ -171,14 +173,15 @@ function doplayer()
 	
 	--if in the air, fall
 	--make this an else of above func?
-	if(p.z<-mget(p.x,p.y)) then p.zspeed-=0.09 ground=0
-		if p.zspeed<0 then fall+=1 p.speed=0.5 end
+	if(p.z<-mget(p.x,p.y)) then p.zspeed-=0.09 p.ground=0
+		if p.zspeed<0 then p.fall+=1 p.speed=0.5 end
 	--if not, stand at map's height
 	else p.z=-mget(p.x,p.y) --fall=0
 	end
 end
 
 function doitem(i)
+	local p=player[1]
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		sfx(4,-1)
 		p.xs=i.xs p.ys=i.ys
@@ -200,6 +203,7 @@ function doitem(i)
 end
 
 function dobutton(b)
+	local p=player[1]
 	if b.x==flr(p.x) and b.y==flr(p.y) and (flr(b.z)==flr(p.z)) then
 		if b.pressed==false then
 			b.pressed=true
@@ -248,23 +252,29 @@ end
 
 function _init()
 	timer=0
+	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
+	ps=0.5
+	camera(0,-mh/2)
 	--actor={}
+	player={}
 	item_list={}
 	items={}
 	splat={}
 	buttons={}
-	p=makeplayer(17,1,10,1,14,3,ps) --0.5
-	camera(0,-mh/2)
+	
+	makeplayer(17,1,10,1,14,3,ps) --0.5
+	--makeplayer(16,1,10,1,12,1,ps)
 	items_i()
-	--add(items,item_list[1])
-	add(items,item_list[8])
-	add(items,item_list[18])
-	add(items,item_list[20])
-	add(items,item_list[21])
 	buttons_i()
 end
 
 function _draw()
+	local p=player[1]
+	--local p2=player[2]
+	--local p1x=player[1].x
+	--local p1y=player[1].y
+	--local p2x=player[2].x
+	--local p2y=player[2].y
 	cls()
 	rectfill(0,0,mw,mh,flc)
 	foreach(splat,drawsplat)
@@ -282,11 +292,15 @@ function _draw()
 			if (flr(p.x)==x and flr(p.y)==y) then
 				drawactor(p)
    end
+   --if (flr(p2x)==x and flr(p2y)==y) then
+				--drawactor(p2)
+   --end
 		end
 	end
 
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
+	foreach(dead)
 
 	--debug
 	print(stat(0),10,-30)
@@ -294,11 +308,11 @@ function _draw()
 	print(p.y,mw-15,-20)
 	print(stat(1),mw-30,-30)
 	--print(mget(p.x,p.y),10,-20)
-	print(fall,10,-20)
+	print(p.fall,10,-20)
 end
 
 function _update()
-	doplayer()
+	foreach(player,doplayer)
 	foreach(items,doitem)
 	foreach(buttons,dobutton)
 	timer+=1
