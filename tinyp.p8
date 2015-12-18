@@ -13,7 +13,7 @@ function items_i()
 	makeitem(24,0,-5,1,0,0,4,9,19,0,1)--8 top curve jump
 	makeitem(60,0,-13,1,8,9,4,10,16,0,1)--9 top long jump
 	makeitem(76,11,-5,1,8,9,4,17,0,0,1)--10 back to mid jump
-	makeitem(111,15,-5,1,8,9,4,12,0,0,1)--11 far right hazards
+	makeitem(125,15,-5,1,8,9,4,12,0,0,1)--11 far right hazards
 	makeitem(10,0,-9,1,8,9,4,0,0,0,1)--12 weird top left secret
 	makeitem(44,2,-5,1,8,9,4,7,0,0,1)--13 top detour
 	makeitem(71,35,-4,1,10,8,9,0,0,0,1)--14 false leap of faith
@@ -68,6 +68,8 @@ function buttons_i()
 	makebutton(97, 14,-mget(97,14), 1,13,5,97, 14,0,20,-1,false)
 	makebutton(103,14,-mget(103,14),1,13,5,103,14,0,20,-1,false)
 	makebutton(107,14,-mget(107,14),1,13,5,107,14,0,20,-1,false)
+	makebutton(111,14,-mget(111,14),1,13,5,111,14,0,20,-1,false)
+	makebutton(117,14,-mget(117,14),1,13,5,117,14,0,20,-1,false)
 	makebutton(81,35,-mget(81,35),1,13,5,81,35,0,10,-1,false)
 	makebutton(90,35,-mget(90,35),1,13,5,90,35,0,10,-1,false)
 	makebutton(97,35,-mget(97,35),1,13,5,97,35,0,10,-1,false)
@@ -344,6 +346,7 @@ function doprogress(s)
 		end
 		--sfx(6+score,-1)
 	end
+	shake=true
 end
 
 function drawactor(a)
@@ -384,6 +387,7 @@ function _init()
 	if debug==true then flc=0 end
 	ps=0.5
 	score=0
+	shake=false
 	camera(0,-mh)
 	--actor={}
 	player={}
@@ -433,6 +437,10 @@ function _draw()
 
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
+	
+	if shake==true then
+		camera(0+rnd(10)-5,-mh)
+	end
 
 	--debug
 	if debug==true then
