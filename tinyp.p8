@@ -1,7 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 5
 __lua__
-debug=false
+debug=true
 function items_i()
 	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0,1)--1 stairs top left
 	makeitem(23,25,-2,1,8,9,4,25,23,0 ,1)--2 crossroad
@@ -23,14 +23,17 @@ function items_i()
 	makeitem(31,11,-2,1,0,0,4,15,0,0,1)--18 invisible checkpoint
 	makeitem(76,15,-1,1,10,8,9,28,0,0,1)--19 post lof
 	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
-	makeitem(12,22,-3,1,0,0,1,0,0,0,1)--21 s route secret
+	makeitem(12,22,-3,1,0,0,1,29,0,0,1)--21 s route secret
 	makeitem(5,7,-3,1,8,9,3,1,0,0,0)--22 2nd easy
 	makeitem(5,25,-1,1,8,9,8,27,0,0,1)--23 s route
 	makeitem(14,0,-10,1,10,11,24,0,0,0,1)--24 secret get!
 	makeitem(32,26,-5,1,8,9,4,4,5,0,1)--25 crossroad
 	makeitem(101,0,-13,1,8,9,4,0,0,0,1)--26 top innaccess
-	makeitem(16,45,-3,1,8,9,4,0,0,0,1)--27 s route
+	makeitem_s(16,45,-3,1,8,9,3,39,4,0,0,0,1)--27 s route
+--makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
 	makeitem(87,26,-4,1,8,9,4,17,0,0,1)--28 pilar challenge
+	makeitem(18,32,-3,1,10,11,8,0,0,0,3)--29 s route secret
+	
 	add(items,item_list[8])
 	add(items,item_list[18])
 	add(items,item_list[20])
