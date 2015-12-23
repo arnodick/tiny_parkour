@@ -13,13 +13,13 @@ function items_i()
 	makeitem(24,0,-5,1,0,0,4,9,19,0,3)--8 top curve jump
 	makeitem(60,0,-13,1,8,9,4,10,16,0,1)--9 top long jump
 	makeitem(76,11,-5,1,8,9,4,17,0,0,1)--10 back to mid jump
-	makeitem(125,14,-5,1,8,9,4,12,0,0,1)--11 far right hazards
+	makeitem(125,14,-5,1,8,9,4,0,0,0,1)--11 far right hazards
 	makeitem(10,0,-9,1,8,9,4,0,0,0,1)--12 weird top left secret
 	makeitem(44,2,-5,1,8,9,4,7,0,0,1)--13 top detour
 	makeitem(71,35,-4,1,10,8,9,0,0,0,1)--14 false leap of faith
 	makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
 	makeitem(93,1,-13,1,8,9,4,0,11,26,1)--16 top hook jumps
-	makeitem(85,14,-10,1,10,11,12,12,11,0,1)--17 secret climb
+	makeitem(85,14,-10,1,10,11,12,11,0,0,1)--17 secret climb
 	makeitem(31,11,-2,1,0,0,4,15,0,0,1)--18 invisible checkpoint
 	makeitem(76,15,-1,1,10,8,9,28,0,0,1)--19 post lof
 	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
@@ -31,8 +31,9 @@ function items_i()
 	makeitem(101,0,-13,1,8,9,4,0,0,0,1)--26 top innaccess
 	makeitem_s(16,45,-3,1,8,9,3,39,4,0,0,0,1)--27 s route
 --makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
-	makeitem(87,26,-4,1,8,9,4,17,0,0,1)--28 pilar challenge
+	makeitem(87,26,-4,1,8,9,4,30,0,0,1)--28 pilar challenge
 	makeitem(18,32,-3,1,10,11,8,0,0,0,3)--29 s route secret
+	makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,1)--30 
 	
 	add(items,item_list[8])
 	add(items,item_list[18])
@@ -60,9 +61,9 @@ function buttons_i()
 	makebutton(85, 0, -mget(85,0),  1,13,5,50, 0,22,10,1,true)
 	makebutton(85, 0, -mget(85,0),  1,13,5,45, 0,23,10,1,true)
 	makebutton(18, 32,-mget(18,32), 1,13,5,19,32,3, 4, 1,false)
-	makebutton(64, 11,-mget(64,11), 1,13,5,72,11,9,4, 1,false)
-	makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
-	makebutton(72, 11,-mget(64,11), 1,13,5,76,11,9,4, 1,false)
+	makebutton(64, 11,-mget(64,11), 1,13,5,72,11,8,4, 1,false)
+	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
+	makebutton(72, 11,-8, 1,13,5,76,11,8,4, 1,false)
 	makebutton(22, 25,-mget(23,25), 1,13,5,23,25,2,30,1,false)
 	makebutton(85, 21,-mget(85,21), 1,13,5,85,15,5,10,1,false)
 	makebutton(117, 26,-mget(117,26), 1,13,5,117,21,5,10,1,false)
