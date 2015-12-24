@@ -207,6 +207,15 @@ function makebutton_s(x,y,z,w,c1,c2,stx,sty,sp,c,r,h,xs,ys,zs)
 	--return b
 end
 
+function makeexit(x,y,z)
+	local e={}
+	e.x=x
+	e.y=y
+	e.z=z
+	e.pressed=false
+	add(exits,e)
+end
+
 function makesplat(x,y,xs,ys)
 	local s={}
 	s.x=x
@@ -249,6 +258,7 @@ function doplayer(p)
 	 		p.x=p.xs p.y=p.ys
 	 		sfx(2,2)
 	 		reload(0x1000,0x1000,8192)
+	 		for k,v in pairs(exits) do exits[k]=nil end
 	 		doprogress(score)
 	 		for k,v in pairs(buttons) do buttons[k]=nil end
 	 		for k,v in pairs(buttons_s) do buttons_s[k]=nil end
@@ -360,11 +370,15 @@ function doprogress(s)
 				mset(112-b*2,a,b*2-1)
 				mset(113-b*2,a,b*2)
 			end
-			--add(items,item_list[30+b])
 			add(items,item_list[#item_list-5+b])
 		end
 	end
+	if score>=5 then makeexit(97,59,-16) end
 	shake=true
+end
+
+function doexit(e)
+	dobuttonpress(e)
 end
 
 function drawactor(a)
@@ -399,6 +413,10 @@ function drawitem(i)
 	end
 end
 
+function drawexit(e)
+	if e.pressed==true then print("win",mw/2,mh/2,8) end
+end
+
 function _init()
 	timer=0
 	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
@@ -415,6 +433,7 @@ function _init()
 	items={}
 	buttons={}
 	buttons_s={}
+	exits={}
 	
 	makeplayer(17,1,10,1,14,3,ps) --0.5
 	--makeplayer(16,1,10,1,12,1,ps)
@@ -456,7 +475,7 @@ function _draw()
 
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
-	
+	foreach(exits,drawexit)
 	--if shake==true then
 		--camera(0+rnd(10)-5,-mh)
 	--end
@@ -478,6 +497,7 @@ function _update()
 	foreach(items,doitem)
 	foreach(buttons,dobutton)
 	foreach(buttons_s,dobutton_s)
+	foreach(exits,doexit)
 	timer+=1
 end
 __gfx__
