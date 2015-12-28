@@ -7,7 +7,7 @@ function items_i()
 	makeitem(23,25,-2,1,8,9,2,25,23,0 ,1)--2 crossroad
 	makeitem(37,15,-3,1,8,9,2,6 ,19,14,2)--3 pilings
 	makeitem(49,36,-9,1,8,9,4,19,14,0 ,1)--4 arches middle
-	makeitem(71,35,-4,1,10,11,4,31,0,0,2)--5 arches secret! 
+	makeitem(71,35,-4,1,10,11,4,31,0,0,2,2)--5 arches secret! 
 	makeitem(49,14,-13,1,10,11,0,17,0,0,0)--6 on top of the wall
 	makeitem(61,15,-10,1,8,9,4,19,0,0,1)--7 leap of faith
 	makeitem(24,0,-5,1,0,0,4,9,19,0,2)--8 top curve jump
@@ -21,7 +21,7 @@ function items_i()
 	makeitem(93,1,-13,1,8,9,4,0,11,26,1)--16 top hook jumps
 	makeitem(85,14,-10,1,10,11,12,11,0,0,1)--17 secret climb
 	makeitem(31,11,-2,1,0,0,4,15,0,0,1)--18 invisible checkpoint
-	makeitem(76,15,-1,1,10,8,9,28,0,0,0)--19 post lof
+	makeitem(76,15,-1,1,10,8,9,28,0,0,0,3)--19 post lof
 	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
 	makeitem(12,22,-3,1,0,0,1,29,0,0,1)--21 s route secret
 	makeitem(5,7,-3,1,8,9,3,1,0,0,0)--22 2nd easy
@@ -145,7 +145,6 @@ function makeplayer(x,y,z,w,c1,c2,s)
 	p.ground=0
 	p.id=#player
 	add(player,p)
-	--return p
 end
 
 function makedead(x,y,z,w,c1,c2)
@@ -191,7 +190,6 @@ function makebutton(x,y,z,w,c1,c2,px,py,pz,spd,di,vis)
 	b.pressed=false
 	--b.n=#buttons
 	add(buttons,b)
-	--return b
 end
 
 function makebutton_s(x,y,z,w,c1,c2,stx,sty,sp,c,r,h,xs,ys,zs)
@@ -208,7 +206,6 @@ function makebutton_s(x,y,z,w,c1,c2,stx,sty,sp,c,r,h,xs,ys,zs)
 	b.pressed=false
 	b.switch=1
 	add(buttons_s,b)
-	--return b
 end
 
 function makeexit(x,y,z)
@@ -227,7 +224,6 @@ function makeending(x,y,z)
 	e.z=z
 	e.pressed=false
 	add(ending,e)
-	--return e
 end
 
 function makeboss(x,y,z)
@@ -239,13 +235,12 @@ function makeboss(x,y,z)
 	b.ys=y
 	b.zs=z
 	b.dial={}
-	b.dial[1]="try harder, mortal"
-	b.dial[2]="you made progress, mortal... now die"
-	b.dial[3]="hm, i may be impressed mortal..."
+	b.dial[1]="try again, mortal"
+	b.dial[2]="well done... now die"
+	b.dial[3]="i may be impressed..."
 	b.dial[4]="this is the farthest anyone has come, mortal"
 	b.dial[5]="you have become champion of parkour"
 	add(boss,b)
-	--return e
 end
 
 function makesplat(x,y,xs,ys)
@@ -255,7 +250,6 @@ function makesplat(x,y,xs,ys)
 	s.x1=x+((xs/0.2)+rnd(2))
 	s.y1=y+((ys/0.2)+rnd(2))
 	add(splat,s)
-	--return s
 end
 
 function doplayer(p)
@@ -273,7 +267,7 @@ function doplayer(p)
 	if p.z>=-gh then
 	 --can jump
 	 if p.ground>0 then
-			if(btnp(4,p.id)) then p.zspeed=p.speed sfx(3,1) dset(1,6) end
+			if(btnp(4,p.id)) then p.zspeed=p.speed sfx(3,1) end
 		end
 		--if hit bottom, die
 		if flc!=13 then
@@ -428,7 +422,7 @@ function doending(e)
 	if p==true then
 		for k,v in pairs(items) do items[k]=nil end
 		dset(route,dget(route)+1)
-		makeboss(40,58,-mh*2.5)
+		makeboss(45,58,-mh*2.5)
 	end
 end
 
@@ -713,7 +707,7 @@ __gfx__
 800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f0000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000c0c0f0f0f0f0f0c0c00000000000000000000000000000000000000000007040407000
 800000000000000000000000000000000000000000000000000000000000000000000000000070707060504030000000000000f0000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000c0c0f0213121f0c0c00000000000000000000000000000000000000000007040407000
+0000000000000000000000000000000000000000000000000000000000c0c0f0216121f0c0c00000000000000000000000000000000000000000007040407000
 800000000000000000000000000000000000000000000000000000000000000000000000000070c0c0b0a0903000000000002121210000000000000000005151
 5100000000000000000000000000000000000000000000000000000000c0c0f0210121f0c0c00000000000000000000000000000000000000000007040407000
 800000000000000000000000000000000000000000000000000000000000000000000000000070c0f0f0d09030000000f0f0210121f0f00000510000f0f05131
