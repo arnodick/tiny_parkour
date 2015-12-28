@@ -4,36 +4,37 @@ __lua__
 debug=true
 function items_i()
 	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0,1)--1 stairs top left
-	makeitem(23,25,-2,1,8,9,4,25,23,0 ,1)--2 crossroad
-	makeitem(37,15,-3,1,8,9,4,6 ,19,14,1)--3 pilings
+	makeitem(23,25,-2,1,8,9,2,25,23,0 ,1)--2 crossroad
+	makeitem(37,15,-3,1,8,9,2,6 ,19,14,2)--3 pilings
 	makeitem(49,36,-9,1,8,9,4,19,14,0 ,1)--4 arches middle
-	makeitem(71,35,-4,1,10,11,4,0,0,0,3)--5 arches secret! 
-	makeitem(49,14,-13,1,10,11,0,17,0,0,1)--6 on top of the wall
+	makeitem(71,35,-4,1,10,11,4,31,0,0,2)--5 arches secret! 
+	makeitem(49,14,-13,1,10,11,0,17,0,0,0)--6 on top of the wall
 	makeitem(61,15,-10,1,8,9,4,19,0,0,1)--7 leap of faith
-	makeitem(24,0,-5,1,0,0,4,9,19,0,3)--8 top curve jump
+	makeitem(24,0,-5,1,0,0,4,9,19,0,2)--8 top curve jump
 	makeitem(60,0,-13,1,8,9,4,10,16,0,1)--9 top long jump
 	makeitem(76,11,-5,1,8,9,4,17,0,0,1)--10 back to mid jump
 	makeitem(125,14,-5,1,8,9,4,0,0,0,1)--11 far right hazards
 	makeitem(10,0,-9,1,8,9,4,0,0,0,1)--12 weird top left secret
 	makeitem(44,2,-5,1,8,9,4,7,0,0,1)--13 top detour
-	makeitem(71,35,-4,1,10,8,9,0,0,0,1)--14 false leap of faith
+	makeitem(71,35,-4,1,10,8,9,31,0,0,1,1)--14 false leap of faith
 	makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
 	makeitem(93,1,-13,1,8,9,4,0,11,26,1)--16 top hook jumps
 	makeitem(85,14,-10,1,10,11,12,11,0,0,1)--17 secret climb
 	makeitem(31,11,-2,1,0,0,4,15,0,0,1)--18 invisible checkpoint
-	makeitem(76,15,-1,1,10,8,9,28,0,0,1)--19 post lof
+	makeitem(76,15,-1,1,10,8,9,28,0,0,0)--19 post lof
 	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
 	makeitem(12,22,-3,1,0,0,1,29,0,0,1)--21 s route secret
 	makeitem(5,7,-3,1,8,9,3,1,0,0,0)--22 2nd easy
 	makeitem(5,25,-1,1,8,9,8,27,0,0,1)--23 s route
-	makeitem(14,0,-10,1,10,11,24,0,0,0,1)--24 secret get!
-	makeitem(32,26,-5,1,8,9,4,4,5,0,1)--25 crossroad
-	makeitem_s(101,0,-13,1,8,9,99,0,4,24,0,0,1)--26 top innaccess
+	makeitem_s(14,0,-10,1,10,11,11,0,24,0,0,0,1)--24 secret get!
+	makeitem(32,26,-5,1,8,9,2,4,5,0,0)--25 crossroad
+	makeitem_s(101,0,-13,1,8,9,99,0,4,24,0,0,0)--26 top innaccess
 	makeitem_s(16,45,-3,1,8,9,3,39,4,0,0,0,1)--27 s route
 --makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
-	makeitem(87,26,-4,1,8,9,4,30,0,0,1)--28 pilar challenge
+	makeitem(87,26,-4,1,8,9,4,30,0,0,0)--28 pilar challenge
 	makeitem(18,32,-3,1,10,11,8,0,0,0,3)--29 s route secret
-	makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,1)--30 
+	makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,0)--30 
+	makeitem(121,35,-5,1,8,9,2,0,0,0,1)--31 crossroad
 	
 	makeitem(93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
@@ -61,11 +62,13 @@ function buttons_i()
 	makebutton(44, 0, -mget(44,0),  1,13,5,126,1,12,30,1,true)
 	makebutton(101, 0,-mget(101,0), 1,13,5,101,0,22,10,1,false)
 	makebutton(85, 0, -mget(85,0),  1,13,5,78, 0,22,4,1,false)
-	makebutton(85, 0, -mget(85,0),  1,13,5,71, 0,25,6,1,false)
-	makebutton(85, 0, -mget(85,0),  1,13,5,64, 0,25,10,1,false)
-	makebutton(85, 0, -mget(85,0),  1,13,5,57, 0,22,10,1,false)
-	makebutton(85, 0, -mget(85,0),  1,13,5,50, 0,22,10,1,false)
+	makebutton(87, 0, -mget(85,0),  1,13,5,71, 0,25,6,1,false)
+	makebutton(89, 0, -mget(85,0),  1,13,5,64, 0,25,10,1,false)
+	makebutton(91, 0, -mget(85,0),  1,13,5,57, 0,22,10,1,false)
+	makebutton(93, 0, -mget(85,0),  1,13,5,50, 0,22,10,1,false)
 	makebutton(85, 0, -mget(85,0),  1,13,5,45, 0,23,10,1,false)
+		makebutton(97, 0, -mget(85,0),  1,13,5,97, 0,0,1,-1,false)
+		makebutton(95, 0, -mget(85,0),  1,13,5,95, 0,0,1,-1,false)
 	makebutton(18, 32,-mget(18,32), 1,13,5,19,32,3, 4, 1,false)
 	makebutton(64, 11,-mget(64,11), 1,13,5,72,11,8,4, 1,false)
 	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
@@ -110,7 +113,7 @@ function buttons_i()
 	makebutton(12,22,-mget(12,22),1,13,5,9,22,0,2, -1,false)
 	makebutton(12,22,-mget(12,22),1,13,5,5,23,0,2, -1,false)
 	makebutton(12,22,-mget(12,22),1,13,5,5,24,0,2, -1,false)
-	
+
 	--bs=makebutton_s(3,39,-mget(3,39),2,8,9,3,6)
 	makebutton_s(3,39,-mget(3,39),1,8,9,3,50,6,3,3,3)
 	makebutton_s(100,35,-mget(100,35),0,8,9,104,35,4,4,1,3,121,35,-5)
@@ -157,7 +160,7 @@ function makedead(x,y,z,w,c1,c2)
 	--return d
 end
 
-function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v)
+function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v,r)
 	local i=makeactor(x,y,z,w,c1,c2)
 	i.xs=x i.ys=y--spawn point is where checkpoint is
 	i.b=b--bounce height
@@ -165,12 +168,13 @@ function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v)
 	i.ic2=ic2
 	i.ic3=ic3
 	i.v=v
+	i.r=r
 	i.n=#item_list
 	add(item_list,i)
 	return i
 end
 
-function makeitem_s(x,y,z,w,c1,c2,xs,ys,b,ic1,ic2,ic3,v)
+function makeitem_s(x,y,z,w,c1,c2,xs,ys,b,ic1,ic2,ic3,v,r)
 	local is=makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v)
 	is.xs=xs--spawn point is customized
 	is.ys=ys
@@ -216,6 +220,34 @@ function makeexit(x,y,z)
 	add(exits,e)
 end
 
+function makeending(x,y,z)
+	local e={}
+	e.x=x
+	e.y=y
+	e.z=z
+	e.pressed=false
+	add(ending,e)
+	--return e
+end
+
+function makeboss(x,y,z)
+	local b={}
+	b.x=x
+	b.y=y
+	b.z=z
+	b.xs=x
+	b.ys=y
+	b.zs=z
+	b.dial={}
+	b.dial[1]="try harder, mortal"
+	b.dial[2]="you made progress, mortal... now die"
+	b.dial[3]="hm, i may be impressed mortal..."
+	b.dial[4]="this is the farthest anyone has come, mortal"
+	b.dial[5]="you have become champion of parkour"
+	add(boss,b)
+	--return e
+end
+
 function makesplat(x,y,xs,ys)
 	local s={}
 	s.x=x
@@ -241,17 +273,15 @@ function doplayer(p)
 	if p.z>=-gh then
 	 --can jump
 	 if p.ground>0 then
-			if(btnp(4,p.id)) then p.zspeed=p.speed sfx(3,1) end
+			if(btnp(4,p.id)) then p.zspeed=p.speed sfx(3,1) dset(1,6) end
 		end
 		--if hit bottom, die
 		if flc!=13 then
 			if gh==0 then
 				for k,v in pairs(dead) do dead[k]=nil end
-	 		--for d in all(dead) do del(dead,d) end
 	 		makedead(p.x,p.y,p.z,1,p.c2,8)
 	 		if p.fall>10 then
 	 			for k,v in pairs(splat) do splat[k]=nil end
-	 			--for s in all(splat) do del(splat,s) end
 	 			makesplat(p.x,p.y,p.xspeed,p.yspeed)
 	 		end
 	 		--todo: maybe delete and reinit player here?
@@ -259,12 +289,12 @@ function doplayer(p)
 	 		sfx(2,2)
 	 		reload(0x1000,0x1000,8192)
 	 		for k,v in pairs(exits) do exits[k]=nil end
-	 		doprogress(score)
+	 		for k,v in pairs(ending) do ending[k]=nil end
+	 		for k,v in pairs(boss) do boss[k]=nil end
 	 		for k,v in pairs(buttons) do buttons[k]=nil end
 	 		for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-	 		--for b in all(buttons) do del(buttons,b) end
-	 		--for bs in all(buttons_s) do del(buttons_s,bs) end
 	 		buttons_i()
+	 		doprogress(score,false)
 			end
 		end
 		p.fall=0 p.ground+=1
@@ -288,22 +318,21 @@ function doitem(i)
 	local p=player[1]
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		score+=i.v
-		if score==0 or score > 5 then sfx(4,-1)
+		if i.v==0 then sfx(4,-1)
 		else sfx(6+score,-1) end
-
 		p.xs=i.xs p.ys=i.ys
 		local ic1=i.ic1
 		local ic2=i.ic2
 		local ic3=i.ic3
+		if i.r!=nil then route=i.r end
 		for k,v in pairs(items) do items[k]=nil end
-		--for v in all(items) do del(items,v) end
 		add(items,item_list[ic1])
 		add(items,item_list[ic2])
 		add(items,item_list[ic3])
-		doprogress(score)
+		doprogress(score,true)
 	else
 		i.z=(-abs(cos(timer*1/40))*i.b)-mget(i.x,i.y)
-		if timer%30==0 then
+		if timer%19==0 then
 			local col1=i.c1 local col2=i.c2
 			i.c1=col2
 			i.c2=col1
@@ -318,6 +347,7 @@ function dobuttonpress(b)
 			b.pressed=true
 			b.z+=1
 			sfx(6,-1)
+			return b.pressed
 		end
 	end
 end
@@ -359,7 +389,7 @@ function dobutton_s(b)
 	end
 end
 
-function doprogress(s)
+function doprogress(s,i)
 	if score>0 then
 		local s=score
 		if s>5 then s=5 end
@@ -370,15 +400,41 @@ function doprogress(s)
 				mset(112-b*2,a,b*2-1)
 				mset(113-b*2,a,b*2)
 			end
+			if i==true then
 			add(items,item_list[#item_list-5+b])
+			end
 		end
 	end
-	if score>=5 then makeexit(97,59,-16) end
+	if score==5 then
+	local h=200
+	makeexit(97,59,-16)
+	makeending(97,58,-203)
+	makebutton(97,59,-16,1,13,5,97,59,h,2,1,false)
+	makebutton(97,59,-16,1,13,5,97,58,h+3,2,1,false)
+	makebutton(97,59,-16,1,13,5,98,59,h+2,2,1,false)
+	makebutton(97,59,-16,1,13,5,96,59,h+2,2,1,false)
+	makebutton(97,59,-16,1,13,5,98,58,h+2,2,1,false)
+	makebutton(97,59,-16,1,13,5,96,58,h+2,2,1,false)	
+	makebutton(97,59,-16,1,13,5,95,56,h+3,2,1,false)
+	makebutton(97,59,-16,1,13,5,99,56,h+3,2,1,false)
+	makebutton(97,59,-16,1,13,5,93,56,h+1,2,1,false)
+	makebutton(97,59,-16,1,13,5,101,56,h+1,2,1,false)
+	end
 	shake=true
 end
 
-function doexit(e)
-	dobuttonpress(e)
+function doending(e)
+	local p=dobuttonpress(e)
+	if p==true then
+		for k,v in pairs(items) do items[k]=nil end
+		dset(route,dget(route)+1)
+		makeboss(40,58,-mh*2.5)
+	end
+end
+
+function doboss(b)
+	b.x=b.xs+cos(timer*1/40)*3
+	b.z=b.zs+sin(timer*1/70)*10
 end
 
 function drawactor(a)
@@ -414,12 +470,35 @@ function drawitem(i)
 end
 
 function drawexit(e)
-	if e.pressed==true then print("win",mw/2,mh/2,8) end
+	for a=0,4 do line(93+a*2,-mget(97,59)+52-(a%2)*2,93+a*2,-mget(97,59)-47,4) end
+	if timer%5==0 then pal(4,flr(rnd(16)),1) end
+end
+
+function drawboss(b)
+	local t="you've come this\nway "..dget(route).." times, mortal...\npathetic"
+	if dget(route)>1 then
+		print(t,b.x-#t/1.5,b.z-45,8) 
+	else
+		t="you completed route "..route.."\n"..b.dial[route]
+		print(t,b.x-#t,b.z-30,8) 
+	end
+	circfill(b.x,b.z,10,12)
+	circ(b.x,b.z,10,3)
+	rectfill(b.x-10,b.z-5,b.x+10,b.z,1)
+	rectfill(b.x+3,b.z+2,b.x+5,b.z-5,4)
+	rectfill(b.x-3,b.z+2,b.x-5,b.z-5,4)
+	rectfill(b.x-2,b.z+4,b.x+2,b.z+6+(cos(timer*1/40)),0)
+	--line(b.x-3,b.z,player[1].x,player[1].y+player[1].z,4)
+	--line(b.x+3,b.z,player[1].x,player[1].y+player[1].z,4)
 end
 
 function _init()
+	cartdata("ap_tinyp")
+	--for a=0,5 do dset(a,0) end
+	--dset(1,7)
 	timer=0
 	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
+	route=0
 	if debug==true then flc=0 end
 	ps=0.5
 	score=0
@@ -434,20 +513,21 @@ function _init()
 	buttons={}
 	buttons_s={}
 	exits={}
+	ending={}
+	boss={}
 	
 	makeplayer(17,1,10,1,14,3,ps) --0.5
-	--makeplayer(16,1,10,1,12,1,ps)
+	
+	--makeplayer(97,60,16,1,14,3,ps) --0.5
+	--score=5
+	--doprogress()
+	
 	items_i()
 	buttons_i()
 end
 
 function _draw()
 	local p=player[1]
-	--local p2=player[2]
-	--local p1x=player[1].x
-	--local p1y=player[1].y
-	--local p2x=player[2].x
-	--local p2y=player[2].y
 	cls()
 	if flc!=0 then
 	rectfill(0,0,mw,mh,flc) end
@@ -476,39 +556,54 @@ function _draw()
 	foreach(items,drawitem)
 	foreach(buttons,drawbutton)
 	foreach(exits,drawexit)
+	foreach(boss,drawboss)
 	--if shake==true then
 		--camera(0+rnd(10)-5,-mh)
 	--end
 
 	--debug
 	if debug==true then
-	print(stat(0),10,-30)
-	print(p.x,mw-40,-20)
-	print(p.y,mw-25,-20)
-	print(p.z,mw-15,-20)
-	print(score,mw/2,-30)
-	print(stat(1),mw-30,-30)
+	print(stat(0),10,-30,11)
+	print(p.x,mw-40,-20,11)
+	print(p.y,mw-25,-20,11)
+	print(p.z,mw-15,-20,11)
+	print(score,mw/2,-30,11)
+	for a=0,5 do print(dget(a),mw/2-10+a*5,-20,11) end
+		print(route,mw/2,-40,11)
+	print(stat(1),mw-30,-30,11)
+		print(stat(1),mw-30,-mh*2+20,11)
+			print(p.x,mw-40,-mh*2,11)
+			print(p.y,mw-25,-mh*2,11)
+			print(p.z,mw-15,-mh*2,11)
+				for a=0,5 do print(dget(a),mw/2-10+a*5,-mh*2,11) end
+					--print(dget(0),mw/2,-mh*2,11)
 	--print(mget(p.x,p.y),10,-20)
-	print(p.fall,10,-20)end
+	print(p.fall,10,-20,11)end
 end
 
 function _update()
 	foreach(player,doplayer)
+	foreach(ending,doending)
 	foreach(items,doitem)
 	foreach(buttons,dobutton)
 	foreach(buttons_s,dobutton_s)
-	foreach(exits,doexit)
+	--foreach(exits,doexit)
+	foreach(boss,doboss)	
+	if player[1].z>=-120 then camera(0,-mh) end
+	if player[1].z<-120 then camera(0,-mh*2) end
+	if player[1].z<-190 then camera(0,-mh*3.5) end
+	
 	timer+=1
 end
 __gfx__
-00000600000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000
-60006000008000008888800008888800080800008888800088888800888880000888880008888800080008800800000000000000080088800008008000000000
-66060000008000000000800000000800080800008000000080000000000080000800088008008000080008800800000000080888080000800808808008088880
-06600000008000008888800008888800088800008888800080000000000080000880080008008800080080800800800000080008080088800800808008080000
-00660000008000008000000000000800000800000000800088888800000880000088888008888800080080880800800000080888080000800800888008088880
-06066000008000008888800000000800000800008000800080000800008800000880008000000800088080080800800000080800080008800800008008000080
-66006000000000000000000008888800000800008888800088888800008000000880888000000800088088880000800000080800000088000800008008088880
-00000600000000000000000000000000000000000000000000000000008000000088880000008800000000000000800000080888000000000000000000000000
+00006000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000
+00060006008000008888800008888800080800008888800088888800888880000888880008888800080008800800000000000000080088800008008000000000
+60600006008000000000800000000800080800008000000080000000000080000800088008008000080008800800000000080888080000800808808008088880
+66000000008000008888800008888800088800008888800080000000000080000880080008008800080080800800800000080008080088800800808008080000
+06600000008000008000000000000800000800000000800088888800000880000088888008888800080080880800800000080888080000800800888008088880
+60660000008000008888800000000800000800008000800080000800008800000880008000000800088080080800800000080800080008800800008008000080
+60060006000000000000000008888800000800008888800088888800008000000880888000000800088088880000800000080800000088000800008008088880
+00006000000000000000000000000000000000000000000000000000008000000088880000008800000000000000800000080888000000000000000000000000
 00000000000000000000000000000000000000000000000000000000888088880000000000000000000000000000800000080000000000000000000000000000
 08008888080888808088880080888800888088808880880888808880008000088888080888880888000000000000800000080000000000000000000000000000
 08008000080000808080080080808800008080800080800000800088008000080008080800080800000000000000800000080000000000000000000000000000
@@ -633,9 +728,9 @@ __gff__
 0000010200000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __map__
-0808080808080808080808080808000808080808080808080404000000000616161616161919191919191919161616161616130707070707070707070c0000000000000c0000000000000c080808080808080c0c0c160c160c160c160c160c160c160c160c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c
+0808080808080808080808080000000000080808080808080404000000000616161616161919191919191919161616161616130707070707070707070c0000000000000c0000000000000c080808080808080c0c0c160c160c160c160c160c160c160c160c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c
 080000000000000000000503030000000303050000000000000000000000060008000a000c0404040404040c0d0e0f10111213070707070000000000000000000000000000000000000000080808000000000c0c0808080c0808080c0808080c0808080c0808080c0c000008080808080808080808080808080800000000000c
-0800000000000000000005030300000003030500000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008070605000000000505050505050505050505050506070808080808
+0800000000000000000005030300000003030500000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008070605000000000404040404040404040404040404040404040405
 0800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007040407
 0800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007040407
 0800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007040407
