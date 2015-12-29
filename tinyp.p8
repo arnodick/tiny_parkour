@@ -53,14 +53,14 @@ function buttons_i()
 	makebutton(42, 1, -mget(42,1),  1,13,5,44, 2,4,15,1,false)
 	makebutton(42, 1, -mget(42,1),  1,13,5,45, 2,4,15,1,false)
 	makebutton(42, 1, -mget(42,1),  1,13,5,46, 2,4,15,1,false)
-	makebutton(45, 2, -4,  1,13,5,49, 2,22,15,1,true)
+	makebutton(45, 2, -4,  1,13,5,49, 2,22,5,1,true)
 	makebutton(45, 2, -4,  1,13,5,49, 1,22,15,1,true)
 	makebutton(44, 0, -mget(44,0),  1,13,5,122,1, 8,30,1,true)
 	makebutton(44, 0, -mget(44,0),  1,13,5,123,1, 9,30,1,true)
 	makebutton(44, 0, -mget(44,0),  1,13,5,124,1,10,30,1,true)
 	makebutton(44, 0, -mget(44,0),  1,13,5,125,1,11,30,1,true)
 	makebutton(44, 0, -mget(44,0),  1,13,5,126,1,12,30,1,true)
-	makebutton(101, 0,-mget(101,0), 1,13,5,101,0,22,10,1,false)
+	makebutton(101, 0,-mget(101,0), 1,13,5,101,0,22,1,1,false)
 	makebutton(85, 0, -mget(85,0),  1,13,5,78, 0,22,4,1,false)
 	makebutton(87, 0, -mget(85,0),  1,13,5,71, 0,25,6,1,false)
 	makebutton(89, 0, -mget(85,0),  1,13,5,64, 0,25,10,1,false)
@@ -69,6 +69,7 @@ function buttons_i()
 	makebutton(85, 0, -mget(85,0),  1,13,5,45, 0,23,10,1,false)
 		makebutton(97, 0, -mget(85,0),  1,13,5,97, 0,0,1,-1,false)
 		makebutton(95, 0, -mget(85,0),  1,13,5,95, 0,0,1,-1,false)
+			for a=0,9 do makebutton(99, 0, -mget(99,0),  1,13,5,102-a*2,0,0,1,-1,false) end
 	makebutton(18, 32,-mget(18,32), 1,13,5,19,32,3, 4, 1,false)
 	makebutton(64, 11,-mget(64,11), 1,13,5,72,11,8,4, 1,false)
 	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
@@ -159,6 +160,26 @@ function makedead(x,y,z,w,c1,c2)
 	--return d
 end
 
+function makesplat(x,y,xs,ys)
+	local s={}
+	s.x=x
+	s.y=y
+	s.x1=x+((xs/0.2)+rnd(2))
+	s.y1=y+((ys/0.2)+rnd(2))
+	add(splat,s)
+end
+
+function makepart(x,y,s,c)
+	local p={}
+	p.x=x
+	p.y=y
+	p.xs=rnd(s)-s/2
+	p.ys=rnd(s)-s/2
+	p.c=c
+	p.ts=timer
+	add(parts,p)
+end
+
 function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v,r)
 	local i=makeactor(x,y,z,w,c1,c2)
 	i.xs=x i.ys=y--spawn point is where checkpoint is
@@ -244,15 +265,6 @@ function makeboss(x,y,z)
 	add(boss,b)
 end
 
-function makesplat(x,y,xs,ys)
-	local s={}
-	s.x=x
-	s.y=y
-	s.x1=x+((xs/0.2)+rnd(2))
-	s.y1=y+((ys/0.2)+rnd(2))
-	add(splat,s)
-end
-
 function doplayer(p)
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(p.x,p.y)
@@ -313,6 +325,7 @@ function doitem(i)
 	local p=player[1]
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		score+=i.v
+		for a=1,8 do makepart(i.x,i.y+i.z,1,i.c1) end
 		if i.v==0 then sfx(4,-1)
 		else sfx(6+score,-1) end
 		p.xs=i.xs p.ys=i.ys
@@ -332,6 +345,14 @@ function doitem(i)
 			i.c1=col2
 			i.c2=col1
 		end
+	end
+end
+
+function dopart(p)
+	p.x+=p.xs
+	p.y+=p.ys
+	if timer-p.ts>=10 then
+		for k,v in pairs(parts) do parts[k]=nil end
 	end
 end
 
@@ -453,6 +474,10 @@ function drawsplat(s)
  pset(s.x,s.y1,8)
 end
 
+function drawpart(p)
+	pset(p.x,p.y,p.c)
+end
+
 function drawitem(i)
  pset(i.x,i.y-mget(i.x,i.y),5)
  pset(i.x,i.y+i.z,i.c1)
@@ -503,6 +528,7 @@ function _init()
 	player={}
 	dead={}
 	splat={}
+	parts={}
 	item_list={}
 	items={}
 	buttons={}
@@ -573,6 +599,7 @@ function _draw()
 	foreach(buttons,drawbutton)
 	foreach(exits,drawexit)
 	foreach(boss,drawboss)
+	foreach(parts,drawpart)
 	--if shake==true then
 		--camera(0+rnd(10)-5,-mh)
 	--end
@@ -601,6 +628,7 @@ function _update()
 	foreach(player,doplayer)
 	foreach(ending,doending)
 	foreach(items,doitem)
+	foreach(parts,dopart)
 	foreach(buttons,dobutton)
 	foreach(buttons_s,dobutton_s)
 	--foreach(exits,doexit)
