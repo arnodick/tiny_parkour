@@ -8,17 +8,17 @@ function items_i()
 	makeitem(37,15,-3,1,8,9,2,6 ,19,14,2)--3 pilings
 	makeitem(49,36,-9,1,8,9,4,19,14,0 ,1)--4 arches middle
 	makeitem(71,35,-4,1,10,11,4,31,0,0,2,2)--5 arches secret! 
-	makeitem(49,14,-13,1,10,11,0,17,0,0,0)--6 on top of the wall
+	makeitem(49,14,-13,1,10,11,0,17,0,0,0,4)--6 on top of the wall
 	makeitem(61,15,-10,1,8,9,4,19,0,0,1)--7 leap of faith
-	makeitem(24,0,-5,1,0,0,4,9,19,0,2)--8 top curve jump
-	makeitem(60,0,-13,1,8,9,4,10,16,0,1)--9 top long jump
+	makeitem(24,0,-5,1,0,0,4,9,19,0,1)--8 top curve jump
+	makeitem(60,0,-13,1,8,9,4,10,16,0,1,5)--9 top long jump
 	makeitem(76,11,-5,1,8,9,4,17,0,0,1)--10 back to mid jump
 	makeitem(125,14,-5,1,8,9,4,0,0,0,1)--11 far right hazards
 	makeitem(10,0,-9,1,8,9,4,0,0,0,1)--12 weird top left secret
 	makeitem(44,2,-5,1,8,9,4,7,0,0,1)--13 top detour
 	makeitem(71,35,-4,1,10,8,9,31,0,0,1,1)--14 false leap of faith
 	makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
-	makeitem(93,1,-13,1,8,9,4,0,11,26,1)--16 top hook jumps
+	makeitem(93,1,-13,1,8,9,4,0,11,26,2,6)--16 top hook jumps
 	makeitem(85,14,-10,1,10,11,12,11,0,0,1)--17 secret climb
 	makeitem(31,11,-2,1,0,0,4,15,0,0,1)--18 invisible checkpoint
 	makeitem(76,15,-1,1,10,8,9,28,0,0,0,3)--19 post lof
@@ -238,8 +238,9 @@ function makeboss(x,y,z)
 	b.dial[1]="try again, mortal"
 	b.dial[2]="well done... now die"
 	b.dial[3]="i may be impressed..."
-	b.dial[4]="this is the farthest anyone has come, mortal"
-	b.dial[5]="you have become champion of parkour"
+	b.dial[4]="where did you learn parkour?"
+	b.dial[5]="better than most mortals, mortal"
+	b.dial[6]="you have become champion of parkour"
 	add(boss,b)
 end
 
@@ -409,10 +410,10 @@ function doprogress(s,i)
 	makebutton(97,59,-16,1,13,5,96,59,h+2,2,1,false)
 	makebutton(97,59,-16,1,13,5,98,58,h+2,2,1,false)
 	makebutton(97,59,-16,1,13,5,96,58,h+2,2,1,false)	
-	makebutton(97,59,-16,1,13,5,95,56,h+3,2,1,false)
-	makebutton(97,59,-16,1,13,5,99,56,h+3,2,1,false)
-	makebutton(97,59,-16,1,13,5,93,56,h+1,2,1,false)
-	makebutton(97,59,-16,1,13,5,101,56,h+1,2,1,false)
+	makebutton(97,59,-16,1,13,5,95,56,h+6,2,1,false)
+	makebutton(97,59,-16,1,13,5,99,56,h+6,2,1,false)
+	makebutton(97,59,-16,1,13,5,93,56,h+6,2,1,false)
+	makebutton(97,59,-16,1,13,5,101,56,h+6,2,1,false)
 	end
 	shake=true
 end
@@ -469,7 +470,7 @@ function drawexit(e)
 end
 
 function drawboss(b)
-	local t="you've come this\nway "..dget(route).." times, mortal...\npathetic"
+	local t="you've come this\nway "..dget(route).." times, mortal...\npathetic. find a new way"
 	if dget(route)>1 then
 		print(t,b.x-#t/1.5,b.z-45,8) 
 	else
@@ -518,13 +519,34 @@ function _init()
 	
 	items_i()
 	buttons_i()
+	
+	star1={} star2={}
+	for a=1,100 do star1[a]=rnd(127) star2[a]=rnd(63) end
+	moon1={} moon2={}
+	for a=1,30 do moon1[a]=92+rnd(15) moon2[a]=-32-rnd(15) end
 end
 
 function _draw()
 	local p=player[1]
 	cls()
-	if flc!=0 then
-	rectfill(0,0,mw,mh,flc) end
+	if flc!=0 then rectfill(0,0,mw,mh,flc) end
+	for a=1,100 do pset(star1[a],star2[a]-200,12) end
+	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
+	circfill(100,-40,10,6)
+	for a=1,30 do pset(moon1[a],moon2[a],5) end
+	local cdist=180
+	local sp=3
+	line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,7)
+	line(((timer/sp)%cdist)+3-40,-40,((timer/sp)%cdist),-39,7)
+	line(((timer/sp)%cdist)+5-40,-39,((timer/sp)%cdist)-5,-39,6)
+	sp=2
+	line(((timer/sp)%cdist)+6-20,-43,((timer/sp)%cdist)-6,-43,7)
+	line(((timer/sp)%cdist)+3-20,-42,((timer/sp)%cdist),-42,7)
+	line(((timer/sp)%cdist)+5-20,-41,((timer/sp)%cdist)-5,-41,6)
+	sp=2.5
+	line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist),-39,7)
+	line(((timer/sp)%cdist)+5-15,-38,((timer/sp)%cdist)-5,-38,6)
+	
 	foreach(splat,drawsplat)
 	foreach(dead,drawactor)
 	--loop through every map cell
@@ -703,9 +725,9 @@ __gfx__
 80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007040407000
 80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000000000000000000000000000000000000000000000000000011c031c0c0c031c0110000000000000000000000000000000000000000007040407000
+000000000000000000000000000000000000000000000000000000000021c03100000031c0210000000000000000000000000000000000000000007040407000
 800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f0000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000c0c0f0f0f0f0f0c0c00000000000000000000000000000000000000000007040407000
+0000000000000000000000000000000000000000000000000000000000c0c0f0000000f0c0c00000000000000000000000000000000000000000007040407000
 800000000000000000000000000000000000000000000000000000000000000000000000000070707060504030000000000000f0000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000c0c0f0216121f0c0c00000000000000000000000000000000000000000007040407000
 800000000000000000000000000000000000000000000000000000000000000000000000000070c0c0b0a0903000000000002121210000000000000000005151
