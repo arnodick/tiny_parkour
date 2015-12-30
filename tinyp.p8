@@ -35,13 +35,13 @@ function items_i()
 	makeitem(18,32,-3,1,10,11,8,0,0,0,3)--29 s route secret
 	makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,0)--30 
 	makeitem(121,35,-5,1,8,9,2,0,0,0,1)--31 crossroad
-	makeitem(23,62,-1,1,8,9,2,0,0,0,1)--32 s puzzle final
+	makeitem_s(23,62,-1,1,8,9,83,61,2,0,0,0,1)--32 s puzzle final
 	
 	makeitem(93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
 	makeitem(95,56,-mget(95,56),1,14,11,0,0,0,0,0)--32 post lof
 	makeitem(99,56,-mget(99,56),1,14,11,0,0,0,0,0)--34 post lof
-	makeitem(97,58,-mget(97,58),1,14,11,0,0,0,0,0)--33 post lof		
+	makeitem_s(97,58,-mget(97,58),1,14,11,0,0,0,0,0)--33 post lof
 	
 	add(items,item_list[8])
 	add(items,item_list[18])
@@ -78,6 +78,9 @@ function buttons_i()
 	makebutton(22, 25,-mget(23,25), 0,13,5,23,25,2,30,1,false)
 	makebutton(85, 21,-mget(85,21), 0,13,5,85,15,5,10,1,false)
 	makebutton(117, 26,-mget(117,26), 0,13,5,117,21,5,10,1,false)
+	makebutton(92,1,-8,2,13,5,96,1,12,1, 1,false)
+		makebutton(92,1,-8,2,13,5,97,1,12,1, 1,false)
+			makebutton(92,1,-8,2,13,5,98,1,12,1, 1,false)
 	
 	--makebutton(91, 15,-mget(91,15), 1,13,5,91, 15,0,20,-1,true)
 	--makebutton(97, 15,-mget(97,15), 1,13,5,97, 15,0,20,-1,true)
@@ -115,6 +118,7 @@ function buttons_i()
 	makebutton(12,22,-mget(12,22),0,13,5,9,22,0,2, -1,false)
 	makebutton(12,22,-mget(12,22),0,13,5,5,23,0,2, -1,false)
 	makebutton(12,22,-mget(12,22),0,13,5,5,24,0,2, -1,false)
+		makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
 
 	makebutton_s(2,  38,-mget(3,39),  1,8,9,3,  50,6,3,3,3,83, 61,-2)
 	makebutton_s(100,35,-mget(100,35),0,8,9,104,35,4,4,1,3,121,35,-5)
@@ -478,7 +482,7 @@ function dotele(t)
 	end
 end
 
-function doprogress(s,i)
+function doprogress(s,i)--i:add ethereal flames
 	if score>0 then
 		local s=score
 		if s>5 then s=5 end
@@ -490,7 +494,7 @@ function doprogress(s,i)
 				mset(113-b*2,a,b*2)
 			end
 			if i==true then
-				add(items,item_list[#item_list-5+b])
+				--add(items,item_list[#item_list-5+b])
 			end
 		end
 	end
@@ -509,7 +513,7 @@ function doprogress(s,i)
 	makebutton(97,59,-16,1,13,5,93,56,h+6,2,1,false)
 	makebutton(97,59,-16,1,13,5,101,56,h+6,2,1,false)
 	end
-	shake=true
+	--shake=true
 end
 
 function doending(e)
@@ -570,8 +574,9 @@ end
 
 function drawitem(i)
  pset(i.x,i.y-mget(i.x,i.y),5)
- pset(i.x,i.y+i.z,i.c1)
- pset(i.x,i.y-1+i.z,i.c1)
+ line(i.x,i.y+i.z,i.x,i.y-1+i.z,i.c1)
+-- pset(i.x,i.y+i.z,i.c1)
+-- pset(i.x,i.y-1+i.z,i.c1)
  pset(i.x,i.y-2+i.z,i.c2)
  if debug==true then
 	print(i.n+1,i.x,i.y,4)
@@ -580,7 +585,8 @@ function drawitem(i)
 end
 
 function drawexit(e)
-	for a=0,4 do line(93+a*2,-mget(97,59)+52-(a%2)*2,93+a*2,-mget(97,59)-47,4) end
+	local i=-mget(97,59)
+	for a=0,4 do line(93+a*2,i+52-(a%2)*2,93+a*2,i-47,4) end
 	if timer%5==0 then pal(4,flr(rnd(16)),1) end
 end
 
@@ -691,19 +697,23 @@ function _draw()
 	print(p.y,mw-25,-20,11)
 	print(p.z,mw-15,-20,11)
 	print(score,mw/2,-30,11)
-	for a=0,5 do print(dget(a),mw/2-10+a*5,-20,11) end
+--	for a=0,5 do print(dget(a),mw/2-10+a*5,-20,11) end
 		print(route,mw/2,-40,11)
 	print(stat(1),mw-30,-30,11)
 		print(stat(1),mw-30,-mh*2+20,11)
 			print(p.x,mw-40,-mh*2,11)
 			print(p.y,mw-25,-mh*2,11)
 			print(p.z,mw-15,-mh*2,11)
-				for a=0,5 do print(dget(a),mw/2-10+a*5,-mh*2,11) end
+--				for a=0,5 do print(dget(a),mw/2-10+a*5,-mh*2,11) end
 					--print(dget(0),mw/2,-mh*2,11)
 	--print(mget(p.x,p.y),10,-20)
 	print(p.fall,10,-20,11)
-	print(switchy,10,-10,11)
+	--print(switchy,10,-10,11)
+		--print(#items,10,-10,11)
+		--print(#item_list,20,-10,11)
+		print(#ending,20,-10,11)
 	end
+--	print(stat(1),mw-30,-30,11)
 end
 
 function _update()
