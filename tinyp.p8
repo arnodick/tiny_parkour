@@ -25,17 +25,16 @@ function items_i()
 	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
 	makeitem(12,22,-3,1,0,0,1,29,0,0,1)--21 s route secret
 	makeitem(5,7,-3,1,8,9,3,1,0,0,0)--22 2nd easy
-	makeitem(5,25,-1,1,8,9,8,27,0,0,1)--23 s route
+	makeitem(5,25,-1,1,8,9,8,27,0,0,1,6)--23 s route
 	makeitem_s(14,0,-10,1,10,11,11,0,24,0,0,0,1)--24 secret get!
 	makeitem(32,26,-5,1,8,9,2,4,5,0,0)--25 crossroad
 	makeitem_s(101,0,-13,1,8,9,99,0,4,24,0,0,0)--26 top innaccess
 	makeitem_s(16,45,-3,1,8,9,3,39,4,32,0,0,1)--27 s route
---makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
 	makeitem(87,26,-4,1,8,9,4,30,0,0,0)--28 pilar challenge
 	makeitem(18,32,-3,1,10,11,8,0,0,0,3)--29 s route secret
 	makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,0)--30 
 	makeitem(121,35,-5,1,8,9,2,0,0,0,1)--31 crossroad
-	makeitem_s(23,62,-1,1,8,9,83,61,2,0,0,0,1)--32 s puzzle final
+	makeitem_s(85,61,-4,1,8,9,83,61,2,0,0,0,1)--32 s puzzle final
 	
 	makeitem(93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
@@ -51,16 +50,9 @@ end
 
 function buttons_i()						
 	makebutton(49, 20,-11,  								0,13,5,50, 2,22,15,1,true)
-	makebutton(42, 1, -mget(42,1),  0,13,5,44, 2,4,15,1,false)
-	makebutton(42, 1, -mget(42,1),  0,13,5,45, 2,4,15,1,false)
-	makebutton(42, 1, -mget(42,1),  0,13,5,46, 2,4,15,1,false)
-	makebutton(45, 2, -4,  0,13,5,49, 2,22,5,1,true)
-	makebutton(45, 2, -4,  0,13,5,49, 1,22,15,1,true)
-	makebutton(44, 0, -mget(44,0),  0,13,5,122,1, 8,30,1,true)
-	makebutton(44, 0, -mget(44,0),  0,13,5,123,1, 9,30,1,true)
-	makebutton(44, 0, -mget(44,0),  0,13,5,124,1,10,30,1,true)
-	makebutton(44, 0, -mget(44,0),  0,13,5,125,1,11,30,1,true)
-	makebutton(44, 0, -mget(44,0),  0,13,5,126,1,12,30,1,true)
+	for a=0,2 do makebutton(42, 1, -4,  0,13,5,44+a, 2,4,15,1,false) end
+	for a=1,2 do makebutton(45, 2, -4,  0,13,5,49, a,22,5,1,true) end
+	for a=0,4 do makebutton(44, 0, -22,  0,13,5,122+a,1, 8+a,30,1,true) end
 	makebutton(101, 0,-mget(101,0), 0,13,5,101,0,22,1,1,false)
 	makebutton(85, 0, -mget(85,0),  0,13,5,78, 0,22,4,1,false)
 	makebutton(87, 0, -mget(85,0),  0,13,5,71, 0,25,6,1,false)
@@ -70,7 +62,7 @@ function buttons_i()
 	makebutton(85, 0, -mget(85,0),  0,13,5,45, 0,23,10,1,false)
 		makebutton(97, 0, -mget(85,0),  0,13,5,97, 0,0,1,-1,false)
 		makebutton(95, 0, -mget(85,0),  0,13,5,95, 0,0,1,-1,false)
---			for a=0,9 do makebutton(99, 0, -mget(99,0),  0,13,5,102-a*2,0,0,1,-1,false) end
+			for a=0,9 do makebutton(99, 0, -mget(99,0),  0,13,5,102-a*2,0,0,1,-1,false) end
 	makebutton(18, 32,-mget(18,32), 0,13,5,19,32,3, 4, 1,false)
 	makebutton(64, 11,-mget(64,11), 0,13,5,72,11,8,4, 1,false)
 	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
@@ -78,14 +70,9 @@ function buttons_i()
 	makebutton(22, 25,-mget(23,25), 0,13,5,23,25,2,30,1,false)
 	makebutton(85, 21,-mget(85,21), 0,13,5,85,15,5,10,1,false)
 	makebutton(117, 26,-mget(117,26), 0,13,5,117,21,5,10,1,false)
-	makebutton(92,1,-8,2,13,5,96,1,12,1, 1,false)
-		makebutton(92,1,-8,2,13,5,97,1,12,1, 1,false)
-			makebutton(92,1,-8,2,13,5,98,1,12,1, 1,false)
 	
-	--makebutton(91, 15,-mget(91,15), 1,13,5,91, 15,0,20,-1,true)
-	--makebutton(97, 15,-mget(97,15), 1,13,5,97, 15,0,20,-1,true)
-	--makebutton(103,15,-mget(103,15),1,13,5,103,15,0,20,-1,true)
-	--makebutton(107,15,-mget(107,15),1,13,5,107,15,0,20,-1,true)
+	for a=0,2 do makebutton(92,1,-8,2,13,5,96+a,1,12,1, 1,false) end
+	
 	makebutton(91, 14,-mget(91,14), 0,13,5,91, 14,0,20,-1,false)
 	makebutton(97, 14,-mget(97,14), 0,13,5,97, 14,0,20,-1,false)
 	makebutton(103,14,-mget(103,14),0,13,5,103,14,0,20,-1,false)
@@ -95,34 +82,37 @@ function buttons_i()
 	makebutton(81,35,-mget(81,35),0,13,5,81,35,0,10,-1,false)
 	makebutton(90,35,-mget(90,35),0,13,5,90,35,0,10,-1,false)
 	makebutton(97,35,-mget(97,35),0,13,5,97,35,0,10,-1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 25,0,12, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 26,0,6, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 27,0,10, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 29,0,7, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 30,0,8, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 32,0,4, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 28,0,4, -1,false)
-	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 31,0,4, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,10,32,0,12, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,11,32,0,4, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,12,32,0,6, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,13,32,0,5, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,14,32,0,4, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,15,32,0,3, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,16,32,0,2, -1,false)
-	makebutton(10,32,-mget(10,32),0,13,5,17,32,0,1, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,5,22,0,4, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,6,22,0,6, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,7,22,0,5, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,8,22,0,8, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,9,22,0,2, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,5,23,0,2, -1,false)
-	makebutton(12,22,-mget(12,22),0,13,5,5,24,0,2, -1,false)
-		makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
+	for a=0,7 do makebutton(3 ,25,-3, 0,13,5,3, 25+a,0,12-a, -1,false) end
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 25,0,12, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 26,0,6, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 27,0,10, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 29,0,7, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 30,0,8, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 32,0,4, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 28,0,4, -1,false)
+--	makebutton(3 ,25,-mget(3,25), 0,13,5,3, 31,0,4, -1,false)
+	for a=0,7 do makebutton(10,32,-3,0,13,5,10+a,32,0,12-a-flr(rnd(3)), -1,false) end
+--	makebutton(10,32,-mget(10,32),0,13,5,10,32,0,12, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,11,32,0,4, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,12,32,0,6, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,13,32,0,5, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,14,32,0,4, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,15,32,0,3, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,16,32,0,2, -1,false)
+--	makebutton(10,32,-mget(10,32),0,13,5,17,32,0,1, -1,false)
+	for a=0,4 do makebutton(12,22,-3,0,13,5,5+a,22,0,4+flr(rnd(4)), -1,false) end
+--	makebutton(12,22,-mget(12,22),0,13,5,5,22,0,4, -1,false)
+--	makebutton(12,22,-mget(12,22),0,13,5,6,22,0,6, -1,false)
+--	makebutton(12,22,-mget(12,22),0,13,5,7,22,0,5, -1,false)
+--	makebutton(12,22,-mget(12,22),0,13,5,8,22,0,8, -1,false)
+--	makebutton(12,22,-mget(12,22),0,13,5,9,22,0,2, -1,false)
+	makebutton(12,22,-3,0,13,5,5,23,0,2, -1,false)
+	makebutton(12,22,-3,0,13,5,5,24,0,2, -1,false)
+	makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
 
 	makebutton_s(2,  38,-mget(3,39),  1,8,9,3,  50,6,3,3,3,83, 61,-2)
 	makebutton_s(100,35,-mget(100,35),0,8,9,104,35,4,4,1,3,121,35,-5)
-	
+
 	makebutton_p(3,50,-3,1,-1)
 	makebutton_p(9,50,-3,1,1)
 	makebutton_p(15,50,-3,1,0)
@@ -132,6 +122,13 @@ function buttons_i()
 	makebutton_p(3,62,-3,1,4)
 	makebutton_p(9,62,-3,1,5)
 	makebutton_p(15,62,-3,1,6)
+end
+
+function sky_i()
+	star1={} star2={}
+	for a=1,100 do star1[a]=rnd(127) star2[a]=rnd(63) end
+	moon1={} moon2={}
+	for a=1,30 do moon1[a]=92+rnd(15) moon2[a]=-32-rnd(15) end
 end
 
 function makeactor(x,y,z,w,c1,c2)
@@ -162,14 +159,7 @@ end
 
 function makedead(x,y,z,w,c1,c2)
 	local d=makeactor(x,y,z,w,c1,c2)
-	--d.x=x
-	--d.y=y
-	--d.z=z
-	--d.w=w
-	--d.c1=c1
-	--d.c2=c2
 	add(dead,d)
-	--return d
 end
 
 function makesplat(x,y,xs,ys)
@@ -181,18 +171,16 @@ function makesplat(x,y,xs,ys)
 	add(splat,s)
 end
 
-
-
---function makepart(x,y,s,c)
---	local p={}
---	p.x=x
---	p.y=y
---	p.xs=rnd(s)-s/2
---	p.ys=rnd(s)-s/2
---	p.c=c
---	p.ts=timer
---	add(parts,p)
---end
+function makepart(x,y,s,c)
+	local p={}
+	p.x=x
+	p.y=y
+	p.xs=rnd(s)-s/2
+	p.ys=rnd(s)-s/2
+	p.c=c
+	p.ts=timer
+	add(parts,p)
+end
 
 function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v,r)
 	local i=makeactor(x,y,z,w,c1,c2)
@@ -303,15 +291,6 @@ function makeboss(x,y,z)
 	add(boss,b)
 end
 
-function makesplat(x,y,xs,ys)
-	local s={}
-	s.x=x
-	s.y=y
-	s.x1=x+((xs/0.2)+rnd(2))
-	s.y1=y+((ys/0.2)+rnd(2))
-	add(splat,s)
-end
-
 function doplayer(p)
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(p.x,p.y)
@@ -340,7 +319,7 @@ function doplayer(p)
 	 		end
 	 		--todo: maybe delete and reinit player here?
 	 		p.x=p.xs p.y=p.ys
-	 		--for a=1,8 do makepart(p.x,p.y-mget(p.x,p.y),1.5,p.c2) end
+	 		for a=1,8 do makepart(p.x,p.y-mget(p.x,p.y),1.5,p.c2) end
 	 		sfx(2,2)
 	 		reload(0x1000,0x1000,8192)
 	 		for k,v in pairs(exits) do exits[k]=nil end
@@ -376,18 +355,17 @@ function doitem(i)
 	local p=player[1]
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		score+=i.v
---		for a=1,8 do makepart(i.x,i.y+i.z,1,i.c1) end
+		for a=1,8 do makepart(i.x,i.y+i.z,1,i.c1) end
 		if i.v==0 then sfx(4,-1)
 		else sfx(6+score,-1) end
 		p.xs=i.xs p.ys=i.ys
-		local ic1=i.ic1
-		local ic2=i.ic2
-		local ic3=i.ic3
+		local ic={}
+		ic[1]=i.ic1
+		ic[2]=i.ic2
+		ic[3]=i.ic3
 		if i.r!=nil then route=i.r end
 		for k,v in pairs(items) do items[k]=nil end
-		add(items,item_list[ic1])
-		add(items,item_list[ic2])
-		add(items,item_list[ic3])
+		for a=1,3 do add(items,item_list[ic[a]]) end
 		doprogress(score,true)
 	else
 		i.z=(-abs(cos(timer*1/40))*i.b)-mget(i.x,i.y)
@@ -399,13 +377,13 @@ function doitem(i)
 	end
 end
 
---function dopart(p)
---	p.x+=p.xs
---	p.y+=p.ys
---	if timer-p.ts>=10 then
---		for k,v in pairs(parts) do parts[k]=nil end
---	end
---end
+function dopart(p)
+	p.x+=p.xs
+	p.y+=p.ys
+	if timer-p.ts>=10 then
+		for k,v in pairs(parts) do parts[k]=nil end
+	end
+end
 
 function dobuttonpress(b)
 	local p=player[1]
@@ -478,7 +456,7 @@ function dotele(t)
 		local p=player[1]
 		sfx(12,-1)
 		p.x=t.xt p.y=t.yt
---		for a=0,20 do makepart(p.x,p.y+p.z,1.5,rnd(15)) end
+		for a=0,20 do makepart(p.x,p.y+p.z,1.5,rnd(15)) end
 	end
 end
 
@@ -494,7 +472,7 @@ function doprogress(s,i)--i:add ethereal flames
 				mset(113-b*2,a,b*2)
 			end
 			if i==true then
-				--add(items,item_list[#item_list-5+b])
+				add(items,item_list[#item_list-5+b])
 			end
 		end
 	end
@@ -502,16 +480,16 @@ function doprogress(s,i)--i:add ethereal flames
 	local h=200
 	makeexit(97,59,-16)
 	makeending(97,58,-203)
-	makebutton(97,59,-16,1,13,5,97,59,h,2,1,false)
-	makebutton(97,59,-16,1,13,5,97,58,h+3,2,1,false)
-	makebutton(97,59,-16,1,13,5,98,59,h+2,2,1,false)
-	makebutton(97,59,-16,1,13,5,96,59,h+2,2,1,false)
-	makebutton(97,59,-16,1,13,5,98,58,h+2,2,1,false)
-	makebutton(97,59,-16,1,13,5,96,58,h+2,2,1,false)	
-	makebutton(97,59,-16,1,13,5,95,56,h+6,2,1,false)
-	makebutton(97,59,-16,1,13,5,99,56,h+6,2,1,false)
-	makebutton(97,59,-16,1,13,5,93,56,h+6,2,1,false)
-	makebutton(97,59,-16,1,13,5,101,56,h+6,2,1,false)
+	makebutton(97,59,-16,0,13,5,97,59,h,  2,1,false)
+	makebutton(97,59,-16,0,13,5,97,58,h+3,2,1,false)
+	makebutton(97,59,-16,0,13,5,98,59,h+2,2,1,false)
+	makebutton(97,59,-16,0,13,5,96,59,h+2,2,1,false)
+	makebutton(97,59,-16,0,13,5,98,58,h+2,2,1,false)
+	makebutton(97,59,-16,0,13,5,96,58,h+2,2,1,false)	
+	makebutton(97,59,-16,0,13,5,95,56,h+6,2,1,false)
+	makebutton(97,59,-16,0,13,5,99,56,h+6,2,1,false)
+	makebutton(97,59,-16,0,13,5,93,56,h+6,2,1,false)
+	makebutton(97,59,-16,0,13,5,101,56,h+6,2,1,false)
 	end
 	--shake=true
 end
@@ -550,7 +528,6 @@ function drawsky()
 	sp=2.5
 	line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist),-39,7)
 	line(((timer/sp)%cdist)+5-15,-38,((timer/sp)%cdist)-5,-38,6)
-
 end
 
 function drawbutton(b)
@@ -568,15 +545,13 @@ function drawsplat(s)
  pset(s.x,s.y1,8)
 end
 
---function drawpart(p)
---	pset(p.x,p.y,p.c)
---end
+function drawpart(p)
+	pset(p.x,p.y,p.c)
+end
 
 function drawitem(i)
  pset(i.x,i.y-mget(i.x,i.y),5)
  line(i.x,i.y+i.z,i.x,i.y-1+i.z,i.c1)
--- pset(i.x,i.y+i.z,i.c1)
--- pset(i.x,i.y-1+i.z,i.c1)
  pset(i.x,i.y-2+i.z,i.c2)
  if debug==true then
 	print(i.n+1,i.x,i.y,4)
@@ -588,6 +563,7 @@ function drawexit(e)
 	local i=-mget(97,59)
 	for a=0,4 do line(93+a*2,i+52-(a%2)*2,93+a*2,i-47,4) end
 	if timer%5==0 then pal(4,flr(rnd(16)),1) end
+	for a=1,100 do pset(star1[a],star2[a]-200,12) end
 end
 
 function drawboss(b)
@@ -611,7 +587,6 @@ end
 function _init()
 	cartdata("ap_tinyp")
 	--for a=0,5 do dset(a,0) end
-	--dset(1,7)
 	switchy=0
 	timer=0
 	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
@@ -620,12 +595,13 @@ function _init()
 	ps=0.5
 	score=0
 	shake=false
-	camera(0,-mh)
+	cam=-mh
+	camera(0,cam)
 	--actor={}
 	player={}
 	dead={}
 	splat={}
---	parts={}
+	parts={}
 	item_list={}
 	items={}
 	buttons={}
@@ -644,21 +620,16 @@ function _init()
 	--doprogress()
 	
 	items_i()
-	buttons_i()
-	
---	star1={} star2={}
---	for a=1,100 do star1[a]=rnd(127) star2[a]=rnd(63) end
---	moon1={} moon2={}
---	for a=1,30 do moon1[a]=92+rnd(15) moon2[a]=-32-rnd(15) end
+	buttons_i()	
+	sky_i()
 end
 
 function _draw()
 	local p=player[1]
 	cls()
 	if flc!=0 then rectfill(0,0,mw,mh,flc) end
---	for a=1,100 do pset(star1[a],star2[a]-200,12) end
 	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
-	--drawsky()	
+	drawsky()	
 	foreach(splat,drawsplat)
 	foreach(dead,drawactor)
 	--loop through every map cell
@@ -685,33 +656,26 @@ function _draw()
 	foreach(buttons,drawbutton)
 	foreach(exits,drawexit)
 	foreach(boss,drawboss)
---	foreach(parts,drawpart)
+	foreach(parts,drawpart)
 	--if shake==true then
 		--camera(0+rnd(10)-5,-mh)
 	--end
 
 	--debug
 	if debug==true then
-	print(stat(0),10,-30,11)
-	print(p.x,mw-40,-20,11)
-	print(p.y,mw-25,-20,11)
-	print(p.z,mw-15,-20,11)
-	print(score,mw/2,-30,11)
---	for a=0,5 do print(dget(a),mw/2-10+a*5,-20,11) end
-		print(route,mw/2,-40,11)
-	print(stat(1),mw-30,-30,11)
-		print(stat(1),mw-30,-mh*2+20,11)
-			print(p.x,mw-40,-mh*2,11)
-			print(p.y,mw-25,-mh*2,11)
-			print(p.z,mw-15,-mh*2,11)
---				for a=0,5 do print(dget(a),mw/2-10+a*5,-mh*2,11) end
-					--print(dget(0),mw/2,-mh*2,11)
-	--print(mget(p.x,p.y),10,-20)
+	print(stat(0),10,cam+mh-30,11)
+	print(p.x,mw-40,cam+mh-20,11)
+	print(p.y,mw-25,cam+mh-20,11)
+	print(p.z,mw-15,cam+mh-20,11)
+	print(score,mw/2,cam+mh-30,11)
+	for a=0,5 do print(dget(a),mw/2-10+a*5,cam+mh-20,11) end
+	print(route,mw/2,cam+mh-40,11)
+	print(stat(1),mw-30,cam+mh-30,11)
 	print(p.fall,10,-20,11)
 	--print(switchy,10,-10,11)
 		--print(#items,10,-10,11)
 		--print(#item_list,20,-10,11)
-		print(#ending,20,-10,11)
+		--print(#ending,20,-10,11)
 	end
 --	print(stat(1),mw-30,-30,11)
 end
@@ -720,16 +684,16 @@ function _update()
 	foreach(player,doplayer)
 	foreach(ending,doending)
 	foreach(items,doitem)
---	foreach(parts,dopart)
+	foreach(parts,dopart)
 	foreach(buttons,dobutton)
 	foreach(buttons_s,dobutton_s)
 	foreach(buttons_p,dobutton_p)
 	foreach(teles,dotele)
 --	foreach(exits,doexit)
 	foreach(boss,doboss)	
-	if player[1].z>=-120 then camera(0,-mh) end
-	if player[1].z<-120 then camera(0,-mh*2) end
-	if player[1].z<-190 then camera(0,-mh*3.5) end
+	if player[1].z>=-120 then cam=-mh camera(0,cam) end
+	if player[1].z<-120 then cam=-mh*2 camera(0,cam) end
+	if player[1].z<-190 then cam=-mh*3.5 camera(0,cam) end
 	
 	timer+=1
 end
