@@ -1,7 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 5
 __lua__
-debug=true
+debug=false
 function items_i()
 	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0,1)--1 stairs top left
 	makeitem(23,25,-2,1,8,9,2,25,23,0 ,1)--2 crossroad
@@ -20,7 +20,7 @@ function items_i()
 	makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
 	makeitem(93,1,-13,1,8,9,4,0,11,26,2,6)--16 top hook jumps
 	makeitem(85,14,-10,1,10,11,12,11,0,0,1)--17 secret climb
-	makeitem(31,11,-2,1,0,0,4,15,0,0,1)--18 invisible checkpoint
+	makeitem_s(31,11,-2,1,0,0,29,11,4,15,0,0,1)--18 invisible checkpoint
 	makeitem(76,15,-1,1,10,8,9,28,0,0,0,3)--19 post lof
 	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
 	makeitem(12,22,-3,1,0,0,1,29,0,0,1)--21 s route secret
@@ -109,6 +109,8 @@ function buttons_i()
 	makebutton(12,22,-3,0,13,5,5,23,0,2, -1,false)
 	makebutton(12,22,-3,0,13,5,5,24,0,2, -1,false)
 	makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
+	
+		makebutton(64,14,-12,2,0,5,64,14,0,1, -1,false)
 
 	makebutton_s(2,  38,-mget(3,39),  1,8,9,3,  50,6,3,3,3,20, 62,-5)
 	makebutton_s(100,35,-mget(100,35),0,8,9,104,35,4,4,1,3,121,35,-5)
@@ -171,6 +173,18 @@ function makesplat(x,y,xs,ys)
 	add(splat,s)
 end
 
+function makeclouds(n,h,s)
+	cloudy={}
+	cloudh={}
+	clouds={}
+	for i=1,n do 
+		cloudy[i]=flr(rnd(42)-48)
+		--cloudy[i]=flr(rnd(42))
+		cloudh[i]=flr(rnd(h))
+		clouds[i]=rnd(s)+2
+	end
+end
+
 function makepart(x,y,s,c)
 	local p={}
 	p.x=x
@@ -180,6 +194,16 @@ function makepart(x,y,s,c)
 	p.c=c
 	p.ts=timer
 	add(parts,p)
+end
+
+function makebubble(x,y,s,c)
+	local b={}
+	b.x=x
+	b.y=y
+	b.xs=s
+	b.ys=0
+	b.c=c
+	add(bubbles,b)
 end
 
 function makeitem(x,y,z,w,c1,c2,b,ic1,ic2,ic3,v,r)
@@ -312,12 +336,15 @@ function doplayer(p)
 		if flc!=13 then
 			if gh==0 then
 				dset(63,dget(63)+1)
+				
+				makebubble(p.x,p.y,rnd(0.6)+0.1,p.c1)
+				makebubble(p.x,p.y,rnd(0.6)+0.1,p.c2)
 				for k,v in pairs(dead) do dead[k]=nil end
 	 		makedead(p.x,p.y,p.z,1,p.c2,8)
-	 		if p.fall>10 then
-	 			for k,v in pairs(splat) do splat[k]=nil end
-	 			makesplat(p.x,p.y,p.xspeed,p.yspeed)
-	 		end
+	 		--if p.fall>10 then
+	 			--for k,v in pairs(splat) do splat[k]=nil end
+	 			--makesplat(p.x,p.y,p.xspeed,p.yspeed)
+	 		--end
 	 		--todo: maybe delete and reinit player here?
 	 		p.x=p.xs p.y=p.ys
 	 		for a=1,8 do makepart(p.x,p.y-mget(p.x,p.y),1.5,p.c2) end
@@ -384,6 +411,19 @@ function dopart(p)
 	if timer-p.ts>=10 then
 		for k,v in pairs(parts) do parts[k]=nil end
 	end
+end
+
+function dobubble(b)
+	if mget(flr(b.x)+1,b.y)==0 then
+		b.x+=b.xs
+		if rnd(1)<0.02 then b.y-=1 end
+	else
+		if mget(flr(b.x),flr(b.y)+1)>0 then
+			b.x=flr(rnd(mw/2)+10) b.y=flr(rnd(mh))
+		else b.y+=b.xs
+		end
+	end
+	if b.x>mw then b.x=0 b.y=flr(rnd(mh)) end
 end
 
 function dobuttonpress(b)
@@ -519,6 +559,19 @@ function drawsky()
 	circfill(100,-40,10,6)
 	for a=1,30 do pset(moon1[a],moon2[a],5) end
 	local cdist=180
+
+	local sp=4
+	for a=1,#cloudy do
+		--rectfill((timer/sp)%cdist+8-cloudx[a],-25-cloudy[a],(timer/sp)%cdist+8-cloudx[a]-30,-25-cloudy[a]-30,5)
+		--rectfill((timer/clouds[a])%cdist+cloudx[a],cloudy[a],(timer/clouds[a])%cdist+cloudx[a]-30,cloudy[a]-10,5)
+		line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a],5)
+		line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a]-1,5)
+	end	
+	--rectfill((timer/sp)%cdist+8-40,-25,(timer/sp)%cdist+8-10,-30,5)
+	line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,5)
+	
+	
+	
 	local sp=3
 	line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,7)
 	line(((timer/sp)%cdist)+3-40,-40,((timer/sp)%cdist),-39,7)
@@ -529,6 +582,8 @@ function drawsky()
 	sp=2.5
 	line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist),-39,7)
 	line(((timer/sp)%cdist)+5-15,-38,((timer/sp)%cdist)-5,-38,6)
+	
+	foreach(bubbles,drawpart)
 end
 
 function drawbutton(b)
@@ -557,6 +612,7 @@ function drawitem(i)
  if debug==true then
 	print(i.n+1,i.x,i.y,4)
 	print(i.v,i.x+8,i.y,3)
+	print(i.r,i.x,i.y+6,3)
 	end
 end
 
@@ -590,7 +646,7 @@ function _init()
 	--for a=0,5 do dset(a,0) end
 	switchy=0
 	timer=0
-	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
+	mw=127 mh=63 mc1=6 mc2=1 flc=4--flc=13
 	route=0
 	if debug==true then flc=0 end
 	ps=0.5
@@ -603,6 +659,7 @@ function _init()
 	dead={}
 	splat={}
 	parts={}
+	bubbles={}
 	item_list={}
 	items={}
 	buttons={}
@@ -614,7 +671,10 @@ function _init()
 	boss={}
 	
 	makeplayer(17,1,10,1,14,3,ps) --0.5
+	makeplayer(16,1,10,1,12,2,ps)
 	maketele(31,62,-19,1,83,61)
+	makeclouds(14,3,rnd(10))
+	for a=1,200 do makebubble(0,flr(rnd(mh)),rnd(0.6)+0.1,9) end
 	
 	--makeplayer(97,60,16,1,14,3,ps) --0.5
 	--score=5
@@ -627,6 +687,7 @@ end
 
 function _draw()
 	local p=player[1]
+	local p2=player[2]
 	cls()
 	if flc!=0 then rectfill(0,0,mw,mh,flc) end
 	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
@@ -636,16 +697,10 @@ function _draw()
 	--loop through every map cell
 	for y=0,mh do
 		for x=0,mw do
-		 --draw each map cell
 		 local h=mget(x,y)
-			if h>0 then
-				--floor
-				pset(x,y-h,mc1+h%2)
-				--wall
-				line(x,y-h+1,x,y,(mc2+(y%2)))
-				if flr(p.y)==y then
-					drawactor(p)
-				end
+			if h>0 then--draw each map cell
+				pset(x,y-h,mc1+h%2)--floor
+				line(x,y-h+1,x,y,(mc2+(y%2)))--wall
 			end
 			--if (flr(p.x)==x and flr(p.y)==y) then
 				--drawactor(p)
@@ -653,6 +708,12 @@ function _draw()
    --if (flr(p2x)==x and flr(p2y)==y) then
 				--drawactor(p2)
    --end
+		end
+		if flr(p.y)==y then
+			drawactor(p)
+		end
+		if flr(p2.y)==y then
+			drawactor(p2)
 		end
 	end
 
@@ -664,7 +725,7 @@ function _draw()
 	--if shake==true then
 		--camera(0+rnd(10)-5,-mh)
 	--end
-
+--foreach(bubbles,drawpart)
 	--debug
 	if debug==true then
 	print(stat(0),10,cam+mh-30,11)
@@ -676,11 +737,11 @@ function _draw()
 	print(route,mw/2,cam+mh-40,11)
 	print(stat(1),mw-30,cam+mh-30,11)
 	print(p.fall,10,-20,11)
-		print(dget(63),20,-20,11)
-	--print(switchy,10,-10,11)
-		--print(#items,10,-10,11)
-		--print(#item_list,20,-10,11)
-		--print(#ending,20,-10,11)
+	print(dget(63),20,-20,11)
+	print(switchy,10,-10,11)
+	print(#items,10,-10,11)
+	print(#item_list,20,-10,11)
+	print(#ending,20,-10,11)
 	end
 --	print(stat(1),mw-30,-30,11)
 end
@@ -693,9 +754,11 @@ function _update()
 	foreach(buttons,dobutton)
 	foreach(buttons_s,dobutton_s)
 	foreach(buttons_p,dobutton_p)
+	foreach(bubbles,dobubble)
 	foreach(teles,dotele)
 --	foreach(exits,doexit)
 	foreach(boss,doboss)	
+	--if player[1].z>=-120 then cam=-mh camera(player[1].x-64,cam) end
 	if player[1].z>=-120 then cam=-mh camera(0,cam) end
 	if player[1].z<-120 then cam=-mh*2 camera(0,cam) end
 	if player[1].z<-190 then cam=-mh*3.5 camera(0,cam) end
