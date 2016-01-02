@@ -160,8 +160,9 @@ function makeplayer(x,y,z,w,c1,c2,s)
 end
 
 function makedead(x,y,s,c)
-	local d=makebubble(x,y,s,c)
-	add(dead,d)
+	local b=makebubble(x,y,s,c)
+	b.d=1
+	add(dead,b)
 	--del(bubbles,d)
 	--bubbles[#bubbles]=nil
 end
@@ -423,7 +424,7 @@ end
 function dobubble(b)
 	if mget(flr(b.x)+1,b.y)==0 then
 		b.x+=b.xs
-		if rnd(1)<0.02 then b.y-=1 end
+		if rnd(1)<0.02 then b.y-=b.d b.d=-b.d end
 	else
 		if mget(flr(b.x),flr(b.y)+1)>0 then
 			b.x=flr(rnd(mw/2)+10) b.y=flr(rnd(mh))
