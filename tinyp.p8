@@ -160,9 +160,8 @@ function makeplayer(x,y,z,w,c1,c2,s)
 end
 
 function makedead(x,y,s,c)
-	local b=makebubble(x,y,s,c)
-	b.d=1
-	add(dead,b)
+	local d=makebubble(x,y,s,c)
+	add(dead,d)
 	--del(bubbles,d)
 	--bubbles[#bubbles]=nil
 end
@@ -206,6 +205,7 @@ function makebubble(x,y,s,c)
 	b.xs=s
 	b.ys=0
 	b.c=c
+	b.d=1
 	add(bubbles,b)
 	return b
 end
@@ -424,7 +424,7 @@ end
 function dobubble(b)
 	if mget(flr(b.x)+1,b.y)==0 then
 		b.x+=b.xs
-		if rnd(1)<0.02 then b.y-=b.d b.d=-b.d end
+		if rnd(1)<0.02 then b.y-=b.d b.d=-b.d end --b.d=cos(timer)-1 end
 	else
 		if mget(flr(b.x),flr(b.y)+1)>0 then
 			b.x=flr(rnd(mw/2)+10) b.y=flr(rnd(mh))
@@ -686,6 +686,7 @@ function _init()
 	maketele(31,62,-19,1,83,61)
 	makeclouds(14,3,rnd(10))
 	bubblei=200
+	--s=0.1
 	for a=1,bubblei do makebubble(flr(rnd(mw)),flr(rnd(mh)),rnd(0.6)+0.1,2+flr(rnd(2)-1)) end
 	
 	--makeplayer(97,60,16,1,14,3,ps) --0.5
