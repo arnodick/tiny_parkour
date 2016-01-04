@@ -3,45 +3,46 @@ version 5
 __lua__
 debug=true
 function items_i()
-	makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0,1)--1 stairs top left
-	makeitem(23,25,-2,1,8,9,2,25,23,0 ,1)--2 crossroad
-	makeitem(37,15,-3,1,8,9,2,6 ,19,14,2)--3 pilings
-	makeitem(49,36,-9,1,8,9,4,19,14,0 ,1)--4 arches middle
-	makeitem(71,35,-4,1,10,11,4,31,0,0,2,2)--5 arches secret! 
-	makeitem(49,14,-13,1,10,11,0,17,33,0,0,4)--6 on top of the wall
-	makeitem(61,15,-10,1,8,9,4,19,0,0,1)--7 leap of faith
-	makeitem(24,0,-5,1,0,0,4,9,19,0,1)--8 top curve jump
-	makeitem(60,0,-13,1,8,9,4,10,16,0,1,5)--9 top long jump
-	makeitem(76,11,-5,1,8,9,4,17,0,0,1)--10 back to mid jump
-	makeitem(125,14,-5,1,8,9,4,0,0,0,1)--11 far right hazards
-	makeitem(10,0,-9,1,8,9,4,0,0,0,1)--12 weird top left secret
-	makeitem(44,2,-5,1,8,9,4,7,0,0,1)--13 top detour
-	makeitem(71,35,-4,1,10,8,9,31,0,0,1,1)--14 false leap of faith
-	makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
-	makeitem(93,1,-13,1,8,9,4,0,11,26,2,6)--16 top hook jumps
-	makeitem(85,14,-10,1,10,11,12,11,0,0,1)--17 secret climb
-	makeitem_s(31,11,-2,1,0,0,29,11,4,15,0,0,1)--18 invisible checkpoint
-	makeitem(76,15,-1,1,10,8,9,28,0,0,0,3)--19 post lof
-	makeitem(11,1,-3,1,8,9,3,22,0,0,0)--20 start easy
-	makeitem(12,22,-3,1,0,0,1,29,0,0,1)--21 s route secret
-	makeitem(5,7,-3,1,8,9,3,1,0,0,0)--22 2nd easy
-	makeitem(5,25,-1,1,8,9,8,27,0,0,1,6)--23 s route
-	makeitem_s(14,0,-10,1,10,11,11,0,24,0,0,0,1)--24 secret get!
-	makeitem(32,26,-5,1,8,9,2,4,5,0,0)--25 crossroad
-	makeitem_s(101,0,-13,1,8,9,99,0,4,24,0,0,0)--26 top innaccess
-	makeitem_s(16,45,-3,1,8,9,3,39,4,32,0,0,1)--27 s route
-	makeitem(87,26,-4,1,8,9,4,30,0,0,0)--28 pilar challenge
-	makeitem(18,32,-3,1,10,11,8,0,0,0,3)--29 s route secret
-	makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,0)--30 
-	makeitem(121,35,-5,1,8,9,2,0,0,0,1)--31 crossroad
-	makeitem_s(85,61,-4,1,8,9,83,61,2,0,0,0,1)--32 s puzzle final
-	makeitem(58,48,0,1,8,9,0,32,0,0,1)--33 mid secret reveal
+makeitem_s(16,14,-7,1,8,9,12,14,6,2,3,0,1)--1 stairs top left
+	makeitem(23,25,-2, 1, 8, 9, 2,25,23, 0,1)--2 crossroad
+	makeitem(37,15,-3, 1, 8, 9, 2, 6,19,14,2)--3 pilings
+	makeitem(49,36,-9, 1, 8, 9, 4,19,14, 0,1)--4 arches middle
+	makeitem(71,35,-4, 1,10,11, 4,31, 0, 0,2,2)--5 arches secret! 
+	makeitem(49,14,-13,1,10,11, 0,17,33, 0,0,4)--6 on top of the wall
+	makeitem(61,15,-10,1, 8, 9, 4,19, 0, 0,1)--7 leap of faith
+	makeitem(24, 0,-5, 1, 0, 0, 4, 9,19, 0,1)--8 top curve jump
+	makeitem(60, 0,-13,1, 8, 9, 4,10,16, 0,1,5)--9 top long jump
+	makeitem(76,11,-5, 1, 8, 9, 4,17, 0, 0,1)--10 back to mid jump
+	makeitem(125,14,-5,1, 8, 9, 4, 0, 0, 0,1)--11 far right hazards
+	makeitem(10, 0,-9, 1, 8, 9, 4, 0, 0, 0,1)--12 weird top left secret
+	makeitem(44, 2,-5, 1, 8, 9, 4, 7, 0, 0,1)--13 top detour
+	makeitem(71,35,-4, 1,10, 8, 9,31, 0, 0,1,1)--14 false leap of faith
+makeitem_s(68,11,-10,1,10,11,64,11,12,10,0,0,3)--15 secret reveal!
+	makeitem(93,1, -13,1, 8, 9, 4, 0,11,26,2,6)--16 top hook jumps
+	makeitem(85,14,-10,1,10,11,12,11, 0, 0,1)--17 secret climb
+makeitem_s(31,11,-2,1,0,0,29,11,4,15,0,0,1)--18 invisible checkpoint
+	makeitem(76,15,-1, 1,10, 8, 9,28, 0, 0,0,3)--19 post lof
+	makeitem(11, 1,-3, 1, 8, 9, 3,22, 0, 0,0)--20 start easy
+	makeitem(12,22,-3, 1, 0, 0, 1,29, 0, 0,1)--21 s route secret
+	makeitem(5,  7,-3, 1, 8, 9, 3,1,  0, 0,0)--22 2nd easy
+	makeitem(5, 25,-1, 1, 8, 9, 8,27, 0, 0,1,6)--23 s route
+makeitem_s(14,0,-10,1,10,11,11,0,24,0,0,0,1)--24 secret get!
+	makeitem(32,26,-5, 1, 8, 9, 2,4,  5, 0,0)--25 crossroad
+makeitem_s(101,0,-13,1,8,9,99,0,4,24,0,0,0)--26 top innaccess
+makeitem_s(16,45,-3,1,8,9,3,39,4,32,0,0,1)--27 s route
+	makeitem(87,26,-4, 1, 8, 9, 4,30, 0, 0,0)--28 pilar challenge
+	makeitem(18,32,-3, 1,10,11, 8, 34, 0, 0,3)--29 s route secret
+makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,0)--30 
+	makeitem(121,35,-5,1,8,9,2,    0, 0, 0,1)--31 crossroad
+makeitem_s(85,61,-4,1,8,9,83,61,2,0,0,0,1)--32 s puzzle final
+	makeitem(58,48,0,1,8,9,0,     32, 0, 0,1)--33 mid secret reveal
+	makeitem_s(36,49,-3,0,8,9,38,63,0,    0, 0, 0,1)--34 indy bridge
 	
 	makeitem(93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
 	makeitem(95,56,-mget(95,56),1,14,11,0,0,0,0,0)--32 post lof
 	makeitem(99,56,-mget(99,56),1,14,11,0,0,0,0,0)--34 post lof
-	makeitem_s(97,58,-mget(97,58),1,14,11,0,0,0,0,0)--33 post lof
+makeitem_s(97,58,-mget(97,58),1,14,11,0,0,0,0,0)--33 post lof
 	
 	add(items,item_list[8])
 	add(items,item_list[18])
@@ -63,10 +64,17 @@ function buttons_i()
 	makebutton(91, 0, -mget(85,0),  0,13,5,57, 0,22,10,1,false)
 	makebutton(93, 0, -mget(85,0),  0,13,5,50, 0,22,10,1,false)
 	makebutton(85, 0, -mget(85,0),  0,13,5,45, 0,23,10,1,false)
-		makebutton(97, 0, -mget(85,0),  0,13,5,97, 0,0,1,-1,false)
-		makebutton(95, 0, -mget(85,0),  0,13,5,95, 0,0,1,-1,false)
-			for a=0,9 do makebutton(99, 0, -mget(99,0),  0,13,5,102-a*2,0,0,1,-1,false) end
-	makebutton(18, 32,-mget(18,32), 0,13,5,19,32,3, 4, 1,false)
+	makebutton(97, 0, -mget(85,0),  0,13,5,97, 0,0,1,-1,false)
+	makebutton(95, 0, -mget(85,0),  0,13,5,95, 0,0,1,-1,false)
+	
+	makebutton(18, 32,-3, 0,13,5,36,49,3, 1, 1,false)
+	for a=0,9 do makebutton(99, 0, -mget(99,0),  0,13,5,102-a*2,0,0,1,-1,false) end
+	for a=0,5 do makebutton(18+a, 32,-3, 0,13,5,18+a+1,32,3, 1, 1,false) end
+	for a=0,1 do makebutton(24+a, 32,-3+a, 0,13,5,24+a+1,32,3-a-1, 1, 1,false) end
+	for a=0,16 do makebutton(24, 32+a,-3, 0,13,5,24,32+a+1,3, 1, 1,false) end
+	for a=0,11 do makebutton(24+a, 39,-3, 0,13,5,24+a+1,39,3, 1, 1,false) end
+	for a=0,1 do makebutton(24+a, 49,-3+a, 0,13,5,24+a+1,49,3-a-1, 1, 1,false) end
+	for a=1,3 do makebutton(36,39+a,-2,0,13,5,36,39+a,3,1,1,false) end
 	makebutton(64, 11,-mget(64,11), 0,13,5,72,11,8,4, 1,false)
 	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
 	makebutton(72, 11,-8, 0,13,5,76,11,8,4, 1,false)
@@ -669,6 +677,7 @@ function _init()
 	maketele(31,62,-19,1,83,61)
 	maketele(58,31,-1,0,58,48)
 	maketele(58,48,-1,0,83,61)
+	maketele(36,49,-3,0,38,63)
 	makeclouds(14,3,rnd(10))
 	bubblei=200
 	--s=0.1
