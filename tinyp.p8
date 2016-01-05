@@ -36,7 +36,7 @@ makeitem_s(117,21,-5,1,8,9,111,21,4,17,0,0,0)--30
 	makeitem(121,35,-5,1,8,9,2,    0, 0, 0,1)--31 crossroad
 makeitem_s(85,61,-4,1,8,9,83,61,2,0,0,0,1)--32 s puzzle final
 	makeitem(58,48,0,1,8,9,0,     32, 0, 0,1)--33 mid secret reveal
-	makeitem_s(36,49,-3,0,8,9,38,63,0,    0, 0, 0,1)--34 indy bridge
+	makeitem_s(36,49,-3,0,8,9,38,63,0,    32, 0, 0,0)--34 indy bridge
 	
 	makeitem(93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
@@ -52,7 +52,7 @@ end
 
 function buttons_i()						
 	for b=0,2 do
-		for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
+	for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
 	end
 	for a=0,2 do makebutton(42, 1, -4,  0,13,5,44+a, 2,4,15,1,false) end
 	for a=1,2 do makebutton(45, 2, -4,  0,13,5,49, a,22,5,1,true) end
@@ -102,6 +102,9 @@ function buttons_i()
 	makebutton(64,14,-12,2,0,5,64,14,0,1, -1,false)
 	makebutton(80,14,-5,2,0,5,82,14,0,1, -1,false)
 	makebutton(74,14,-5,2,0,5,76,14,1,1, -1,false)
+	makebutton(63,60,-19,0,0,5,57,60,22,1, 1,false)
+	makebutton(51,60,-16,0,0,5,51,60,160,1, 1,false)
+	makebutton(0,62,-8,0,13,5,0,62,200,1, 1,true)
 
 	makebutton_s(2,  38,-mget(3,39),  1,8,9,3,  50,6,3,3,3,20, 62,-5)
 	makebutton_s(100,35,-mget(100,35),0,8,9,104,35,4,4,1,3,121,35,-5)
@@ -681,7 +684,7 @@ function _init()
 	makeclouds(14,3,rnd(10))
 	bubblei=200
 	--s=0.1
-	for a=1,bubblei do makebubble(flr(rnd(mw)),flr(rnd(mh)),rnd(0.6)+0.1,2+flr(rnd(2)-1)) end
+--	for a=1,bubblei do makebubble(flr(rnd(mw)),flr(rnd(mh)),rnd(0.6)+0.1,2+flr(rnd(2)-1)) end
 	
 	--makeplayer(97,60,16,1,14,3,ps) --0.5
 	--score=5
