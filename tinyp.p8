@@ -67,11 +67,13 @@ function buttons_i()
 	makebutton(97, 0, -mget(85,0),  0,13,5,97, 0,0,1,-1,false)
 	makebutton(95, 0, -mget(85,0),  0,13,5,95, 0,0,1,-1,false)
 	
-	makebutton(18, 32,-3, 0,13,5,36,49,3, 1, 1,false)
+--	makebutton(18, 32,-3, 0,13,5,36,49,3, 1, 1,false)
 	for a=0,9 do makebutton(99, 0, -mget(99,0),  0,13,5,102-a*2,0,0,1,-1,false) end
-	for a=0,5 do makebutton(18+a, 32,-3, 0,13,5,18+a+1,32,3, 1, 1,false) end
+	makebutton_c(18,32,-3,0,0,0,19,32,3,1,1,false,1,0,0,6)
+--	for a=0,5 do makebutton(18+a, 32,-3, 0,13,5,18+a+1,32,3, 1, 1,false) end
 	for a=0,1 do makebutton(24+a, 32,-3+a, 0,13,5,24+a+1,32,3-a-1, 1, 1,false) end
-	for a=0,16 do makebutton(24, 32+a,-3, 0,13,5,24,32+a+1,3, 1, 1,false) end
+	makebutton_c(24,32,-3,0,0,0,24,33,3,1,1,false,0,1,0,17)	
+--	for a=0,16 do makebutton(24, 32+a,-3, 0,13,5,24,32+a+1,3, 1, 1,false) end
 	for a=0,11 do makebutton(24+a, 39,-3, 0,13,5,24+a+1,39,3, 1, 1,false) end
 	for a=0,1 do makebutton(24+a, 49,-3+a, 0,13,5,24+a+1,49,3-a-1, 1, 1,false) end
 	for a=1,3 do makebutton(36,39+a,-2,0,13,5,36,39+a,3,1,1,false) end
@@ -233,6 +235,7 @@ function makebutton(x,y,z,w,c1,c2,px,py,pz,spd,di,vis)
 	b.pressed=false
 	--b.n=#buttons
 	add(buttons,b)
+	return b
 end
 
 function makebutton_s(x,y,z,w,c1,c2,stx,sty,sp,c,r,h,xs,ys,zs)
@@ -260,6 +263,17 @@ function makebutton_p(x,y,z,w,v)
 	b.v=v
 	b.pressed=false
 	add(buttons_p,b)
+end
+
+function makebutton_c(x,y,z,w,c1,c2,px,py,pz,spd,di,vis,xd,yd,zd,l)
+	local b=makebutton(x,y,z,w,c1,c2,px,py,pz,spd,di,vis)
+	del(buttons,b)
+	b.xd=xd
+	b.yd=yd
+	b.zd=zd
+	b.l=l
+	b.li=0
+	add(buttons_c,b)
 end
 
 function maketele(x,y,z,w,xt,yt)
@@ -317,7 +331,7 @@ function doplayer(p)
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(p.x,p.y)
 	if(btn (5,p.id) or btn(4,p.id)) then
-		if btn(5,p.id) then p.speed=0.34 else p.speed=0.5 end
+if btn(5,p.id) then p.speed=0.33 else p.speed=0.5 end
 		if(btn (0,p.id))then p.xspeed=-p.speed end
 		if(btn (1,p.id))then p.xspeed=p.speed end
 		if(btn (2,p.id))then p.yspeed=-p.speed end
@@ -433,7 +447,7 @@ function dobuttonpress(b)
 	if b.x<=flr(p.x) and b.x+b.w>=flr(p.x) and b.y<=flr(p.y) and b.y+b.w>=flr(p.y) and (flr(b.z)==flr(p.z)) then
 		if b.pressed==false then
 			b.pressed=true
-			b.z+=1
+--			b.z+=1
 			sfx(6,-1)
 			return b.pressed
 		end
@@ -448,6 +462,7 @@ function dobutton(b)
 			if h!=b.pz then
 				mset(b.px,b.py,h+b.di)
 				sfx(5,-1)
+			else return true
 			end
 		end
 	end
@@ -489,6 +504,18 @@ function dobutton_p(b)
 			if band(s,1)==1 then mset(20+a,62,1+4+a*2) mset(20+a,63,1+4+a*2)
 			else mset(20+a,62,0) mset(20+a,63,0) end
 			s=shr(s,1)
+		end
+	end
+end
+
+function dobutton_c(b)
+--	dobuttonpress(b)
+	if b.li<b.l then
+		if dobutton(b)==true then
+			b.x+=b.xd b.y+=b.yd b.z+=b.zd
+			b.px+=b.xd b.py+=b.yd b.pz+=b.zd
+			b.pressed=false
+			b.li+=1
 		end
 	end
 end
@@ -670,6 +697,7 @@ function _init()
 	buttons={}
 	buttons_s={}
 	buttons_p={}
+	buttons_c={}
 	teles={}
 	exits={}
 	ending={}
@@ -744,10 +772,11 @@ function _draw()
 		print(p.fall,10,-20,11)
 		print(dget(63),20,-20,11)
 		print(switchy,10,-10,11)
-		print(#items,10,-10,11)
-		print(#item_list,20,-10,11)
+--		print(#items,10,-10,11)
+--		print(#item_list,20,-10,11)
 		print(#ending,20,-10,11)
 		print(#bubbles,20,0,11)
+		print(buttons_c[1].li,20,10,11)
 	end
 --	print(stat(1),mw-30,-30,11)
 end
@@ -760,6 +789,7 @@ function _update()
 	foreach(buttons,dobutton)
 	foreach(buttons_s,dobutton_s)
 	foreach(buttons_p,dobutton_p)
+	foreach(buttons_c,dobutton_c)
 	foreach(bubbles,dobubble)
 	foreach(dead,dobubble)
 	foreach(teles,dotele)
