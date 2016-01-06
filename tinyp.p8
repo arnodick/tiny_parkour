@@ -52,9 +52,11 @@ end
 
 function buttons_i()						
 	for b=0,2 do
-	for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
+		for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
 	end
-	for a=0,2 do makebutton(42, 1, -4,  0,13,5,44+a, 2,4,15,1,false) end
+--	makebutton_l(x,y,z,w,c1,c2,px,py,pz,spd,di,vis,xd,yd,zd,l)	
+	makebutton_l(42,1,-4,0,13,5,44,2,4,15,1,false,1,0,0,2)
+--for a=0,2 do makebutton(42, 1, -4,  0,13,5,44+a, 2,4,15,1,false) end
 	for a=1,2 do makebutton(45, 2, -4,  0,13,5,49, a,22,5,1,true) end
 	for a=0,4 do makebutton(44, 0, -22,  0,13,5,122+a,1, 8+a,30,1,true) end
 	makebutton(101, 0,-mget(101,0), 0,13,5,101,0,22,1,1,false)
@@ -67,16 +69,9 @@ function buttons_i()
 	makebutton(97, 0, -mget(85,0),  0,13,5,97, 0,0,1,-1,false)
 	makebutton(95, 0, -mget(85,0),  0,13,5,95, 0,0,1,-1,false)
 	
---	makebutton(18, 32,-3, 0,13,5,36,49,3, 1, 1,false)
 	for a=0,9 do makebutton(99, 0, -mget(99,0),  0,13,5,102-a*2,0,0,1,-1,false) end
-	makebutton_c(18,32,-3,0,0,0,19,32,3,1,1,false,1,0,0,6)
---	for a=0,5 do makebutton(18+a, 32,-3, 0,13,5,18+a+1,32,3, 1, 1,false) end
-	for a=0,1 do makebutton(24+a, 32,-3+a, 0,13,5,24+a+1,32,3-a-1, 1, 1,false) end
-	makebutton_c(24,32,-3,0,0,0,24,33,3,1,1,false,0,1,0,17)	
---	for a=0,16 do makebutton(24, 32+a,-3, 0,13,5,24,32+a+1,3, 1, 1,false) end
-	for a=0,11 do makebutton(24+a, 39,-3, 0,13,5,24+a+1,39,3, 1, 1,false) end
-	for a=0,1 do makebutton(24+a, 49,-3+a, 0,13,5,24+a+1,49,3-a-1, 1, 1,false) end
-	for a=1,3 do makebutton(36,39+a,-2,0,13,5,36,39+a,3,1,1,false) end
+	
+	makebutton(18, 32,-3, 0,13,5,36,49,3, 1, 1,false)
 	makebutton(64, 11,-mget(64,11), 0,13,5,72,11,8,4, 1,false)
 	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
 	makebutton(72, 11,-8, 0,13,5,76,11,8,4, 1,false)
@@ -120,6 +115,13 @@ function buttons_i()
 	makebutton_p(3,62,-3,1,4)
 	makebutton_p(9,62,-3,1,5)
 	makebutton_p(15,62,-3,1,6)
+
+	makebutton_c(18,32,-3,0,0,0,19,32,3,1,3,false,1,0,0,6)	
+	makebutton_c(24,32,-3,0,0,0,25,32,2,1,1,false,1,0,-1,2)	
+	makebutton_c(24,32,-3,0,0,0,24,33,3,1,3,false,0,1,0,17)	
+	makebutton_c(24,39,-3,0,0,0,25,39,3,1,3,false,1,0,0,10)	
+	makebutton_c(25,49,-2,0,0,0,25,49,3,1,3,false,1,0,0,5)	
+	makebutton_c(34,39,-3,0,0,0,35,39,2,1,1,false,1,0,-1,2)	
 end
 
 function sky_i()
@@ -155,10 +157,11 @@ function makeplayer(x,y,z,w,c1,c2,s)
 	add(player,p)
 end
 
-function makedead(x,y,s,c)
-	local d=makebubble(x,y,s,c)
-	add(dead,d)
-end
+--function makedead(x,y,s,c)
+--	local d=makebubble(x,y,s,c)
+--	del(bubbles,d)
+--	add(dead,d)
+--end
 
 function makesplat(x,y,xs,ys)
 	local s={}
@@ -274,6 +277,13 @@ function makebutton_c(x,y,z,w,c1,c2,px,py,pz,spd,di,vis,xd,yd,zd,l)
 	b.l=l
 	b.li=0
 	add(buttons_c,b)
+	return b
+end
+
+function makebutton_l(x,y,z,w,c1,c2,px,py,pz,spd,di,vis,xd,yd,zd,l)
+	local b=makebutton_c(x,y,z,w,c1,c2,px,py,pz,spd,di,vis,xd,yd,zd,l)
+	del(buttons_c,b)
+	add(buttons_l,b)
 end
 
 function maketele(x,y,z,w,xt,yt)
@@ -331,7 +341,7 @@ function doplayer(p)
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(p.x,p.y)
 	if(btn (5,p.id) or btn(4,p.id)) then
-if btn(5,p.id) then p.speed=0.33 else p.speed=0.5 end
+	if btn(5,p.id) then p.speed=0.3 else p.speed=0.5 end
 		if(btn (0,p.id))then p.xspeed=-p.speed end
 		if(btn (1,p.id))then p.xspeed=p.speed end
 		if(btn (2,p.id))then p.yspeed=-p.speed end
@@ -348,14 +358,10 @@ if btn(5,p.id) then p.speed=0.33 else p.speed=0.5 end
 		if flc!=13 then
 			if gh==0 then
 				dset(63,dget(63)+1)
-				
-				--makebubble(p.x,p.y,rnd(0.6)+0.1,p.c1)
-				--makebubble(p.x,p.y,rnd(0.6)+0.1,p.c2)
-				for k,v in pairs(dead) do dead[k]=nil end
-				if #bubbles>bubblei+6 then while #bubbles>204 do bubbles[#bubbles]=nil end end
-				makedead(p.x,p.y,rnd(0.1)+0.1,p.c1)
-				makedead(p.x,p.y,rnd(0.1)+0.1,p.c2)
-	 		--makedead(p.x,p.y,p.z,1,p.c2,8)
+				if #bubbles>bubblei+6 then while #bubbles>bubblei do bubbles[#bubbles]=nil end end
+				if #bubbles>bubblei+6 then while #bubbles>bubblei do del(bubbles,bubbles[#bubbles]) end end
+				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c1)
+				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c2)
 	 		
 	 		--if p.fall>10 then
 	 			--for k,v in pairs(splat) do splat[k]=nil end
@@ -363,6 +369,7 @@ if btn(5,p.id) then p.speed=0.33 else p.speed=0.5 end
 	 		--end
 	 		--todo: maybe delete and reinit player here?
 	 		p.x=p.xs p.y=p.ys
+	 		for k,v in pairs(parts) do parts[k]=nil end
 	 		for a=1,30 do makepart(p.x,p.y-mget(p.x,p.y),3,p.c2) end
 	 		sfx(2,2)
 	 		reload(0x1000,0x1000,8192)
@@ -372,6 +379,8 @@ if btn(5,p.id) then p.speed=0.33 else p.speed=0.5 end
 	 		for k,v in pairs(buttons) do buttons[k]=nil end
 	 		for k,v in pairs(buttons_s) do buttons_s[k]=nil end
 	 		for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+	 		for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+	 		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
 --	 		for k,v in pairs(parts) do parts[k]=nil end
 	 		switchy=0
 	 		buttons_i()
@@ -447,6 +456,7 @@ function dobuttonpress(b)
 	if b.x<=flr(p.x) and b.x+b.w>=flr(p.x) and b.y<=flr(p.y) and b.y+b.w>=flr(p.y) and (flr(b.z)==flr(p.z)) then
 		if b.pressed==false then
 			b.pressed=true
+			b.vis=false
 --			b.z+=1
 			sfx(6,-1)
 			return b.pressed
@@ -512,10 +522,25 @@ function dobutton_c(b)
 --	dobuttonpress(b)
 	if b.li<b.l then
 		if dobutton(b)==true then
-			b.x+=b.xd b.y+=b.yd b.z+=b.zd
+			b.x+=b.xd b.y+=b.yd b.z-=b.zd
 			b.px+=b.xd b.py+=b.yd b.pz+=b.zd
 			b.pressed=false
 			b.li+=1
+		end
+	end
+end
+
+function dobutton_l(b)
+	dobuttonpress(b)
+	if b.pressed==true then
+		if timer%b.spd==0 then
+			for a=0,b.l do
+				local h=mget(b.px+a*b.xd,b.py+a*b.yd)
+				if h!=b.pz+a*b.zd then
+					mset(b.px+a*b.xd,b.py+a*b.yd,h+b.di)
+					sfx(5,-1)
+				end
+			end
 		end
 	end
 end
@@ -688,7 +713,7 @@ function _init()
 	camera(0,cam)
 	--actor={}
 	player={}
-	dead={}
+--	dead={}
 	splat={}
 	parts={}
 	bubbles={}
@@ -698,6 +723,7 @@ function _init()
 	buttons_s={}
 	buttons_p={}
 	buttons_c={}
+	buttons_l={}
 	teles={}
 	exits={}
 	ending={}
@@ -710,9 +736,9 @@ function _init()
 	maketele(58,48,-1,0,83,61)
 	maketele(36,49,-3,0,38,63)
 	makeclouds(14,3,rnd(10))
-	bubblei=200
+	bubblei=180
 	--s=0.1
---	for a=1,bubblei do makebubble(flr(rnd(mw)),flr(rnd(mh)),rnd(0.6)+0.1,2+flr(rnd(2)-1)) end
+	for a=1,bubblei do makebubble(flr(rnd(mw)),flr(rnd(mh)),rnd(0.6)+0.1,2+flr(rnd(2)-1)) end
 	
 	--makeplayer(97,60,16,1,14,3,ps) --0.5
 	--score=5
@@ -790,8 +816,9 @@ function _update()
 	foreach(buttons_s,dobutton_s)
 	foreach(buttons_p,dobutton_p)
 	foreach(buttons_c,dobutton_c)
+	foreach(buttons_l,dobutton_l)
 	foreach(bubbles,dobubble)
-	foreach(dead,dobubble)
+--	foreach(dead,dobubble)
 	foreach(teles,dotele)
 --	foreach(exits,doexit)
 	foreach(boss,doboss)	
@@ -985,7 +1012,7 @@ __sfx__
 00160000116601565014640126300d6300a62007620066200562005620046300563007650096700e6601263014620116300f6400e6400d6400d6400c6400b6400a63009620096200762005620036200462004620
 0010000023600236001c6101c6201b6201b6301a6401a6401a6501866013640106300e6200d6200d6200c6300a6200a6200a6300a6300a6500a6600b6600c6500d6400d6400d6400c64009630056300363002630
 0010000002640036400d6501665017640156401464013640136401364013630156201662016620166301663015630126301363017630186301762016630146401364013630136301463017630146300d62001610
-001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0004000006630017300660001600006000363001730036000160008600056000f600096000a600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
