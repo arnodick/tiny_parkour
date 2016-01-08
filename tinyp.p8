@@ -11,16 +11,16 @@ makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
 	makeitem( 49,14,-13,1, 3,11,       0,17,33, 0,0,4)--6 on top of the wall
 	makeitem( 61,15,-10,1, 8, 9,       4,19, 0, 0,1)--7 leap of faith
 	makeitem( 24, 0, -5,1, 0, 0,       4, 9, 0, 0,1)--8 top curve jump
-	makeitem( 60, 0,-13,1, 8, 9,       4,10,16, 0,1)--9 top long jump
-	makeitem( 76,11, -5,1, 8, 9,       4,17,35, 0,1,9)--10 back to mid jump
-	makeitem(125,14, -5,1, 8, 9,       4, 0, 0, 0,1,10)--11 far right hazards
+	makeitem( 60, 0,-13,1, 8,12,       4,10,16, 0,1)--9 top long jump
+	makeitem( 76,11, -5,1, 4, 9,       4,36, 0, 0,1,9)--10 back to mid jump
+	makeitem(125,14, -5,1, 8,12,       4, 0, 0, 0,1,10)--11 far right hazards
 	makeitem( 10, 0, -9,1, 8, 9,       4, 0, 0, 0,1)--12 weird top left secret
 	makeitem( 44, 2, -5,1, 8, 9,       4, 7, 0, 0,1)--13 top detour
 	makeitem( 71,35, -4,1, 9, 8,       9,31, 0, 0,1,2)--14 false leap of faith
 makeitem_s( 68,11,-10,1,12,11,64,11,12,35, 0, 0,2,6)--15 secret reveal!
-	makeitem( 93, 1,-13,1, 8, 9,       4,11,26, 0,2)--16 top hook jumps
+	makeitem( 93, 1,-13,1, 8,12,       4,11,26, 0,2)--16 top hook jumps
 	makeitem( 85,14,-10,1,10,11,      12,11, 0, 0,1)--17 secret climb
-makeitem_s( 31,11, -2,1, 0, 0,29,11, 4,15, 0, 0,1)--18 invisible checkpoint
+makeitem_s( 31,11, -2,1, 0, 0,28,11, 4,15, 0, 0,1)--18 invisible checkpoint
 	makeitem( 76,15, -1,1, 8, 9,       9,28, 0, 0,0,1)--19 post lof
 	makeitem( 11, 1, -3,1, 8, 9,       3,22, 0, 0,0)--20 start easy
 	makeitem( 12,22, -3,1, 0, 0,       1,29, 0, 0,1)--21 s route secret
@@ -28,7 +28,7 @@ makeitem_s( 31,11, -2,1, 0, 0,29,11, 4,15, 0, 0,1)--18 invisible checkpoint
 	makeitem(  5,25, -1,1,12,13,       8,27, 0, 0,1,7)--23 s route
 makeitem_s( 14, 0,-10,1,10,11,11, 0,24, 0, 0, 0,1)--24 secret get!
 	makeitem( 32,26, -5,1, 8, 9,       2, 4, 5, 0,0)--25 crossroad
-makeitem_s(101, 0,-13,1, 8, 9,99, 0, 4,24, 0, 0,0,11)--26 top innaccess
+makeitem_s(101, 0,-13,1,12,10,99, 0, 4,24, 0, 0,0,11)--26 top innaccess
 makeitem_s( 16,45, -3,1, 8, 9, 3,39, 4,32, 0, 0,1)--27 s route
 	makeitem( 87,26, -4,1, 8, 9,       4,30, 0, 0,0)--28 pilar challenge
 	makeitem( 18,32, -3,1,10,14,       8,34, 0, 0,3,8)--29 s route secret
@@ -37,7 +37,8 @@ makeitem_s(117,21, -5,1, 8, 9,111,21,0,17, 0, 0,0)--30
 makeitem_s( 85,61, -4,1, 8, 9,83,61,14, 0, 0, 0,1)--32 s puzzle final
 	makeitem( 58,48,  0,1, 8, 9,       0,32, 0, 0,1,5)--33 mid secret reveal
 makeitem_s( 36,49, -3,0, 8, 9,38,63, 0,32, 0, 0,0)--34 indy bridge
-makeitem_s(116,11,  0,0, 8, 9,125,11,0, 0, 0, 0,1)--35 inv bridge
+makeitem_s(116,11,  0,0, 8, 9,125,11,0, 0, 0, 0,2)--35 inv bridge
+	makeitem(60,20,   0,0, 8, 9,       0,31, 0, 0,1)--36 top to mid end
 	
 	makeitem( 93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
@@ -71,6 +72,9 @@ function buttons_i()
 	makebutton(64, 11,-mget(64,11), 0,13,5,72,11,8,4, 1,false)
 	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
 	makebutton(72, 11,-8, 0,13,5,76,11,8,4, 1,false)
+	makebutton(72, 11,-8, 0,13,5,75,11,0,1,-1,false)
+	makebutton(72, 11,-8, 0,13,5,77,11,0,1,-1,false)
+	makebutton(76, 11,-8, 0,13,5,80,11,8,1, 1,false)
 	makebutton(22, 25,-mget(23,25), 0,13,5,23,25,2,30,1,false)
 	makebutton(85, 21,-mget(85,21), 0,13,5,85,15,9,10,1,false)
 	makebutton(117, 26,-mget(117,26), 0,13,5,117,21,5,10,1,false)
@@ -94,7 +98,7 @@ function buttons_i()
 	makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
 	makebutton(64,14,-12,2,0,5,64,14,0,1, -1,false)
 	makebutton(80,14,-5,2,0,5,82,14,0,1, -1,false)
-	makebutton(74,14,-5,2,0,5,76,14,1,1, -1,false)
+	makebutton(74,14,-5,2,13,5,76,14,1,1, -1,false)
 	makebutton(63,60,-19,0,0,5,57,60,22,1, 1,false)
 	makebutton(51,60,-16,0,0,5,51,60,160,1, 1,false)
 	makebutton(0,62,-8,0,13,5,0,62,200,1, 1,true)
@@ -120,13 +124,17 @@ function buttons_i()
 	makebutton_c(34,39,-3,0,0,0,35,39,2,1,1,false,1,0,-1,2)	
 	makebutton_c(10, 0,-8,0,0,0,11, 0,0,1,-8,false,-1,0,0,11)	
 	makebutton_c(0,  1,-8,0,0,0, 0, 0,0,1,-8,false,0,1,0,61)	
-	makebutton_c(76,11,-8,0,0,0,77,11,8,1, 1,false,1,0,0,30)	
- makebutton_c(106,11,-8,0,0,0,108,11,8,1, 1,false,2,0,0,5)	
+	makebutton_c(80,11,-8,0,0,0,81,11,8,1, 8,false,1,0,0,26)	
+	makebutton_c(106,11,-8,0,0,0,108,11,8,1, 1,false,2,0,0,5)	
+	makebutton_c( 76,20,-1,0,0,0, 75,20,2,1, 1,false,-1,0,1,10)	
 
 	makebutton_l(42,1,-4,0,13,5,44,2,4,15,1,false,1,0,0,2)
 	makebutton_l(44,0,-22,0,13,5,122,1,8,30,1,true,1,0,1,4)
-
 	makebutton_l(99,0,-22,0,13,5,102,0,0,1,-1,false,-2,0,0,9)	
+	makebutton_l(72,11,-8,0,13,5,75,10,0,1,-1,false,1,0,0,2)	
+	makebutton_l(72,11,-8,0,13,5,75,12,0,1,-1,false,1,0,0,2)	
+	makebutton_l(72,11,-8,0,13,5,75,13,0,1,-1,false,1,0,0,2)	
+	makebutton_l(76,14,-1,0,13,5,76,19,1,1, 1,false,0,1,0,1)	
 end
 
 function sky_i()
