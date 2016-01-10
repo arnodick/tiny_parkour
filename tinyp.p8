@@ -1,7 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 5
 __lua__
-debug=true
+debug=false
 function items_i()
 makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
 	makeitem( 23,25, -2,1, 8, 9,       2,25,23, 0,1)--2 crossroad
@@ -13,7 +13,7 @@ makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
 	makeitem( 24, 0, -5,1, 0, 0,       4, 9, 0, 0,1)--8 top curve jump
 	makeitem( 60, 0,-13,1, 8,12,       4,10,16, 0,1)--9 top long jump
 	makeitem( 76,11, -5,1, 4, 9,       4,36, 0, 0,1,9)--10 back to mid jump
-	makeitem(125,14, -5,1, 8,12,       4, 0, 0, 0,1,10)--11 far right hazards
+	makeitem(125,14, -5,1, 8,12,      10, 0, 0, 0,1,10)--11 far right hazards
 	makeitem( 10, 0, -9,1, 8, 9,       4, 0, 0, 0,1)--12 weird top left secret
 	makeitem( 44, 2, -5,1, 8, 9,       4, 7, 0, 0,1)--13 top detour
 	makeitem( 71,35, -4,1, 9, 8,       9,31, 0, 0,1,2)--14 false leap of faith
@@ -97,7 +97,7 @@ function buttons_i()
 	makebutton(12,22,-3,0,13,5,5,24,0,2, -1,false)
 	makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
 	makebutton(64,14,-12,2,0,5,64,14,0,1, -1,false)
-	makebutton(80,14,-5,2,0,5,82,14,0,1, -1,false)
+	makebutton(80,14,-5,4,0,5,82,14,0,1, -1,false)
 	makebutton(74,14,-5,2,13,5,76,14,1,1, -1,false)
 	makebutton(63,60,-19,0,0,5,57,60,22,1, 1,false)
 	makebutton(51,60,-16,0,0,5,51,60,160,1, 1,false)
@@ -124,7 +124,8 @@ function buttons_i()
 	makebutton_c(34,39,-3,0,0,0,35,39,2,1,1,false,1,0,-1,2)	
 	makebutton_c(10, 0,-8,0,0,0,11, 0,0,1,-8,false,-1,0,0,11)	
 	makebutton_c(0,  1,-8,0,0,0, 0, 0,0,1,-8,false,0,1,0,61)	
-	makebutton_c(80,11,-8,0,0,0,81,11,8,1, 8,false,1,0,0,26)	
+	makebutton_c(80,11,-8,0,0,0,81,11,8,1, 8,false,1,0,0,26)
+	makebutton_c(82,11,-8,0,0,0,81,11,0,1,-8,false,1,0,0,25)	
 	makebutton_c(106,11,-8,0,0,0,108,11,8,1, 1,false,2,0,0,5)	
 	makebutton_c( 76,20,-1,0,0,0, 75,20,2,1, 1,false,-1,0,1,10)	
 
@@ -142,6 +143,16 @@ function sky_i()
 	for a=1,100 do star1[a]=rnd(127) star2[a]=rnd(63) end
 	moon1={} moon2={}
 	for a=1,30 do moon1[a]=92+rnd(15) moon2[a]=-32-rnd(15) end
+end
+
+function makeroom(mw,mh,c1,c2,flc)
+	local r={}
+	r.w=mw
+	r.h=mh
+	r.c1=c1
+	r.c2=c2
+	r.flc=flc
+	add(rooms,r)
 end
 
 function makeactor(x,y,z,w,c1,c2)
@@ -389,6 +400,7 @@ function doplayer(p)
 	 		for a=1,30 do makepart(p.x,p.y-mget(p.x,p.y),3,p.c2) end
 	 		sfx(2,2)
 	 		reload(0x1000,0x1000,8192)
+--	 		reload(0x1000,0x1000,8192)
 	 		for k,v in pairs(exits) do exits[k]=nil end
 	 		for k,v in pairs(ending) do ending[k]=nil end
 	 		for k,v in pairs(boss) do boss[k]=nil end
@@ -421,6 +433,7 @@ function doplayer(p)
 end
 
 function doitem(i)
+	if player[1]!=nil then
 	local p=player[1]
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		score+=i.v
@@ -449,6 +462,7 @@ function doitem(i)
 			i.c2=col1
 		end
 	end
+	end
 end
 
 function dopart(p)
@@ -473,6 +487,7 @@ function dobubble(b)
 end
 
 function dobuttonpress(b)
+	if player[1]!=nil then
 	local p=player[1]
 	if b.x<=flr(p.x) and b.x+b.w>=flr(p.x) and b.y<=flr(p.y) and b.y+b.w>=flr(p.y) and (flr(b.z)==flr(p.z)) then
 		if b.pressed==false then
@@ -482,6 +497,7 @@ function dobuttonpress(b)
 			sfx(6,-1)
 			return b.pressed
 		end
+	end
 	end
 end
 
@@ -501,6 +517,7 @@ end
 
 function dobutton_s(b)
 	dobuttonpress(b)
+	if player[1]!=nil then
 	local p=player[1]
 	if b.xs<=flr(p.x) and b.xs+b.w >=flr(p.x)  and b.ys<=flr(p.y) and b.ys+b.w>=flr(p.y)  and b.zs==flr(p.z) then
 		b.pressed=false
@@ -520,6 +537,7 @@ function dobutton_s(b)
 			end
 			b.switch=bxor(b.switch,1)
 		end
+	end
 	end
 end
 
@@ -628,12 +646,17 @@ function doboss(b)
 end
 
 function drawactor(a)
+	if player[1]!=nil then
  pset(a.x,a.y-mget(a.x,a.y),5)
  pset(a.x,a.y+a.z,a.c2)
  pset(a.x,a.y-1+a.z,a.c1)
+ end
 end
 
 function drawsky()
+	if exits[1]!=nil then
+		for a=1,100 do pset(star1[a],star2[a]-200,12) end
+	end
 	circfill(100,-40,10,6)
 	for a=1,30 do pset(moon1[a],moon2[a],5) end
 
@@ -701,7 +724,6 @@ function drawexit(e)
 	for a=0,4 do line(93+a*2,i+52-(a%2)*2,93+a*2,i-47,12) end
 --	for a=0,score do line(93+a*2,i+4-(a%2)*2,93+a*2,i-4,12) end	
 	if timer%5==0 then pal(12,flr(rnd(16)),1) end
-	for a=1,100 do pset(star1[a],star2[a]-200,12) end
 end
 
 function drawboss(b)
@@ -727,10 +749,13 @@ end
 function _init()
 	cartdata("ap_tinyp")
 	--for a=0,10 do dset(a,0) end
+	rooms={}
+	room=1
+	makeroom(127,63,6,1,0)
 	switchy=0
 	timer=0
-	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
-	if debug==true then flc=0 end
+--	mw=127 mh=63 mc1=6 mc2=1 flc=0--flc=13
+	--if debug==true then flc=0 end
 	ps=0.5
 	score=0
 	route=0
@@ -755,9 +780,9 @@ function _init()
 	exits={}
 	ending={}
 	boss={}
-	
+
 	makeplayer(17,1,10,1,14,3,ps) --0.5
-	makeplayer(16,1,10,1,12,2,ps)
+--	makeplayer(16,1,10,1,12,2,ps)
 	maketele(31,62,-19,1,83,61)
 	maketele(58,31,-1,0,58,48)
 	maketele(58,48,-1,0,83,61)
@@ -796,11 +821,15 @@ function _draw()
 				line(x,y-h+1,x,y,(mc2+(y%2)))--wall
 			end
 		end
+		if player[1]!=nil then
 		if flr(p.y)==y then
 			drawactor(p)
 		end
+		end
+		if player[2]!=nil then
 		if flr(p2.y)==y then
 			drawactor(p2)
+		end
 		end
 	end
 
@@ -849,11 +878,14 @@ function _update()
 --	foreach(dead,dobubble)
 	foreach(teles,dotele)
 --	foreach(exits,doexit)
-	foreach(boss,doboss)	
+	foreach(boss,doboss)
+	if player[1]!=nil then
 	--if player[1].z>=-120 then cam=-mh camera(player[1].x-64,cam+player[1].y+player[1].z) end
 	if player[1].z>=-120 then cam=-mh camera(0,cam) end
+--	if player[1].z>=-120 then cam=-mh camera(30,cam) end
 	if player[1].z<-120 then cam=-mh*2 camera(0,cam) end
 	if player[1].z<-190 then cam=-mh*3.5 camera(0,cam) end
+	end
 	
 	timer+=1
 end
