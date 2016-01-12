@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=false
+debug=true
 function items_i(r)
 if r==2 then
 makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
@@ -647,8 +647,8 @@ function doexit(e)
 	if p==true then
 		room+=1
 		local r=rooms[room]
-		for b=0,127 do for a=0,63 do mset(a,b,0) end end
-		reload(r.dest,r.src,r.len)
+--		for b=0,127 do for a=0,63 do mset(a,b,0) end end
+
 			for k,v in pairs(finish) do finish[k]=nil end
 	 	for k,v in pairs(ending) do ending[k]=nil end
 	 	for k,v in pairs(boss) do boss[k]=nil end
@@ -660,6 +660,8 @@ function doexit(e)
 	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
 	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
 	 	for k,v in pairs(teles) do teles[k]=nil end	 		
+			reload(r.dest,r.src,r.len)
+			player[1].x=r.px player[1].y=r.py
 --	 		for k,v in pairs(parts) do parts[k]=nil end
 			items_i(room)
 	 	buttons_i(room)
@@ -729,9 +731,10 @@ end
 
 function drawsky(r)
 if r==2 then
-	--if finish[1]!=nil then
-		for a=1,100 do pset(star1[a],star2[a]-200,12) end
-	--end
+	if finish[1]!=nil then
+		for a=1,100 do if timer%(a*5)==0 then pset(star1[a],star2[a]-200,12+flr(rnd(2))) end end
+	end
+
 	circfill(100,-40,10,6)
 	for a=1,30 do pset(moon1[a],moon2[a],5) end
 
@@ -792,7 +795,7 @@ end
 function drawfinish(e)
 	local i=-mget(97,59)
 	for a=0,4 do line(93+a*2,i+52-(a%2)*2,93+a*2,i-47,12) end
-	if timer%5==0 then pal(12,13,1) else pal() end
+	--if timer%5==0 then pal(12,13,1) else pal() end
 end
 
 function drawboss(b)
@@ -820,8 +823,8 @@ function _init()
 	--for a=0,10 do dset(a,0) end
 	rooms={}
 	room=1
-	makeroom(127,31,6,2,13,0x2000,0x0000,4096,60,16)	
-	makeroom(127,63,6,1, 0,0x1000,0x1000,8192,17,1)
+	makeroom(127,31,6,2,13,0x2000,0x0000,4096,60,16)--intro
+	makeroom(127,63,6,1, 0,0x1000,0x1000,8192,17,1)--main
 	local r=rooms[room]
 --	for b=0,127 do for a=0,63 do mset(a,b,0) end end
 	reload(r.dest,r.src,r.len)
@@ -853,11 +856,11 @@ function _init()
 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
 --	makeplayer(16,1,10,1,12,2,ps)
 	
-	--makeplayer(97,60,16,1,14,3,ps) --0.5
+--	makeplayer(97,60,16,1,14,3,ps) --0.5
 	--makeplayer(16,1,10,1,12,2,ps)
-	--score=5
-	--route=5
-	--doprogress()
+--	score=5
+--	route=5
+--	doprogress()
 	
 	items_i(room)
 	buttons_i(room)	
