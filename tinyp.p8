@@ -65,6 +65,16 @@ if r==1 then
 	makeexit(6,1,-1,0)
 end
 if r==2 then
+	local ro=rooms[r]
+	if ro.gen==true then
+		timer=0
+		makeclouds(14,3,rnd(10))
+		bubblei=200
+		for a=1,bubblei do
+			makebubble(flr(rnd(ro.w)),flr(rnd(ro.h)),rnd(0.6)+0.1,2+flr(rnd(2)-1))
+		end
+		ro.gen=false
+	end
 	for b=0,2 do
 		for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
 	end
@@ -178,6 +188,7 @@ function makeroom(mw,mh,c1,c2,flc,dest,src,len,px,py)
 	r.len=len
 	r.px=px
 	r.py=py
+	r.gen=true
 	add(rooms,r)
 end
 
@@ -836,10 +847,6 @@ function _init()
 
 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
 --	makeplayer(16,1,10,1,12,2,ps)
-	makeclouds(14,3,rnd(10))
-	bubblei=200
-	--s=0.1
-if room==2 then	for a=1,bubblei do makebubble(flr(rnd(rooms[room].w)),flr(rnd(rooms[room].h)),rnd(0.6)+0.1,2+flr(rnd(2)-1)) end end
 	
 	--makeplayer(97,60,16,1,14,3,ps) --0.5
 	--makeplayer(16,1,10,1,12,2,ps)
@@ -892,9 +899,10 @@ function _draw()
 	--end
 	--debug
 	if debug==true then
-		for a=0,10 do print(dget(a),r.w/2-30+a*8,cam+r.h-50,11) end
+		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50,11) end
+		print(timer,r.w-20,cam+r.h-50,11)
 		print(stat(0),10,cam+r.h-40,11)
-		print(stat(1),r.w-30,cam+r.h-40,11)
+		print(stat(1),r.w-27,cam+r.h-40,11)
 		if p!=nil then
 		print(p.x,10,cam+r.h-30,11)
 		print(p.y,25,cam+r.h-30,11)
