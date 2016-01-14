@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=true
+debug=false
 function items_i(r)
 if r==2 then
 makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
@@ -192,7 +192,7 @@ if r==1 then
 end
 if r==2 then
 	star1={} star2={}
-	for a=1,100 do star1[a]=rnd(127) star2[a]=rnd(63) end
+	for a=1,100 do star1[a]=rnd(127) star2[a]=rnd(100) end
 	moon1={} moon2={}
 	for a=1,30 do moon1[a]=92+rnd(15) moon2[a]=-32-rnd(15) end
 	thunder=200+flr(rnd(1000))
@@ -408,6 +408,7 @@ function makeboss(x,y,z)
 	b.eh=0.01
 	b.t=timer
 	b.ti=120
+	b.tk=300
 	b.dial={}
 	b.dial[1]="try again, mortal"
 	b.dial[2]="well done... now die"
@@ -661,7 +662,9 @@ function dotele(t)
 end
 
 function changeroom()
+		rtimer=0
 		room+=1
+		if room>#rooms then room=#rooms end
 		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
 		for k,v in pairs(finish) do finish[k]=nil end
@@ -677,7 +680,9 @@ function changeroom()
 		for k,v in pairs(teles) do teles[k]=nil end	 		
 		for k,v in pairs(parts) do parts[k]=nil end
 		reload(r.dest,r.src,r.len)
-		player[1].x=r.px player[1].y=r.py
+		cam=-r.h camera(0,cam)
+--				makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
+--		player[1].x=r.px player[1].y=r.py
 		items_i(room)
 		buttons_i(room)
 		sky_i(room)
@@ -687,14 +692,15 @@ end
 
 function doexit(e)
 	p=dobuttonpress(e)
-	if e.pressed==true then
+--	if e.pressed==true then
 		if p==true then
+			sfx(12,0,-1)
+			for k,v in pairs(parts) do parts[k]=nil end
 			for a=1,20 do makepart(e.x,e.y,1,1,flr(rnd(6))) end	
+			for k,v in pairs(player) do player[k]=nil end
+			rtimer=timer
 		end
-		if #parts==0 then--	if parts[1]==nil then
-			changeroom()
-		end
-	end 
+--	end 
 end
 
 function doprogress(s,i)--i:add ethereal flames
@@ -746,6 +752,12 @@ function doboss(b)
 	b.z=b.zs+sin(timer*1/70)*10
 	if b.r<20 then b.r+=0.5 end
 	if timer-b.t==b.ti then b.eh=0.4 sfx(18,-1,0) end
+	if timer-b.t==b.tk then
+		sfx(12,0,-1)
+		for k,v in pairs(parts) do parts[k]=nil end
+		for a=1,20 do makepart(player[1].x,player[1].y+player[1].z,1,1,flr(rnd(6))) end	
+		for k,v in pairs(player) do player[k]=nil end
+	end
 end
 
 function drawactor(a)
@@ -837,6 +849,7 @@ function drawfinish(e)
 end
 
 function drawboss(b)
+	pal(4,4+flr(rnd(3)),1)
 	local t="you've come this\nway "..dget(route).." times, mortal...\npathetic. find a new way"
 	if dget(route)>1 then
 		print(t,b.x-#t/1.5,b.z-45,8) 
@@ -850,9 +863,11 @@ function drawboss(b)
 	rectfill(b.x+0.3*b.r,b.z-0.5*b.r,b.x+0.5*b.r,b.z+b.eh*b.r,4)
 	rectfill(b.x-0.3*b.r,b.z-0.5*b.r,b.x-0.5*b.r,b.z+b.eh*b.r,4)
 	rectfill(b.x-0.2*b.r,b.z+0.4*b.r,b.x+0.2*b.r,b.z+0.6*b.r+(cos(timer*1/40)),0)
+	if player[1]!=nil then
 	if timer-b.t>b.ti then
 		line(b.x-0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
 		line(b.x+0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
+	end
 	end
 end
 
@@ -868,6 +883,7 @@ function _init()
 	reload(r.dest,r.src,r.len)
 	start=0
 	timer=0
+	rtimer=0
 	ps=0.5
 	score=0
 	route=0
@@ -971,12 +987,17 @@ function _update()
 	local r=rooms[room]
 	local p=player[1]
 	if room==1 then
-		if start==0 then
-		if flr(p.x)==70 and flr(p.y==20) and flr(p.z)==0 then
-			reload(r.dest,r.src,r.len)
-			start=1
-			tut_c=5
+		if rtimer!=0 then
+			if timer-rtimer>=60 then
+				changeroom()
+			end
 		end
+		if start==0 then
+			if flr(p.x)==70 and flr(p.y==20) and flr(p.z)==0 then
+				reload(r.dest,r.src,r.len)
+				start=1
+				tut_c=5
+			end
 		end
 		if start==1 then--fireworks
 			if timer<500 then
@@ -992,6 +1013,15 @@ function _update()
 			end
 		end
 	end
+	
+	if room==2 then
+		if timer==60 then
+			sfx(12,-1)
+			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
+			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end	
+		end
+	end
+	
 	foreach(player,doplayer)
 --	for p in all(player) do doplayer(p,rooms[room]) end
 	foreach(ending,doending)
@@ -1203,7 +1233,7 @@ __sfx__
 0004000006630017300660001600006000363001730036000160008600056000f600096000a600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000700200423004240042400425004230042200423004240042200423004250042200422004240042500423004230042400424004240042600423004240042600425004240042200424004230042300423004230
 000600003f0703d0703d0703c0703b0703a0703a0703907039070380703807037070370703607035070340703407033070320703107030070300702f0702e0702d0702c0702a0702707007470074700747007470
-00040000106500f6500f6500d6500c6500a6500965008650076500665005650046500365001650016500164001640016400163001630016200162001610016100160001600016000160001600016000160001600
+00040000106700f6600f6500d6500c6500a6500964008640076400664005640046400364001640016400164001640016400163001630016200162001610016100160001600016000160001600016000160001600
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
