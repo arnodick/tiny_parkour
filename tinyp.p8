@@ -457,9 +457,14 @@ function doplayer(p)
 	 			--makesplat(p.x,p.y,p.xspeed,p.yspeed)
 	 		--end
 	 		--todo: maybe delete and reinit player here?
-	 		p.x=p.xs p.y=p.ys
-	 		for k,v in pairs(parts) do parts[k]=nil end
-	 		for a=1,30 do makepart(p.x,p.y-mget(p.x,p.y),3,3,p.c2) end
+
+	 		for k,v in pairs(player) do player[k]=nil end
+ 			makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+ 			
+ 			for k,v in pairs(parts) do parts[k]=nil end
+	 		for a=1,30 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),3,3,player[1].c2) end
+
+--	 		p.x=p.xs p.y=p.ys
 	 		sfx(2,2)
 --	 		for a=0,r.h do
 --	 			for b=0,r.w do
@@ -506,7 +511,7 @@ function doitem(i)
 		for a=1,20 do makepart(i.x,i.y+i.z,1,1,i.c1) end
 		if i.v==0 then sfx(4,-1)
 		else sfx(6+score,-1) end
-		p.xs=i.xs p.ys=i.ys
+		rooms[room].px=i.xs rooms[room].py=i.ys
 		local ic={}
 		ic[1]=i.ic1
 		ic[2]=i.ic2
@@ -753,7 +758,7 @@ function doboss(b)
 	if b.r<20 then b.r+=0.5 end
 	if timer-b.t==b.ti then b.eh=0.4 sfx(18,-1,0) end
 	if timer-b.t==b.tk then
-		sfx(12,0,-1)
+		sfx(20,0,-1)
 		for k,v in pairs(parts) do parts[k]=nil end
 		for a=1,20 do makepart(player[1].x,player[1].y+player[1].z,1,1,flr(rnd(6))) end	
 		for k,v in pairs(player) do player[k]=nil end
@@ -908,7 +913,7 @@ function _init()
 	ending={}
 	boss={}
 
-	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
+	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 --	makeplayer(16,1,10,1,12,2,ps)
 	
 --	makeplayer(97,60,16,1,14,3,ps) --0.5
@@ -1017,7 +1022,7 @@ function _update()
 	if room==2 then
 		if timer==60 then
 			sfx(12,-1)
-			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
+			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end	
 		end
 	end
