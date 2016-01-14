@@ -660,15 +660,9 @@ function dotele(t)
 	end
 end
 
-function doexit(e)
-	p=dobuttonpress(e)
-	local r=rooms[room]
-	if p==true then
-		for a=1,20 do makepart(e.x,e.y,1,1,flr(rnd(6))) end
-	end
-	
-	if parts[1]==nil then
+function changeroom()
 		room+=1
+		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
 		for k,v in pairs(finish) do finish[k]=nil end
 		for k,v in pairs(ending) do ending[k]=nil end
@@ -681,14 +675,28 @@ function doexit(e)
 		for k,v in pairs(buttons_c) do buttons_c[k]=nil end
 		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
 		for k,v in pairs(teles) do teles[k]=nil end	 		
+		for k,v in pairs(parts) do parts[k]=nil end
 		reload(r.dest,r.src,r.len)
 		player[1].x=r.px player[1].y=r.py
---	 		for k,v in pairs(parts) do parts[k]=nil end
 		items_i(room)
 		buttons_i(room)
 		sky_i(room)
 --	 	doprogress(score,false)
- end
+-- end
+end
+
+function doexit(e)
+	p=dobuttonpress(e)
+	if p==true then
+		for a=1,20 do makepart(e.x,e.y,1,1,flr(rnd(6))) end	
+		changeroom()
+--	if parts[1]==nil then
+	end
+	--if e.pressed==true then
+		--if parts[1]==nil then
+			--changeroom()
+		--end
+	--end 
 end
 
 function doprogress(s,i)--i:add ethereal flames
@@ -755,7 +763,7 @@ if r==1 then
 	if start==0 then
 		if timer%255==0 then tut_c+=1 if tut_c>4 then tut_c=1 end end
 	else
-		if timer%255==0 then tut_c+=1 if tut_c>11 then tut_c=4 end end
+		if timer%255==0 then tut_c+=1 if tut_c>11 then tut_c=5 end end
 	end
 	for a=1,#tut[tut_c] do
 	print(sub(tut[tut_c],a,a),(128-#tut[tut_c]/2)-timer%256+a*4,46+(sin((timer+a)/20)*3)*start,8)
