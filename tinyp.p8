@@ -687,16 +687,14 @@ end
 
 function doexit(e)
 	p=dobuttonpress(e)
-	if p==true then
-		for a=1,20 do makepart(e.x,e.y,1,1,flr(rnd(6))) end	
-		changeroom()
---	if parts[1]==nil then
-	end
-	--if e.pressed==true then
-		--if parts[1]==nil then
-			--changeroom()
-		--end
-	--end 
+	if e.pressed==true then
+		if p==true then
+			for a=1,20 do makepart(e.x,e.y,1,1,flr(rnd(6))) end	
+		end
+		if #parts==0 then--	if parts[1]==nil then
+			changeroom()
+		end
+	end 
 end
 
 function doprogress(s,i)--i:add ethereal flames
