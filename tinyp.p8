@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=false
+debug=true
 function items_i(r)
 if r==2 then
 makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
@@ -669,6 +669,7 @@ end
 function changeroom()
 		rtimer=0
 		room+=1
+--		start=0
 		if room>#rooms then room=#rooms end
 		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
@@ -971,6 +972,7 @@ function _draw()
 		print(timer,r.w-20,cam+r.h-50,11)
 		print(stat(0),10,cam+r.h-40+40,11)
 		print(stat(1),r.w-27,cam+r.h-40+40,11)
+		print(room,r.w-27,cam+r.h-40+50,11)
 		if p!=nil then
 		print(p.x,10,cam+r.h-30,11)
 		print(p.y,25,cam+r.h-30,11)
@@ -993,7 +995,7 @@ function _update()
 	local p=player[1]
 	if room==1 then
 		if rtimer!=0 then
-			if timer-rtimer>=60 then
+			if timer-rtimer==60 then
 				changeroom()
 			end
 		end
