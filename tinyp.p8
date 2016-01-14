@@ -178,9 +178,17 @@ function sky_i(r)
 if r==1 then
 	tut_c=1
 	tut={}
-	tut[1]="welcome to tiny parkour!"
-	tut[2]="hold button 1 to jump"
-	tut[3]="hold button 2 to walk"
+	tut[1]="hold button 1 to jump"
+	tut[2]="hold button 2 to walk"
+	tut[3]="hold button 1 or 2 to move"
+	tut[4]="hold direction buttons to move"
+	tut[5]="welcome to tiny parkour!"
+	tut[6]="everyone forgot how to parkour"
+	tut[7]="so god of parkour is enraged.."
+	tut[8]="we send our   best   parkourer"	
+	tut[9]="you are ... ... the chosen one"
+	tut[10]="defeat   the parkour challenge"
+	tut[11]="become   champion of parkour!"
 end
 if r==2 then
 	star1={} star2={}
@@ -255,12 +263,12 @@ function makeclouds(n,h,s)
 	end
 end
 
-function makepart(x,y,s,c)
+function makepart(x,y,xs,ys,c)
 	local p={}
 	p.x=x
 	p.y=y
-	p.xs=rnd(s)-s/2
-	p.ys=rnd(s)-s/2
+	p.xs=rnd(xs)-xs/2
+	p.ys=rnd(ys)-ys/2
 	p.c=c
 	p.ts=timer
 	add(parts,p)
@@ -450,7 +458,7 @@ function doplayer(p)
 	 		--todo: maybe delete and reinit player here?
 	 		p.x=p.xs p.y=p.ys
 	 		for k,v in pairs(parts) do parts[k]=nil end
-	 		for a=1,30 do makepart(p.x,p.y-mget(p.x,p.y),3,p.c2) end
+	 		for a=1,30 do makepart(p.x,p.y-mget(p.x,p.y),3,3,p.c2) end
 	 		sfx(2,2)
 --	 		for a=0,r.h do
 --	 			for b=0,r.w do
@@ -494,7 +502,7 @@ function doitem(i)
 	if p!=nil then
 	if i.x==flr(p.x) and i.y==flr(p.y) and (flr(i.z)==flr(p.z) or flr(i.z)==flr(p.z-1)) then
 		score+=i.v
-		for a=1,20 do makepart(i.x,i.y+i.z,1,i.c1) end
+		for a=1,20 do makepart(i.x,i.y+i.z,1,1,i.c1) end
 		if i.v==0 then sfx(4,-1)
 		else sfx(6+score,-1) end
 		p.xs=i.xs p.ys=i.ys
@@ -648,34 +656,37 @@ function dotele(t)
 		sfx(12,-1)
 		p.x=t.xt p.y=t.yt p.z=-100
 		p.zspeed=0
-		for a=0,50 do makepart(p.x,p.y+p.z,4,rnd(15)) end
+		for a=0,50 do makepart(p.x,p.y+p.z,4,4,rnd(15)) end
 	end
 end
 
 function doexit(e)
 	p=dobuttonpress(e)
+	local r=rooms[room]
 	if p==true then
+		for a=1,20 do makepart(e.x,e.y,1,1,flr(rnd(6))) end
+	end
+	
+	if parts[1]==nil then
 		room+=1
-		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
-
-			for k,v in pairs(finish) do finish[k]=nil end
-	 	for k,v in pairs(ending) do ending[k]=nil end
-	 	for k,v in pairs(boss) do boss[k]=nil end
-	 	for k,v in pairs(items) do items[k]=nil end
-		 for k,v in pairs(item_list) do item_list[k]=nil end	 	
-	 	for k,v in pairs(buttons) do buttons[k]=nil end
-	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
-	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
-	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
-	 	for k,v in pairs(teles) do teles[k]=nil end	 		
-			reload(r.dest,r.src,r.len)
-			player[1].x=r.px player[1].y=r.py
+		for k,v in pairs(finish) do finish[k]=nil end
+		for k,v in pairs(ending) do ending[k]=nil end
+		for k,v in pairs(boss) do boss[k]=nil end
+		for k,v in pairs(items) do items[k]=nil end
+	 for k,v in pairs(item_list) do item_list[k]=nil end	 	
+		for k,v in pairs(buttons) do buttons[k]=nil end
+		for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+		for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+		for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+		for k,v in pairs(teles) do teles[k]=nil end	 		
+		reload(r.dest,r.src,r.len)
+		player[1].x=r.px player[1].y=r.py
 --	 		for k,v in pairs(parts) do parts[k]=nil end
-			items_i(room)
-	 	buttons_i(room)
-	 	sky_i(room)
+		items_i(room)
+		buttons_i(room)
+		sky_i(room)
 --	 	doprogress(score,false)
  end
 end
@@ -741,10 +752,14 @@ end
 
 function drawsky(r)
 if r==1 then
-	if start==true then
-		print(tut[tut_c],(128-#tut[tut_c]/2)-timer%256,50,8)
-		print(tut[tut_c],(128-#tut[tut_c]/2)-timer%256,49,7)
-		if timer%255==0 then tut_c+=1 if tut_c>3 then tut_c=1 end end
+	if start==0 then
+		if timer%255==0 then tut_c+=1 if tut_c>4 then tut_c=1 end end
+	else
+		if timer%255==0 then tut_c+=1 if tut_c>11 then tut_c=4 end end
+	end
+	for a=1,#tut[tut_c] do
+	print(sub(tut[tut_c],a,a),(128-#tut[tut_c]/2)-timer%256+a*4,46+(sin((timer+a)/20)*3)*start,8)
+	print(sub(tut[tut_c],a,a),(128-#tut[tut_c]/2)-timer%256+a*4,45+(cos((timer+a)/20)*3)*start,7)
 	end
 end
 if r==2 then
@@ -845,7 +860,7 @@ function _init()
 	local r=rooms[room]
 --	for b=0,127 do for a=0,63 do mset(a,b,0) end end
 	reload(r.dest,r.src,r.len)
-	start=false
+	start=0
 	timer=0
 	ps=0.5
 	score=0
@@ -927,17 +942,17 @@ function _draw()
 	if debug==true then
 		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50,11) end
 		print(timer,r.w-20,cam+r.h-50,11)
-		print(stat(0),10,cam+r.h-40,11)
-		print(stat(1),r.w-27,cam+r.h-40,11)
+		print(stat(0),10,cam+r.h-40+40,11)
+		print(stat(1),r.w-27,cam+r.h-40+40,11)
 		if p!=nil then
 		print(p.x,10,cam+r.h-30,11)
 		print(p.y,25,cam+r.h-30,11)
 		print(p.z,35,cam+r.h-30,11)
-		print("f "..p.fall,80,-30,11)
+		print("f "..p.fall,80,cam+r.h-30,11)
 		end
 		print("sc "..score,r.w/2-10,cam+r.h-40,11)
 		print("rt "..route,r.w/2-10,cam+r.h-30,11)
-		print("d "..dget(63),100,-30,11)
+		print("d "..dget(63),100,cam+r.h-30,11)
 --		print(#items,10,-10,11)
 --		print(#item_list,20,-10,11)=
 --		print(#ending,20,-10,11)
@@ -950,9 +965,25 @@ function _update()
 	local r=rooms[room]
 	local p=player[1]
 	if room==1 then
+		if start==0 then
 		if flr(p.x)==70 and flr(p.y==20) and flr(p.z)==0 then
 			reload(r.dest,r.src,r.len)
-			start=true
+			start=1
+			tut_c=5
+		end
+		end
+		if start==1 then--fireworks
+			if timer<500 then
+			if parts[1]==nil then
+			if timer%flr(rnd(120))==0 then
+				local x=flr(rnd(127)) local y=flr(rnd(30)-40)
+				for a=1,30 do
+					sfx(20,0,-1)
+					makepart(x,y,4,4,flr(rnd(15)))
+				end
+			end
+			end
+			end
 		end
 	end
 	foreach(player,doplayer)
@@ -975,6 +1006,7 @@ function _update()
 --	if player[1].z>=-120 then cam=-mh camera(30,cam) end
 	if p.z<-120 then cam=-r.h*2 camera(0,cam) end
 	if p.z<-190 then cam=-r.h*3.5 camera(0,cam) end
+	if room==1 then cam=-r.h*2 camera(0,cam) end
 	end
 	
 	timer+=1
@@ -1165,7 +1197,7 @@ __sfx__
 0004000006630017300660001600006000363001730036000160008600056000f600096000a600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000700200423004240042400425004230042200423004240042200423004250042200422004240042500423004230042400424004240042600423004240042600425004240042200424004230042300423004230
 000600003f0703d0703d0703c0703b0703a0703a0703907039070380703807037070370703607035070340703407033070320703107030070300702f0702e0702d0702c0702a0702707007470074700747007470
-001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00040000106500f6500f6500d6500c6500a6500965008650076500665005650046500365001650016500164001640016400163001630016200162001610016100160001600016000160001600016000160001600
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
