@@ -781,13 +781,9 @@ end
 function drawsky(r)
 if r==1 then
 	if start==0 then
-		if timer%255==0 then tut_c+=1 if tut_c>4 then tut_c=1 end end
+		drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,1,4,start)
 	else
-		if timer%255==0 then tut_c+=1 if tut_c>11 then tut_c=5 end end
-	end
-	for a=1,#tut[tut_c] do
-	print(sub(tut[tut_c],a,a),(128-#tut[tut_c]/2)-timer%256+a*4,46+(sin((timer+a)/20)*3)*start,8)
-	print(sub(tut[tut_c],a,a),(128-#tut[tut_c]/2)-timer%256+a*4,45+(cos((timer+a)/20)*3)*start,7)
+		drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,5,11,start)
 	end
 end
 if r==2 then
@@ -826,6 +822,14 @@ if r==2 then
 	else pal()
 	end
 end
+end
+
+function drawtext(t,x,y,c,mi,ma,w)
+	if timer%255==0 then tut_c+=1 if tut_c>ma then tut_c=mi end end
+	for a=1,#t[tut_c] do
+		print(sub(t[tut_c],a,a),x+a*4,y  +(sin((timer+a)/20)*3)*w,8)
+		print(sub(t[tut_c],a,a),x+a*4,y-1+(cos((timer+a)/20)*3)*w,7)
+	end
 end
 
 function drawbutton(b)
