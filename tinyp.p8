@@ -4,44 +4,46 @@ __lua__
 --tiny parkour
 --by aslhey pringle
 debug=true
+doff=0
 function items_i(r)
 if r==2 then
 makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
-	makeitem( 23,25, -2,1, 8, 9,       2,25,23, 0,1)--2 crossroad
-	makeitem( 37,15, -3,1, 8, 9,       2, 6,19,14,2)--3 pilings
-	makeitem( 49,36, -9,1, 8, 9,       4,19,14, 0,1)--4 arches middle
-	makeitem( 71,35, -4,1,10,11,       4,31, 0, 0,2,3)--5 arches secret! 
-	makeitem( 49,14,-13,1, 3,11,       0,17,33, 0,0,4)--6 on top of the wall
-	makeitem( 61,15,-10,1, 8, 9,       4,19, 0, 0,1)--7 leap of faith
-	makeitem( 24, 0, -5,1, 0, 0,       4, 9, 0, 0,1)--8 top curve jump
-	makeitem( 60, 0,-13,1, 8,12,       4,10,16, 0,1)--9 top long jump
-	makeitem( 76,11, -5,1, 4, 9,       4,36, 0, 0,1,9)--10 back to mid jump
-	makeitem(125,14, -5,1, 8,12,      10, 0, 0, 0,1,10)--11 far right hazards
-	makeitem( 10, 0, -9,1, 8, 9,       4, 0, 0, 0,1)--12 weird top left secret
-	makeitem( 44, 2, -5,1, 8, 9,       4, 7, 0, 0,1)--13 top detour
-	makeitem( 71,35, -4,1, 9, 8,       9,31, 0, 0,1,2)--14 false leap of faith
+	makeitem(  23,25, -2,1, 8, 9,       2,25,23, 0,1)--2 crossroad
+	makeitem(  37,15, -3,1, 8, 9,       2, 6,19,14,2)--3 pilings
+	makeitem(  49,36, -9,1, 8, 9,       4,19,14, 0,1)--4 arches middle
+	makeitem(  71,35, -4,1,10,11,       4,31, 0, 0,2,3)--5 arches secret! 
+	makeitem(  49,14,-13,1, 3,11,       0,17,33, 0,0,4)--6 on top of the wall
+	makeitem(  61,15,-10,1, 8, 9,       4,19, 0, 0,1)--7 leap of faith
+	makeitem(  24, 0, -5,1, 0, 0,       4, 9, 0, 0,1)--8 top curve jump
+	makeitem(  60, 0,-13,1, 8,12,       4,10,16, 0,1)--9 top long jump
+	makeitem(  76,11, -5,1, 4, 9,       4,36, 0, 0,1,9)--10 back to mid jump
+	makeitem( 125,14, -5,1, 8,12,      10, 0, 0, 0,1)--11 far right hazards
+	makeitem(  10, 0, -9,1, 8, 9,       4, 0, 0, 0,1)--12 weird top left secret
+	makeitem(  44, 2, -5,1, 8, 9,       4, 7, 0, 0,1)--13 top detour
+	makeitem(  71,35, -4,1, 9, 8,       9,31, 0, 0,1,2)--14 false leap of faith
 makeitem_s( 68,11,-10,1,12,11,64,11,12,35, 0, 0,2,6)--15 secret reveal!
-	makeitem( 93, 1,-13,1, 8,12,       4,11,26, 0,2)--16 top hook jumps
-	makeitem( 85,14,-10,1,10,11,      12,11, 0, 0,1)--17 secret climb
+	makeitem(  93, 1,-13,1, 8,12,       4,37,26, 0,2)--16 top hook jumps
+	makeitem(  85,14,-10,1,10,11,      12,11, 0, 0,1)--17 secret climb
 makeitem_s( 31,11, -2,1, 0, 0,28,11, 4,15, 0, 0,1)--18 invisible checkpoint
-	makeitem( 76,15, -1,1, 8, 9,       9,28, 0, 0,0,1)--19 post lof
-	makeitem( 11, 1, -3,1, 8, 9,       3,22, 0, 0,0)--20 start easy
-	makeitem( 12,22, -3,1, 0, 0,       1,29, 0, 0,1)--21 s route secret
-	makeitem(  5, 7, -3,1, 8, 9,       3, 1, 0, 0,0)--22 2nd easy
-	makeitem(  5,25, -1,1,12,13,       8,27, 0, 0,1,7)--23 s route
+	makeitem( 	76,15, -1,1, 8, 9,       9,28, 0, 0,0,1)--19 post lof
+	makeitem( 	11, 1, -3,1, 8, 9,       3,22, 0, 0,0)--20 start easy
+	makeitem( 	12,22, -3,1, 0, 0,       1,29, 0, 0,1)--21 s route secret
+	makeitem(  	5, 7, -3,1, 8, 9,       3, 1, 0, 0,0)--22 2nd easy
+	makeitem(  	5,25, -1,1,12,13,       8,27, 0, 0,1,7)--23 s route
 makeitem_s( 14, 0,-10,1,10,11,11, 0,24, 0, 0, 0,1)--24 secret get!
-	makeitem( 32,26, -5,1, 8, 9,       2, 4, 5, 0,0)--25 crossroad
+	makeitem( 	32,26, -5,1, 8, 9,       2, 4, 5, 0,0)--25 crossroad
 makeitem_s(101, 0,-13,1,12,10,99, 0, 4,24, 0, 0,0,11)--26 top innaccess
 makeitem_s( 16,45, -3,1, 8, 9, 3,39, 4,32, 0, 0,1)--27 s route
-	makeitem( 87,26, -4,1, 8, 9,       4,30, 0, 0,0)--28 pilar challenge
-	makeitem( 18,32, -3,1,10,14,       8,34, 0, 0,3,8)--29 s route secret
+	makeitem( 	87,26, -4,1, 8, 9,       4,30, 0, 0,0)--28 pilar challenge
+	makeitem( 	18,32, -3,1,10,14,       8,34, 0, 0,3,8)--29 s route secret
 makeitem_s(117,21, -5,1, 8, 9,111,21,0,17, 0, 0,0)--30 
-	makeitem(121,35, -5,1, 8, 9,       2, 0, 0, 0,1)--31 crossroad
+	makeitem(	121,35, -5,1, 8, 9,       2, 0, 0, 0,1)--31 crossroad
 makeitem_s( 85,61, -4,1, 8, 9,83,61,14, 0, 0, 0,1)--32 s puzzle final
-	makeitem( 58,48,  0,1, 8, 9,       0,32, 0, 0,1,5)--33 mid secret reveal
+	makeitem( 	58,48,  0,1, 8, 9,       0,32, 0, 0,1,5)--33 mid secret reveal
 makeitem_s( 36,49, -3,0, 8, 9,38,63, 0,32, 0, 0,0)--34 indy bridge
 makeitem_s(116,11,  0,0, 8, 9,125,11,0, 0, 0, 0,2)--35 inv bridge
-	makeitem(60,20,   0,0, 8, 9,       0,31, 0, 0,1)--36 top to mid end
+	makeitem(60,20,   	0,0, 8, 9,       0,31, 0, 0,1)--36 top to mid end
+	makeitem(116,2,   -4,0, 8,12,       4,0,  0, 0,1,10)--37 top standard
 	
 	makeitem( 93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
 	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
@@ -62,6 +64,7 @@ end
 
 function buttons_i(r)
 if r==1 then
+	doff=30
 	local ro=rooms[r]
 	if ro.gen==true then
 		player[1].z=-85
@@ -73,6 +76,7 @@ if r==1 then
 	makeexit(17,0,-20,1)
 end
 if r==2 then
+	doff=0
 	local ro=rooms[r]
 	if ro.gen==true then
 		timer=0
@@ -180,8 +184,8 @@ if r==1 then
 	tut={}
 	tut[1]="hold button 1 to jump"
 	tut[2]="hold button 2 to walk"
-	tut[3]="hold button 1 or 2 to move"
-	tut[4]="hold direction buttons to move"
+	tut[3]="d pad + button 1 or 2 to move"
+	tut[4]="only move when button 1 or 2 is pressed"
 	tut[5]="welcome to tiny parkour!"
 	tut[6]="everyone forgot how to parkour"
 	tut[7]="so god of parkour is enraged.."
@@ -669,7 +673,6 @@ end
 function changeroom()
 		rtimer=0
 		room+=1
---		start=0
 		if room>#rooms then room=#rooms end
 		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
@@ -859,14 +862,17 @@ function drawboss(b)
 	pal(4,4+flr(rnd(3)),1)
 	local t="you've come this\nway "..dget(route).." times, mortal...\npathetic. find a new way"
 	if dget(route)>1 then
-		print(t,b.x-#t/1.5,b.z-45,8) 
+		for a=1,#t do
+			print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+30+(sin((timer+a)/20)*3),8)
+			print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+31+(cos((timer+a)/20)*3),7)
+		end--		print(t,b.x-#t/1.5,b.z-45,8) 
 	else
 		t="you completed route "..route.."\n"..b.dial[route]
 		for a=1,#t do
-		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,46+(sin((timer+a)/20)*3)*start,8)
-		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,45+(cos((timer+a)/20)*3)*start,7)
-	end
-		print(t,b.x-#t,b.z-30,8) 
+		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+30+(sin((timer+a)/20)*3),8)
+		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+31+(cos((timer+a)/20)*3),7)
+		end
+		--print(t,b.x-#t,b.z-30,8) 
 	end
 	circfill(b.x,b.z,b.r,12)
 	circ(b.x,b.z,b.r,3)
@@ -887,7 +893,7 @@ end
 
 function _init()
 	cartdata("ap_tinyp")
-	--for a=0,10 do dset(a,0) end
+--	for a=0,10 do dset(a,0) end
 	rooms={}
 	room=1
 	makeroom(127,31,6,12,1,0x2000,0x0000,4096,60,20)--intro
@@ -977,20 +983,21 @@ function _draw()
 	--end
 	--debug
 	if debug==true then
-		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50,11) end
-		print(timer,r.w-20,cam+r.h-50+60,11)
-		print(stat(0),10,cam+r.h-40+40,11)
-		print(stat(1),r.w-27,cam+r.h-40+40,11)
-		print(room,r.w-27,cam+r.h-40+50,11)
+		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
+		print(timer,r.w-20,cam+r.h-50+doff,11)
+		print(stat(0),10,cam+r.h-40+doff,11)
+		print(stat(1),r.w-27,cam+r.h-40+doff,11)
+		print("room: "..room,r.w-27,cam+r.h-20+doff,11)
 		if p!=nil then
-		print(p.x,10,cam+r.h-30,11)
-		print(p.y,25,cam+r.h-30,11)
-		print(p.z,35,cam+r.h-30,11)
-		print("f "..p.fall,80,cam+r.h-30,11)
+		print(p.x,10,cam+r.h-30+doff,11)
+		print(p.y,25,cam+r.h-30+doff,11)
+		print(p.z,35,cam+r.h-30+doff,11)
+		print("f "..p.fall,80,cam+r.h-30+doff,11)
 		end
-		print("sc "..score,r.w/2-10,cam+r.h-40,11)
-		print("rt "..route,r.w/2-10,cam+r.h-30,11)
-		print("d "..dget(63),100,cam+r.h-30,11)
+		print("sc "..score,r.w/2-10,cam+r.h-40+doff,11)
+		print("rt "..route,r.w/2-10,cam+r.h-30+doff,11)
+		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)		
+		print("d "..dget(63),100,cam+r.h-30+doff,11)
 --		print(#items,10,-10,11)
 --		print(#item_list,20,-10,11)=
 --		print(#ending,20,-10,11)
@@ -1003,16 +1010,11 @@ function _update()
 	local r=rooms[room]
 	local p=player[1]
 	if room==1 then
-		if rtimer!=0 then
-			if timer-rtimer==60 then
-				changeroom()
-			end
-		end
 		if start==0 then
-			timer=0
 			if flr(p.x)==70 and flr(p.y==20) and flr(p.z)==0 then
+				--if start==0 then rtimer=timer end
 				reload(r.dest,r.src,r.len)
-				add(items,makeitem(17,1,-20,0,8,9,1,0,0,0,0,0))
+				add(items,makeitem(17,1,-20,0,8,9,4,0,0,0,0,0))
 				start=1
 				tut_c=5
 			end
@@ -1028,6 +1030,11 @@ function _update()
 				end
 			end
 			end
+			end
+		end
+		if rtimer!=0 then
+			if timer-rtimer==60 then
+				changeroom()
 			end
 		end
 	end
@@ -1069,11 +1076,11 @@ c0c0e0e00101e0e0c0c0e0e001012121414121210101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
 c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
 c0c0e0e00101e0e0c0c0e0e001012121414121210101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
 c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
-800000000000000000000000009090a0b0c0d0e0e0e0e04040000000003030303030000000000000000000000000004040404040000000000000004040404040
+800000000000000000000000009090a0b0c0d0e0e0e0e04040000000004040404040000000000000000000000000004040404040000000000000004040404040
 00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
-80000000000000000000000000909090807060504040404040000000003030303030000000000000000000000000004040404040404040400000004040404040
+80000000000000000000000000909090807060504040404040000000004040404040000000000000000000000000004040404040404040400000004040404040
 00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
-80000000000000000000000000000000000000000000000000000000003030303030000000000000000000000000004040404040000000400000004040404040
+80000000000000000000000000000000000000000000000000000000004040404040000000000000000000000000004040404040000000400000004040404040
 00000000008080000060600000404000000000808060604040000000004040404040404040404040404040400000000030303030300000000030303030300080
 80000000000000000000000000000000000000000000000000000000003030303030000000004040404040000000004040404040000000404040404040404040
 00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
