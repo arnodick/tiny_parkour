@@ -14,7 +14,7 @@ makeitem_s( 16,14, -7,1, 8, 9,12,14, 6, 2, 3, 0,1)--1 stairs top left
 	makeitem(  71,35, -4,1,10,11,       4,31, 0, 0,2,3)--5 arches secret! 
 	makeitem(  49,14,-13,1, 3,11,       0,17,33, 0,0,4)--6 on top of the wall
 	makeitem(  61,15,-10,1, 8, 9,       4,19, 0, 0,1)--7 leap of faith
-	makeitem(  24, 0, -5,1, 0, 0,       4, 9, 0, 0,1)--8 top curve jump
+	makeitem(  24, 0, -5,1, 0, 0,      20, 9, 0, 0,1)--8 top curve jump
 	makeitem(  60, 0,-13,1, 8,12,       4,10,16, 0,1)--9 top long jump
 	makeitem(  76,11, -5,1, 4, 9,       4,36, 0, 0,1,9)--10 back to mid jump
 	makeitem( 125,14, -5,1, 8,12,      10, 0, 0, 0,1)--11 far right hazards
@@ -27,7 +27,7 @@ makeitem_s( 68,11,-10,1,12,11,64,11,12,35, 0, 0,2,6)--15 secret reveal!
 makeitem_s( 31,11, -2,1, 0, 0,28,11, 4,15, 0, 0,1)--18 invisible checkpoint
 	makeitem( 	76,15, -1,1, 8, 9,       9,28, 0, 0,0,1)--19 post lof
 	makeitem( 	11, 1, -3,1, 8, 9,       3,22, 0, 0,0)--20 start easy
-	makeitem( 	12,22, -3,1, 0, 0,       1,29, 0, 0,1)--21 s route secret
+	makeitem( 	12,22, -3,1, 0, 0,       3,29, 0, 0,1)--21 s route secret
 	makeitem(  	5, 7, -3,1, 8, 9,       3, 1, 0, 0,0)--22 2nd easy
 	makeitem(  	5,25, -1,1,12,13,       8,27, 0, 0,1,7)--23 s route
 makeitem_s( 14, 0,-10,1,10,11,11, 0,24, 0, 0, 0,1)--24 secret get!
@@ -108,7 +108,7 @@ if r==2 then
 	makebutton(72, 11,-8, 0,13,5,75,11,0,1,-1,false)
 	makebutton(72, 11,-8, 0,13,5,77,11,0,1,-1,false)
 	makebutton(76, 11,-8, 0,13,5,80,11,8,1, 1,false)
-	makebutton(22, 25,-mget(23,25), 0,13,5,23,25,2,30,1,false)
+	makebutton(22, 25,-mget(23,25), 0,13,5,23,25,2,30,1,true)
 	makebutton(85, 21,-mget(85,21), 0,13,5,85,15,9,10,1,false)
 	makebutton(117, 26,-mget(117,26), 0,13,5,117,21,5,10,1,false)
 	
@@ -125,7 +125,7 @@ if r==2 then
 	makebutton(97,35,-mget(97,35),0,13,5,97,35,0,10,-1,false)
 	for a=0,7 do makebutton(3 ,25,-3, 0,13,5,3, 25+a,0,12-a, -1,false) end
 	for a=0,7 do makebutton(10,32,-3,0,13,5,10+a,32,0,12-a-flr(rnd(3)), -1,false) end
-	for a=0,4 do makebutton(12,22,-3,0,13,5,5+a,22,0,4+flr(rnd(4)), -1,false) end
+	for a=0,4 do makebutton(12,22,-3,0,13,5,5+a,22,0,4+flr(rnd(4)), -1,true) end
 	makebutton(12,22,-3,0,13,5,5,23,0,2, -1,false)
 	makebutton(12,22,-3,0,13,5,5,24,0,2, -1,false)
 	makebutton(92,1,-8,2,13,5,92,1,0,1, -1,false)
@@ -412,6 +412,7 @@ function makeboss(x,y,z)
 	b.t=timer
 	b.ti=120
 	b.tk=300
+	b.text_c=1
 	b.dial={}
 	b.dial[1]="try again, mortal"
 	b.dial[2]="well done... now die"
@@ -666,6 +667,7 @@ function dotele(t)
 		p.x=t.xt p.y=t.yt p.z=-100
 		p.zspeed=0
 		for a=0,50 do makepart(p.x,p.y+p.z,4,4,rnd(15)) end
+		t.pressed=false
 	end
 end
 
@@ -750,7 +752,7 @@ function doending(e)
 	local p=dobuttonpress(e)
 	if p==true then
 		for k,v in pairs(items) do items[k]=nil end
-		dset(route,dget(route)+1)
+		dset(route-1,dget(route-1)+1)
 		makeboss(45,58,-r.h*2.5)
 	end
 end
@@ -824,7 +826,7 @@ end
 end
 
 function drawtext(t,x,y,c,mi,ma,w)
-	if timer%255==0 then c+=1 if tut_c>=ma then c=mi end end
+	if timer%255==0 then c+=1 if c>ma then c=mi end end
 	for a=1,#t[c] do
 		print(sub(t[c],a,a),x+a*4,y  +(sin((timer+a)/20)*3)*w,8)
 		print(sub(t[c],a,a),x+a*4,y-1+(cos((timer+a)/20)*3)*w,7)
@@ -864,19 +866,19 @@ end
 
 function drawboss(b)
 	pal(4,4+flr(rnd(3)),1)
-	local t="you've come this\nway "..dget(route).." times, mortal...\npathetic. find a new way"
-	if dget(route)>1 then
-		for a=1,#t do
-			print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+30+(sin((timer+a)/20)*3),8)
-			print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+31+(cos((timer+a)/20)*3),7)
-		end--		print(t,b.x-#t/1.5,b.z-45,8) 
+	local t={}
+	t[1]="you've come this way "..dget(route-1).." times"
+	t[2]="find a new route tiny mortal"
+	if dget(route-1)>1 then
+		b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
 	else
-		t="you completed route "..route.."\n"..b.dial[route]
-		for a=1,#t do
-		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+30+(sin((timer+a)/20)*3),8)
-		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+31+(cos((timer+a)/20)*3),7)
-		end
-		--print(t,b.x-#t,b.z-30,8) 
+		t[1]="you completed route "..route
+		t[2]=b.dial[route]
+		b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
+--		for a=1,#t do
+--		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+30+(sin((timer+a)/20)*3),8)
+--		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+31+(cos((timer+a)/20)*3),7)
+--		end
 	end
 	circfill(b.x,b.z,b.r,12)
 	circ(b.x,b.z,b.r,3)
@@ -939,7 +941,7 @@ function _init()
 --	makeplayer(97,60,16,1,14,3,ps) --0.5
 	--makeplayer(16,1,10,1,12,2,ps)
 --	score=5
---	route=5
+--	route=8
 --	doprogress()
 	
 	items_i(room)
@@ -975,9 +977,10 @@ function _draw()
 		end
 	end
 
-	foreach(items,drawitem)
+
 	foreach(buttons,drawbutton)
 	foreach(buttons_l,drawbutton)
+	foreach(items,drawitem)
 	foreach(finish,drawfinish)
 	foreach(boss,drawboss)
 	foreach(parts,drawpart)
@@ -1021,6 +1024,8 @@ function _update()
 				add(items,makeitem(17,1,-20,0,8,9,4,0,0,0,0,0))
 				start=1
 				tut_c=4
+				maketele(56,2,0,3,61,5)
+				maketele(98,1,0,4,104,5)
 			end
 		end
 		if start==1 then--fireworks
@@ -1080,15 +1085,15 @@ c0c0e0e00101e0e0c0c0e0e001012121414121210101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
 c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
 c0c0e0e00101e0e0c0c0e0e001012121414121210101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
 c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
-800000000000000000000000009090a0b0c0d0e0e0e0e04040000000004040404040000000004040404040000000000000000000000000000000000000000000
-00000000008080000060600000404000000000808060604040000000000000000000000000000000000000000000000030303030300000000030303030300080
-80000000000000000000000000909090807060504040404040000000004040404040000000004040404040000000004040404040404040400000004040404040
+800000000000000000000000009090a0b0c0d0e0e0e0e04040000000004040404040000000000000000000000000004040404040404040400000004040404040
+00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
+80000000000000000000000000909090807060504040404040000000004040404040000000000000000000000000004040404040000000400000004040404040
 00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
 80000000000000000000000000000000000000000000000000000000003030303030000000000000000000000000004040404040000000400000004040404040
 00000000008080000060600000404000000000808060604040000000004040404040405060504040404040400000000030303030300000000030303030300080
-80000000000000000000000000000000000000000000000000000000003030303030000000000000000000000000004040404040000000404040404040404040
-00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
-80000000000000000000000000000000000000000000000000000000003030303030000000000000000000000000004040404040000000000000004040404040
+80000000000000000000000000000000000000000000000000000000003030303030000000004040404040000000004040404040000000400000004040404040
+00000000008080000060600000404000000000808060604040000000004040404040405060504040404040400000000030303030300000000030303030300080
+80000000000000000000000000000000000000000000000000000000003030303030000000004040404040000000004040404040000000404040404040404040
 00000000008080000060600000404000000000808060604040000000004040404040000000000040404040400000000030303030300000000030303030300080
 80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080
