@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=true
+debug=false
 doff=0
 function items_i(r)
 if r==2 then
@@ -469,7 +469,8 @@ function doplayer(p)
 	 		for a=1,30 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),3,3,player[1].c2) end
 
 	 		for k,v in pairs(player) do player[k]=nil end
-	 		makemenu()
+	 		rtimer=timer
+	 		--makemenu()
 			end
 		end
 		p.fall=0 p.ground+=1
@@ -1063,6 +1064,12 @@ function _update()
 			sfx(12,-1)
 			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end	
+		end
+		if rtimer>0 then
+		if timer-rtimer==30 then
+			makemenu()
+			rtimer=0
+		end
 		end
 	end
 	
