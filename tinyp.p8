@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -428,6 +428,13 @@ function makeboss(x,y,z)
 	add(boss,b)
 end
 
+function makemenu()
+	local m={}
+	m.opt={}
+	m.opt[1]="press button to retry"
+	add(menus,m)
+end
+
 function doplayer(p)
 	--if p.z==-15 then music(0,0,1) end
 	--if p.z>15 then music(-1,0,1) end
@@ -452,42 +459,17 @@ function doplayer(p)
 		if r.flc==0 then
 			if gh==0 then
 				dset(63,dget(63)+1)
+				sfx(2,2)
 				if #bubbles>bubblei+6 then while #bubbles>bubblei do bubbles[#bubbles]=nil end end
 				if #bubbles>bubblei+6 then while #bubbles>bubblei do del(bubbles,bubbles[#bubbles]) end end
 				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c1)
 				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c2)
-	 		--if p.fall>10 then
-	 			--for k,v in pairs(splat) do splat[k]=nil end
-	 			--makesplat(p.x,p.y,p.xspeed,p.yspeed)
-	 		--end
-	 		--todo: maybe delete and reinit player here?
-
-	 		for k,v in pairs(player) do player[k]=nil end
- 			makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
  			
  			for k,v in pairs(parts) do parts[k]=nil end
 	 		for a=1,30 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),3,3,player[1].c2) end
 
---	 		p.x=p.xs p.y=p.ys
-	 		sfx(2,2)
---	 		for a=0,r.h do
---	 			for b=0,r.w do
---	 				mset(b,a,0)
---	 			end
---	 		end
-	 		reload(r.dest,r.src,r.len)
-	 		for k,v in pairs(finish) do finish[k]=nil end
-	 		for k,v in pairs(ending) do ending[k]=nil end
-	 		for k,v in pairs(boss) do boss[k]=nil end
-	 		for k,v in pairs(buttons) do buttons[k]=nil end
-	 		for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-	 		for k,v in pairs(buttons_p) do buttons_p[k]=nil end
-	 		for k,v in pairs(buttons_c) do buttons_c[k]=nil end
-	 		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
-	 		for k,v in pairs(teles) do teles[k]=nil end	 		
---	 		for k,v in pairs(parts) do parts[k]=nil end
-	 		buttons_i(room)
-	 		doprogress(score,false)
+	 		for k,v in pairs(player) do player[k]=nil end
+	 		makemenu()
 			end
 		end
 		p.fall=0 p.ground+=1
@@ -771,6 +753,28 @@ function doboss(b)
 	end
 end
 
+function domenu(m)
+	if btnp(4) then
+		local r=rooms[room]
+		makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+		sfx(12,-1)
+		for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
+	 reload(r.dest,r.src,r.len)
+	 for k,v in pairs(finish) do finish[k]=nil end
+	 for k,v in pairs(ending) do ending[k]=nil end
+	 for k,v in pairs(boss) do boss[k]=nil end
+	 for k,v in pairs(buttons) do buttons[k]=nil end
+	 for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+	 for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+	 for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+	 for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+	 for k,v in pairs(teles) do teles[k]=nil end
+	 buttons_i(room)
+	 doprogress(score,false)
+	 for k,v in pairs(menus) do menus[k]=nil end
+	end
+end
+
 function drawactor(a)
 	if player[1]!=nil then
  pset(a.x,a.y-mget(a.x,a.y),5)
@@ -897,6 +901,10 @@ function drawboss(b)
 	end
 end
 
+function drawmenu(m)
+	print(m.opt[1],31,16,8)
+end
+
 function _init()
 	cartdata("ap_tinyp")
 --	for a=0,10 do dset(a,0) end
@@ -934,6 +942,7 @@ function _init()
 	finish={}
 	ending={}
 	boss={}
+	menus={}
 
 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 --	makeplayer(16,1,10,1,12,2,ps)
@@ -984,6 +993,7 @@ function _draw()
 	foreach(finish,drawfinish)
 	foreach(boss,drawboss)
 	foreach(parts,drawpart)
+	foreach(menus,drawmenu)
 
 	--if shake==true then
 		--camera(0+rnd(10)-5,-mh)
@@ -1070,6 +1080,7 @@ function _update()
 	foreach(teles,dotele)
 	foreach(exits,doexit)
 	foreach(boss,doboss)
+	foreach(menus,domenu)
 	if p!=nil then
 --	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y+p.z) end
 	if p.z>=-120 then cam=-r.h camera(0,cam) end
