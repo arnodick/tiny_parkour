@@ -431,7 +431,10 @@ end
 function makemenu()
 	local m={}
 	m.opt={}
-	m.opt[1]="press button to retry"
+	m.opt[1]="continue"
+	m.opt[2]="restart"
+	m.opt[3]="quit"
+	m.sel=0
 	add(menus,m)
 end
 
@@ -755,24 +758,35 @@ function doboss(b)
 end
 
 function domenu(m)
+	if btnp(2) then m.sel-=1 end
+	if btnp(3) then m.sel+=1 end
+	m.sel=m.sel%3
 	if btnp(4) then
-		local r=rooms[room]
-		makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
-		sfx(12,-1)
-		for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
-	 reload(r.dest,r.src,r.len)
-	 for k,v in pairs(finish) do finish[k]=nil end
-	 for k,v in pairs(ending) do ending[k]=nil end
-	 for k,v in pairs(boss) do boss[k]=nil end
-	 for k,v in pairs(buttons) do buttons[k]=nil end
-	 for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-	 for k,v in pairs(buttons_p) do buttons_p[k]=nil end
-	 for k,v in pairs(buttons_c) do buttons_c[k]=nil end
-	 for k,v in pairs(buttons_l) do buttons_l[k]=nil end
-	 for k,v in pairs(teles) do teles[k]=nil end
-	 buttons_i(room)
-	 doprogress(score,false)
-	 for k,v in pairs(menus) do menus[k]=nil end
+		if m.sel==0 then
+			local r=rooms[room]
+			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+			sfx(12,-1)
+			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
+	 	reload(r.dest,r.src,r.len)
+	 	for k,v in pairs(finish) do finish[k]=nil end
+	 	for k,v in pairs(ending) do ending[k]=nil end
+	 	for k,v in pairs(boss) do boss[k]=nil end
+	 	for k,v in pairs(buttons) do buttons[k]=nil end
+	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+	 	for k,v in pairs(teles) do teles[k]=nil end
+	 	buttons_i(room)
+	 	doprogress(score,false)
+	 	for k,v in pairs(menus) do menus[k]=nil end
+	 end
+	 if m.sel==1 then
+	 	--restart
+	 end
+	 if m.sel==2 then
+	 	--quit
+	 end
 	end
 end
 
@@ -903,7 +917,10 @@ function drawboss(b)
 end
 
 function drawmenu(m)
-	print(m.opt[1],31,16,8)
+	for a=1,#m.opt do
+		local w=0 if m.sel+1==a then w=1 end
+		drawtext(m.opt,63-#m.opt[a]*2,-40+a*9,a,a,a,w)
+	end
 end
 
 function _init()
