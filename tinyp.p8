@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=true
+debug=false
 doff=0
 function items_i(r)
 if r==2 then
@@ -925,7 +925,7 @@ end
 function drawmenu(m)
 	for a=1,#m.opt do
 		local w=0 if m.sel+1==a then w=1 end
-		drawtext(m.opt,63-#m.opt[a]*2,-40+a*9,a,a,a,w)
+		drawtext(m.opt,63-#m.opt[a]*2,-50+a*9,a,a,a,w)
 	end
 end
 
