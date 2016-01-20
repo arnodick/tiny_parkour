@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -411,7 +411,7 @@ function makeboss(x,y,z)
 	b.eh=0.01
 	b.t=timer
 	b.ti=120
-	b.tk=300
+	b.tk=360
 	b.text_c=1
 	b.dial={}
 	b.dial[1]="try again, mortal"
@@ -657,9 +657,9 @@ function dotele(t)
 	end
 end
 
-function changeroom()
+function changeroom(ro)
 		rtimer=0
-		room+=1
+		room=ro
 		if room>#rooms then room=#rooms end
 		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
@@ -761,9 +761,9 @@ function domenu(m)
 	if btnp(2) then m.sel-=1 end
 	if btnp(3) then m.sel+=1 end
 	m.sel=m.sel%3
+	local r=rooms[room]
 	if btnp(4) then
-		if m.sel==0 then
-			local r=rooms[room]
+		if m.sel==0 then--continue
 			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 			sfx(12,-1)
 			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
@@ -781,8 +781,14 @@ function domenu(m)
 	 	doprogress(score,false)
 	 	for k,v in pairs(menus) do menus[k]=nil end
 	 end
-	 if m.sel==1 then
-	 	--restart
+	 if m.sel==1 then--restart
+	 	score=0 route=0 timer=0
+	 	r.px=17 r.py=1
+	 	changeroom(2)
+--	 	sfx(12,-1)
+--			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+--			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end
+			for k,v in pairs(menus) do menus[k]=nil end
 	 end
 	 if m.sel==2 then
 	 	--quit
@@ -1071,7 +1077,7 @@ function _update()
 		end
 		if rtimer!=0 then
 			if timer-rtimer==60 then
-				changeroom()
+				changeroom(room+1)
 			end
 		end
 	end
