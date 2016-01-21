@@ -2,8 +2,8 @@ pico-8 cartridge // http://www.pico-8.com
 version 5
 __lua__
 --tiny parkour
---by aslhey pringle
-debug=true
+--by ashley pringle
+debug=false
 doff=0
 function items_i(r)
 if r==2 then
@@ -677,7 +677,7 @@ function changeroom(ro)
 		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
 		for k,v in pairs(teles) do teles[k]=nil end	 		
 		for k,v in pairs(parts) do parts[k]=nil end
-		for k,v in pairs(bubbles) do bubbles[k]=nil end		
+		--for k,v in pairs(bubbles) do bubbles[k]=nil end
 		reload(r.dest,r.src,r.len)
 		cam=-r.h camera(0,cam)
 --				makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
@@ -791,9 +791,12 @@ function domenu(m)
 	 end
 	 if m.sel==2 then--quit
 	 	score=0 route=0 timer=0 start=0
-	 	changeroom(1)
-	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
-	 	buttons_i(room)
+	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
+	 	room=1
+			rooms[room].gen=true	 	
+	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
+	 	changeroom(room)
+--	 	buttons_i(room)
 	 	for k,v in pairs(menus) do menus[k]=nil end
 	 end
 	end
@@ -1077,8 +1080,12 @@ function _update()
 		end
 		if rtimer!=0 then
 			if timer-rtimer==60 then
-				changeroom(room+1)
-				rooms[room].gen=true
+				room=room+1
+				del(rooms,rooms[2])
+				makeroom(127,63,6, 1,0,0x1000,0x1000,0x2000,17,1)--main
+				--rooms[room].gen=true
+				changeroom(room)
+				--rooms[room].gen=true
 			end
 		end
 	end
