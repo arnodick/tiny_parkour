@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=true
+debug=false
 doff=0
 function items_i(r)
 if r==2 then
@@ -754,6 +754,12 @@ function doboss(b)
 		for a=1,20 do makepart(player[1].x,player[1].y+player[1].z,1,1,flr(rnd(6))) end	
 		for k,v in pairs(player) do player[k]=nil end
 	end
+	if parts[1]==nil and player[1]==nil then
+		room=3
+		makeroom(127,31,0,0,0,0x2000,0x0000,4096,0,0)--menu
+		changeroom(room)
+		for b=0,127 do for a=0,31 do mset(b,a,0) end end	
+	end
 end
 
 function domenu(m)
@@ -920,9 +926,9 @@ function drawboss(b)
 		line(b.x+0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
 	end
 	end
-	if timescore>0 then
-		print("time: "..timescore,b.x,b.z,8)
-	end
+--	if timescore>0 then
+--		print("time: "..timescore,b.x,b.z,8)
+--	end
 end
 
 function drawmenu(m)
@@ -1022,6 +1028,10 @@ function _draw()
 	foreach(boss,drawboss)
 	foreach(parts,drawpart)
 	foreach(menus,drawmenu)
+	
+	if room==3 then
+		print("time: "..timescore,63,31,8)
+	end
 	--debug
 	if debug==true then
 		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
