@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by aslhey pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -87,6 +87,7 @@ if r==2 then
 		end
 		ro.gen=false
 	end
+	
 	for b=0,2 do
 		for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
 	end
@@ -663,6 +664,7 @@ function changeroom(ro)
 		if room>#rooms then room=#rooms end
 		local r=rooms[room]
 --		for b=0,127 do for a=0,63 do mset(a,b,0) end end
+		for k,v in pairs(exits) do exits[k]=nil end
 		for k,v in pairs(finish) do finish[k]=nil end
 		for k,v in pairs(ending) do ending[k]=nil end
 		for k,v in pairs(boss) do boss[k]=nil end
@@ -675,6 +677,7 @@ function changeroom(ro)
 		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
 		for k,v in pairs(teles) do teles[k]=nil end	 		
 		for k,v in pairs(parts) do parts[k]=nil end
+		for k,v in pairs(bubbles) do bubbles[k]=nil end		
 		reload(r.dest,r.src,r.len)
 		cam=-r.h camera(0,cam)
 --				makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
@@ -730,7 +733,6 @@ function doprogress(s,i)--i:add ethereal flames
 	makebutton(97,59,-16,0,13,5,93,56,h+6,2,1,false)
 	makebutton(97,59,-16,0,13,5,101,56,h+6,2,1,false)
 	end
-	--shake=true
 end
 
 function doending(e)
@@ -785,13 +787,14 @@ function domenu(m)
 	 	score=0 route=0 timer=0
 	 	r.px=17 r.py=1
 	 	changeroom(2)
---	 	sfx(12,-1)
---			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
---			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end
-			for k,v in pairs(menus) do menus[k]=nil end
+	 	for k,v in pairs(menus) do menus[k]=nil end
 	 end
-	 if m.sel==2 then
-	 	--quit
+	 if m.sel==2 then--quit
+	 	score=0 route=0 timer=0 start=0
+	 	changeroom(1)
+	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+	 	buttons_i(room)
+	 	for k,v in pairs(menus) do menus[k]=nil end
 	 end
 	end
 end
@@ -939,18 +942,19 @@ function _init()
 	local r=rooms[room]
 --	for b=0,127 do for a=0,63 do mset(a,b,0) end end
 	reload(r.dest,r.src,r.len)
-	start=0
 	timer=0
 	rtimer=0
-	timescore=0
-	ps=0.5
+	start=0
+	
 	score=0
 	route=0
 	rc={}
-	shake=false
+	timescore=0
+	ps=0.5
+	
 	cam=-rooms[room].h
 	camera(0,cam)
-	--actor={}
+
 	player={}
 	parts={}
 	bubbles={}
@@ -1018,10 +1022,6 @@ function _draw()
 	foreach(boss,drawboss)
 	foreach(parts,drawpart)
 	foreach(menus,drawmenu)
-
-	--if shake==true then
-		--camera(0+rnd(10)-5,-mh)
-	--end
 	--debug
 	if debug==true then
 		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
@@ -1078,6 +1078,7 @@ function _update()
 		if rtimer!=0 then
 			if timer-rtimer==60 then
 				changeroom(room+1)
+				rooms[room].gen=true
 			end
 		end
 	end
