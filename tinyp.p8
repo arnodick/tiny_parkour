@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -45,21 +45,20 @@ makeitem_s(116,11,  0,0, 8, 9,125,11,0, 0, 0, 0,2)--35 inv bridge
 	makeitem(60,20,   	0,0, 8, 9,       0,31, 0, 0,1)--36 top to mid end
 	makeitem(116,2,   -4,0, 8,12,       4,0,  0, 0,1,10)--37 top standard
 	
-	makeitem( 93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
-	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
-	makeitem( 95,56,-mget(95,56),1,14,11,0,0,0,0,0)--32 post lof
-	makeitem( 99,56,-mget(99,56),1,14,11,0,0,0,0,0)--34 post lof
-makeitem_s( 97,58,-mget(97,58),1,14,11,0,0,0,0,0)--33 post lof
+--	makeitem( 93,56,-mget(93,56),1,14,11,0,0,0,0,0)--31 post lof
+--	makeitem(101,56,-mget(101,56),1,14,11,0,0,0,0,0)--35 post lof
+--	makeitem( 95,56,-mget(95,56),1,14,11,0,0,0,0,0)--32 post lof
+--	makeitem( 99,56,-mget(99,56),1,14,11,0,0,0,0,0)--34 post lof
+--	makeitem_s( 97,58,-mget(97,58),1,14,11,0,0,0,0,0)--33 post lof
 	
 	add(items,item_list[8])
 	add(items,item_list[18])
 	add(items,item_list[20])
 	add(items,item_list[21])
 end
-if r==1 then
---makeitem_s(117,21, -5,1, 8, 9,111,21,0,17, 0, 0,0)--30 
---add(items,item_list[1])
-end
+--if r==1 then
+
+--end
 end
 
 function buttons_i(r)
@@ -261,7 +260,6 @@ function makeclouds(n,h,s)
 	clouds={}
 	for i=1,n do 
 		cloudy[i]=flr(rnd(42)-48)
-		--cloudy[i]=flr(rnd(42))
 		cloudh[i]=flr(rnd(h))
 		clouds[i]=rnd(s)+2
 	end
@@ -465,7 +463,7 @@ function doplayer(p)
 				dset(63,dget(63)+1)
 				sfx(2,2)
 				if #bubbles>bubblei+6 then while #bubbles>bubblei do bubbles[#bubbles]=nil end end
-				if #bubbles>bubblei+6 then while #bubbles>bubblei do del(bubbles,bubbles[#bubbles]) end end
+				--if #bubbles>bubblei+6 then while #bubbles>bubblei do del(bubbles,bubbles[#bubbles]) end end
 				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c1)
 				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c2)
  			
@@ -474,7 +472,6 @@ function doplayer(p)
 
 	 		for k,v in pairs(player) do player[k]=nil end
 	 		rtimer=timer
-	 		--makemenu()
 			end
 		end
 		p.fall=0 p.ground+=1
@@ -1055,12 +1052,12 @@ function _update()
 	local p=player[1]
 	if room==1 then
 		if start==0 then
-			if flr(p.x)==70 and flr(p.y==20) and flr(p.z)==0 then
+			if flr(p.x)==70 and flr(p.y)==20 and flr(p.z)==0 then
 				--if start==0 then rtimer=timer end
 				reload(r.dest,r.src,r.len)
-				add(items,makeitem(17,1,-20,0,8,9,4,0,0,0,0,0))
 				start=1
-				tut_c=4
+				tut_c=4				
+				add(items,makeitem(17,1,-20,0,8,9,4,0,0,0,0,0))
 				maketele(56,2,0,3,61,5)
 				maketele(98,1,0,4,104,5)
 			end
