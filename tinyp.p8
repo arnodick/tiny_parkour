@@ -1039,6 +1039,7 @@ function _draw()
 		print("deaths: "..deaths,20,41,7)
 		print("press button to continue",20,61,8)
 		if btnp(4) then
+			del(rooms,rooms[3])
 			score=0 route=0 timer=0 start=0 deaths=0
 	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
 	 	room=1
@@ -1064,7 +1065,7 @@ function _draw()
 		print("rt "..route,r.w/2-10,cam+r.h-30+doff,11)
 		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)
 		print("deaths "..deaths,53,cam+r.h-20+doff,11)
-		print("timescore "..timescore,53,cam+r.h-10+doff,11)		
+--		print("timescore "..timescore,53,cam+r.h-10+doff,11)		
 		print("d "..dget(63),100,cam+r.h-30+doff,11)
 --		print(#items,10,-10,11)
 --		print(#item_list,20,-10,11)=
