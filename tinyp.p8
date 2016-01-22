@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -460,6 +460,7 @@ function doplayer(p)
 		--if hit bottom, die
 		if r.flc==0 then
 			if gh==0 then
+				deaths+=1
 				dset(63,dget(63)+1)
 				sfx(2,2)
 				if #bubbles>bubblei+6 then while #bubbles>bubblei do bubbles[#bubbles]=nil end end
@@ -787,13 +788,13 @@ function domenu(m)
 	 	for k,v in pairs(menus) do menus[k]=nil end
 	 end
 	 if m.sel==1 then--restart
-	 	score=0 route=0 timer=0
+	 	score=0 route=0 timer=0 deaths=0
 	 	r.px=17 r.py=1
 	 	changeroom(2)
 	 	for k,v in pairs(menus) do menus[k]=nil end
 	 end
 	 if m.sel==2 then--quit
-	 	score=0 route=0 timer=0 start=0
+	 	score=0 route=0 timer=0 start=0 deaths=0
 	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
 	 	room=1
 			rooms[room].gen=true	 	
@@ -956,6 +957,7 @@ function _init()
 	route=0
 	rc={}
 	timescore=0
+	deaths=0
 	ps=0.5
 	
 	cam=-rooms[room].h
@@ -1030,7 +1032,20 @@ function _draw()
 	foreach(menus,drawmenu)
 	
 	if room==3 then
-		print("time: "..timescore,63,31,8)
+		local m=flr((timescore/30)/60)
+		local s=(timescore/30)-m*60
+		local z="" if s<10 then z="0" end
+		print("time: "..m..":"..z..s,20,31,7)
+		print("deaths: "..deaths,20,41,7)
+		print("press button to continue",20,61,8)
+		if btnp(4) then
+			score=0 route=0 timer=0 start=0 deaths=0
+	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
+	 	room=1
+			rooms[room].gen=true	 	
+	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
+	 	changeroom(room)
+	 end
 	end
 	--debug
 	if debug==true then
@@ -1047,7 +1062,9 @@ function _draw()
 		end
 		print("sc "..score,r.w/2-10,cam+r.h-40+doff,11)
 		print("rt "..route,r.w/2-10,cam+r.h-30+doff,11)
-		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)		
+		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)
+		print("deaths "..deaths,53,cam+r.h-20+doff,11)
+		print("timescore "..timescore,53,cam+r.h-10+doff,11)		
 		print("d "..dget(63),100,cam+r.h-30+doff,11)
 --		print(#items,10,-10,11)
 --		print(#item_list,20,-10,11)=
