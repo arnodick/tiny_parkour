@@ -180,6 +180,8 @@ end
 
 function sky_i(r)
 if r==1 then
+	tut_bot=1
+	tut_top=3
 	tut_c=1
 	tut={}
 	tut[1]="hold button 1 to jump"
@@ -218,16 +220,6 @@ function makeroom(mw,mh,c1,c2,flc,dest,src,len,px,py)
 	add(rooms,r)
 end
 
-function makeexit(x,y,z,w)
-	local e=makeactor(x,y,z,w)
---	e.x=x
---	e.y=y
---	e.z=z
---	e.w=w
---	e.pressed=false
-	add(exits,e)
-end
-
 function makeactor(x,y,z,w,c1,c2)
 	local a={}
 	a.x=x
@@ -239,6 +231,16 @@ function makeactor(x,y,z,w,c1,c2)
 	a.pressed=false
 	--add(actor,a)
 	return a
+end
+
+function makeexit(x,y,z,w)
+	local e=makeactor(x,y,z,w)
+--	e.x=x
+--	e.y=y
+--	e.z=z
+--	e.w=w
+--	e.pressed=false
+	add(exits,e)
 end
 
 function makeplayer(x,y,z,w,c1,c2,s)
@@ -369,14 +371,14 @@ function makebutton_l(x,y,z,w,c1,c2,px,py,pz,spd,di,vis,xd,yd,zd,l)
 end
 
 function maketele(x,y,z,w,xt,yt)
-	local t={}
-	t.x=x
-	t.y=y
-	t.z=z
-	t.w=w
+	local t=makeactor(x,y,z,w)
+--	t.x=x
+--	t.y=y
+--	t.z=z
+--	t.w=w
 	t.xt=xt
 	t.yt=yt
-	t.pressed=false
+--	t.pressed=false
 	add(teles,t)
 end
 
@@ -808,57 +810,74 @@ function domenu(m)
 end
 
 function drawactor(a)
-	if player[1]!=nil then
+--	if player[1]!=nil then
  pset(a.x,a.y-mget(a.x,a.y),5)
  pset(a.x,a.y+a.z,a.c2)
  pset(a.x,a.y-1+a.z,a.c1)
- end
+-- end
 end
 
 function drawsky(r)
-if r==1 then
-	if start==0 then
-		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,1,3,start)
-	else
-		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,4,10,start)
+	if r==1 then
+--	if start==0 then
+		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,tut_bot,tut_top,start)
+--	else
+--		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,4,10,start)
+--	end
 	end
-end
-if r==2 then
-	if finish[1]!=nil then
-		for a=1,100 do if timer%(a*5)==0 then pset(star1[a],star2[a]-200,12+flr(rnd(2))) end end
-	end
+	if r==2 then
+		--if finish[1]!=nil then
+			for a=1,100 do if timer%(a*5)==0 then pset(star1[a],star2[a]-200,12+flr(rnd(2))) end end
+		--end
 
-	circfill(100,-40,10,6)
-	for a=1,30 do pset(moon1[a],moon2[a],5) end
+		circfill(100,-40,10,6)
+		for a=1,30 do pset(moon1[a],moon2[a],5) end
 
-	local cdist=180
-	local sp=4
-	for a=1,#cloudy do
+		local cdist=180
+		local sp=4
+		for a=1,#cloudy do
 		--rectfill((timer/sp)%cdist+8-cloudx[a],-25-cloudy[a],(timer/sp)%cdist+8-cloudx[a]-30,-25-cloudy[a]-30,5)
 		--rectfill((timer/clouds[a])%cdist+cloudx[a],cloudy[a],(timer/clouds[a])%cdist+cloudx[a]-30,cloudy[a]-10,5)
 		line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a],5)
 		line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a]-1,5)
-	end	
-	line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,5)
+		end	
+		line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,5)
 		
-	local sp=3
-	line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,7)
-	line(((timer/sp)%cdist)+3-40,-40,((timer/sp)%cdist),-39,7)
-	line(((timer/sp)%cdist)+5-40,-39,((timer/sp)%cdist)-5,-39,6)
+		local sp=3
+		line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,7)
+		line(((timer/sp)%cdist)+3-40,-40,((timer/sp)%cdist),-39,7)
+		line(((timer/sp)%cdist)+5-40,-39,((timer/sp)%cdist)-5,-39,6)
 	
-	sp=2	line(((timer/sp)%cdist)+6-20,-43,((timer/sp)%cdist)-6,-43,7)
-	line(((timer/sp)%cdist)+3-20,-42,((timer/sp)%cdist),-42,7)
-	line(((timer/sp)%cdist)+5-20,-41,((timer/sp)%cdist)-5,-41,6)
+		sp=2	line(((timer/sp)%cdist)+6-20,-43,((timer/sp)%cdist)-6,-43,7)
+		line(((timer/sp)%cdist)+3-20,-42,((timer/sp)%cdist),-42,7)
+		line(((timer/sp)%cdist)+5-20,-41,((timer/sp)%cdist)-5,-41,6)
 	
-	sp=2.5
-	line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist),-39,7)
-	line(((timer/sp)%cdist)+5-15,-38,((timer/sp)%cdist)-5,-38,6)
+		sp=2.5
+		line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist),-39,7)
+		line(((timer/sp)%cdist)+5-15,-38,((timer/sp)%cdist)-5,-38,6)
 	
-	foreach(bubbles,drawpart)--disintegrating sea
-	if timer%thunder==0 then pal(0,7,-1) sfx(13,-1) thunder=200+flr(rnd(1000))--thunder
-	else pal()
+		foreach(bubbles,drawpart)--disintegrating sea
+		if timer%thunder==0 then pal(0,7,-1) sfx(13,-1) thunder=200+flr(rnd(1000))--thunder
+		else pal()
+		end
 	end
-end
+	if r==3 then
+		local m=flr((timescore/30)/60)
+		local s=(timescore/30)-m*60
+		local z="" if s<10 then z="0" end
+		print("time: "..m..":"..z..s,20,31,7)
+		print("deaths: "..deaths,20,41,7)
+		print("press button to continue",20,61,8)
+		if btnp(4) then
+			del(rooms,rooms[3])
+			score=0 route=0 timer=0 start=0 deaths=0
+	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
+	 	room=1
+			rooms[room].gen=true	 	
+	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
+	 	changeroom(room)
+	 end
+	end
 end
 
 function drawtext(t,x,y,c,mi,ma,w)
@@ -872,10 +891,10 @@ end
 
 function drawbutton(b)
 	if b.vis==true then
-			pset(b.x,b.y+b.z-1,b.c1)
-			if b.pressed==false then
-				pset(b.x,b.y+b.z,b.c2)
-			end
+		pset(b.x,b.y+b.z-1,b.c1)
+		if b.pressed==false then
+			pset(b.x,b.y+b.z,b.c2)
+		end
 	end
 end
 
@@ -1031,24 +1050,6 @@ function _draw()
 	foreach(boss,drawboss)
 	foreach(parts,drawpart)
 	foreach(menus,drawmenu)
-	
-	if room==3 then
-		local m=flr((timescore/30)/60)
-		local s=(timescore/30)-m*60
-		local z="" if s<10 then z="0" end
-		print("time: "..m..":"..z..s,20,31,7)
-		print("deaths: "..deaths,20,41,7)
-		print("press button to continue",20,61,8)
-		if btnp(4) then
-			del(rooms,rooms[3])
-			score=0 route=0 timer=0 start=0 deaths=0
-	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
-	 	room=1
-			rooms[room].gen=true	 	
-	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
-	 	changeroom(room)
-	 end
-	end
 	--debug
 	if debug==true then
 		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
@@ -1082,10 +1083,10 @@ function _update()
 	if room==1 then
 		if start==0 then
 			if flr(p.x)==70 and flr(p.y)==20 and flr(p.z)==0 then
-				--if start==0 then rtimer=timer end
 				reload(r.dest,r.src,r.len)
 				start=1
-				tut_c=4				
+				tut_bot=4 tut_top=10
+				tut_c=tut_bot		
 				add(items,makeitem(17,1,-20,0,8,9,4,0,0,0,0,0))
 				maketele(56,2,0,3,61,5)
 				maketele(98,1,0,4,104,5)
