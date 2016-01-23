@@ -219,11 +219,11 @@ function makeroom(mw,mh,c1,c2,flc,dest,src,len,px,py)
 end
 
 function makeexit(x,y,z,w)
-	local e={}
-	e.x=x
-	e.y=y
-	e.z=z
-	e.w=w
+	local e=makeactor(x,y,z,w)
+--	e.x=x
+--	e.y=y
+--	e.z=z
+--	e.w=w
 	e.pressed=false
 	add(exits,e)
 end
@@ -339,11 +339,11 @@ function makebutton_s(x,y,z,w,c1,c2,stx,sty,sp,c,r,h,xs,ys,zs)
 end
 
 function makebutton_p(x,y,z,w,v)
-	local b={}
-	b.x=x
-	b.y=y
-	b.z=z
-	b.w=w
+	local b=makeactor(x,y,z,w,0,0)
+--	b.x=x
+--	b.y=y
+--	b.z=z
+--	b.w=w
 	b.v=v
 	b.pressed=false
 	add(buttons_p,b)
@@ -380,20 +380,20 @@ function maketele(x,y,z,w,xt,yt)
 end
 
 function makefinish(x,y,z)
-	local e={}
-	e.x=x
-	e.y=y
-	e.z=z
+	local e=makeactor(x,y,z)
+--	e.x=x
+--	e.y=y
+--	e.z=z
 	e.pressed=false
 	add(finish,e)
 end
 
 function makeending(x,y,z)
-	local e={}
-	e.x=x
-	e.y=y
-	e.z=z
-	e.w=0
+	local e=makeactor(x,y,z,0)
+--	e.x=x
+--	e.y=y
+--	e.z=z
+--	e.w=0
 	e.pressed=false
 	add(ending,e)
 end
@@ -997,7 +997,7 @@ end
 function _draw()
 	local r=rooms[room]
 	local p=player[1]
-	local p2=player[2]
+--	local p2=player[2]
 	cls()
 	if r.flc!=0 then rectfill(0,0,r.w,r.h,r.flc) end
 --	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
@@ -1015,11 +1015,11 @@ function _draw()
 			drawactor(p)
 		end
 		end
-		if p2!=nil then
-		if flr(p2.y)==y then
-			drawactor(p2)
-		end
-		end
+--		if p2!=nil then
+--		if flr(p2.y)==y then
+--			drawactor(p2)
+--		end
+--	end
 	end
 
 
