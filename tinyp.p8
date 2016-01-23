@@ -224,7 +224,7 @@ function makeexit(x,y,z,w)
 --	e.y=y
 --	e.z=z
 --	e.w=w
-	e.pressed=false
+--	e.pressed=false
 	add(exits,e)
 end
 
@@ -236,6 +236,7 @@ function makeactor(x,y,z,w,c1,c2)
 	a.w=w
 	a.c1=c1
 	a.c2=c2
+	a.pressed=false
 	--add(actor,a)
 	return a
 end
@@ -316,7 +317,7 @@ function makebutton(x,y,z,w,c1,c2,px,py,pz,spd,di,vis)
 	b.spd=spd
 	b.di=di
 	b.vis=vis
-	b.pressed=false
+--	b.pressed=false
 	--b.n=#buttons
 	add(buttons,b)
 	return b
@@ -333,7 +334,7 @@ function makebutton_s(x,y,z,w,c1,c2,stx,sty,sp,c,r,h,xs,ys,zs)
 	b.xs=xs
 	b.ys=ys
 	b.zs=zs
-	b.pressed=false
+--	b.pressed=false
 	b.switch=1
 	add(buttons_s,b)
 end
@@ -345,7 +346,7 @@ function makebutton_p(x,y,z,w,v)
 --	b.z=z
 --	b.w=w
 	b.v=v
-	b.pressed=false
+--	b.pressed=false
 	add(buttons_p,b)
 end
 
@@ -384,7 +385,7 @@ function makefinish(x,y,z)
 --	e.x=x
 --	e.y=y
 --	e.z=z
-	e.pressed=false
+--	e.pressed=false
 	add(finish,e)
 end
 
@@ -394,7 +395,7 @@ function makeending(x,y,z)
 --	e.y=y
 --	e.z=z
 --	e.w=0
-	e.pressed=false
+--	e.pressed=false
 	add(ending,e)
 end
 
