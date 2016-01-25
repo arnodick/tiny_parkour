@@ -659,6 +659,13 @@ function dotele(t)
 	end
 end
 
+function winner()
+	for a=0,10 do
+		if dget(a)==0 then return false end
+	end
+	return true
+end
+
 function changeroom(ro)
 		rtimer=0
 		room=ro
@@ -759,10 +766,13 @@ function doboss(b)
 		for k,v in pairs(player) do player[k]=nil end
 	end
 	if parts[1]==nil and player[1]==nil then
+		b.r-=1
+		if b.r<=0 then
 		room=3
 		makeroom(127,31,0,0,0,0x2000,0x0000,4096,0,0)--menu
 		changeroom(room)
 		for b=0,127 do for a=0,31 do mset(b,a,0) end end	
+		end
 	end
 end
 
@@ -811,9 +821,11 @@ end
 
 function drawactor(a)
 --	if player[1]!=nil then
+if a.vis!=false then
  pset(a.x,a.y-mget(a.x,a.y),5)
  pset(a.x,a.y+a.z,a.c2)
  pset(a.x,a.y-1+a.z,a.c1)
+end
 -- end
 end
 
@@ -961,7 +973,8 @@ end
 
 function _init()
 	cartdata("ap_tinyp")
---	for a=0,10 do dset(a,0) end
+	win=winner()
+	for a=0,10 do dset(a,0) end
 	rooms={}
 	room=1
 	makeroom(127,31,6,12,1,0x2000,0x0000,4096,60,20)--intro
@@ -1067,6 +1080,7 @@ function _draw()
 		print("rt "..route,r.w/2-10,cam+r.h-30+doff,11)
 		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)
 		print("deaths "..deaths,53,cam+r.h-20+doff,11)
+		print(win,53,cam+r.h-10+doff,11)
 --		print("timescore "..timescore,53,cam+r.h-10+doff,11)		
 		print("d "..dget(63),100,cam+r.h-30+doff,11)
 --		print(#items,10,-10,11)
