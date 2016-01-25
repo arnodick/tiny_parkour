@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=true
+debug=false
 doff=0
 function items_i(r)
 if r==2 then
@@ -279,6 +279,14 @@ function makepart(x,y,xs,ys,c)
 	add(parts,p)
 end
 
+function makefireworks(x,xo,y,yo)
+	sfx(20,0,-1)
+	local x=flr(rnd(x)+xo) local y=flr(rnd(y)+yo)
+	for a=1,30 do
+		makepart(x,y,4,4,flr(rnd(15)))
+	end
+end
+
 function makebubble(x,y,s,c)
 	local b={}
 	b.x=x
@@ -416,17 +424,17 @@ function makeboss(x,y,z)
 	b.tk=360
 	b.text_c=1
 	b.dial={}
-	b.dial[1]="try again, mortal"
-	b.dial[2]="well done... now die"
-	b.dial[3]="i may be impressed..."
-	b.dial[4]="where did you learn parkour?"
-	b.dial[5]="better than most mortals, mortal"
-	b.dial[6]="you have become champion of parkour"
-	b.dial[7]="you have become champion of parkour"
-	b.dial[8]="you have become champion of parkour"
-	b.dial[9]="you have become champion of parkour"
-	b.dial[10]="you have become champion of parkour"
-	b.dial[11]="you have become champion of parkour"
+	b.dial[1] ="find more routes, mortal"
+	b.dial[2] ="well done... now die"
+	b.dial[3] ="i may be impressed..."
+	b.dial[4] ="where did you learn parkour?"
+	b.dial[5] ="better than most mortals, mortal"
+	b.dial[6] ="few have come this far, mortal"
+	b.dial[7] ="powerful parkour skills .."
+	b.dial[8] ="you've come a long way, mortal ..."
+	b.dial[9] ="no one has ever found this route..."
+	b.dial[10]="maybe you should stop trying"
+	b.dial[11]="impossible...."
 	add(boss,b)
 end
 
@@ -754,24 +762,33 @@ function doending(e)
 end
 
 function doboss(b)
-	b.x=b.xs+cos(timer*1/40)*3
-	b.z=b.zs+sin(timer*1/70)*10
-	if b.r<20 then b.r+=0.5 end
-	if timer-b.t==b.ti then b.eh=0.4 sfx(18,-1,0) end
-	if timer-b.t==b.tk then
-		timescore=timer
-		sfx(20,0,-1)
-		for k,v in pairs(parts) do parts[k]=nil end
-		for a=1,20 do makepart(player[1].x,player[1].y+player[1].z,1,1,flr(rnd(6))) end	
-		for k,v in pairs(player) do player[k]=nil end
-	end
-	if parts[1]==nil and player[1]==nil then
-		b.r-=1
-		if b.r<=0 then
-		room=3
-		makeroom(127,31,0,0,0,0x2000,0x0000,4096,0,0)--menu
-		changeroom(room)
-		for b=0,127 do for a=0,31 do mset(b,a,0) end end	
+	if winner()!=true then
+		if player[1]!=nil then		
+			b.x=b.xs+cos(timer*1/40)*3
+			b.z=b.zs+sin(timer*1/70)*10
+			if b.r<20 then b.r+=0.5 end
+			if timer-b.t==b.ti then b.eh=0.4 sfx(18,-1,0) end
+			if timer-b.t==b.tk then
+				timescore=timer
+				sfx(20,0,-1)
+				for k,v in pairs(parts) do parts[k]=nil end
+				for a=1,20 do makepart(player[1].x,player[1].y+player[1].z,1,1,flr(rnd(6))) end	
+				for k,v in pairs(player) do player[k]=nil end
+			end
+		else
+			b.r-=1
+			if b.r<=0 then
+				room=3
+				makeroom(127,31,0,0,0,0x2000,0x0000,4096,0,0)--menu
+				changeroom(room)
+				for b=0,127 do for a=0,31 do mset(b,a,0) end end	
+			end
+		end
+	else
+		b.r=20
+		b.z+=0.1
+		if parts[1]==nil then
+			makefireworks(40,b.x-20,40,b.z-20)
 		end
 	end
 end
@@ -877,6 +894,7 @@ function drawsky(r)
 		local m=flr((timescore/30)/60)
 		local s=(timescore/30)-m*60
 		local z="" if s<10 then z="0" end
+		print("route "..route,20,21,7)
 		print("time: "..m..":"..z..s,20,31,7)
 		print("deaths: "..deaths,20,41,7)
 		print("press button to continue",20,61,8)
@@ -933,35 +951,34 @@ end
 
 function drawboss(b)
 	pal(4,4+flr(rnd(3)),1)
-	local t={}
-	t[1]="you've come this way "..dget(route-1).." times"
-	t[2]="find a new route tiny mortal"
-	if dget(route-1)>1 then
-		b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
-	else
-		t[1]="you completed route "..route
-		t[2]=b.dial[route]
-		b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
---		for a=1,#t do
---		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+30+(sin((timer+a)/20)*3),8)
---		print(sub(t,a,a),(128-#t/2)-timer%256+a*4,b.z+31+(cos((timer+a)/20)*3),7)
---		end
-	end
 	circfill(b.x,b.z,b.r,12)
 	circ(b.x,b.z,b.r,3)
 	rectfill(b.x-b.r,b.z-b.r/2,b.x+b.r,b.z,1)
 	rectfill(b.x+0.3*b.r,b.z-0.5*b.r,b.x+0.5*b.r,b.z+b.eh*b.r,4)
 	rectfill(b.x-0.3*b.r,b.z-0.5*b.r,b.x-0.5*b.r,b.z+b.eh*b.r,4)
 	rectfill(b.x-0.2*b.r,b.z+0.4*b.r,b.x+0.2*b.r,b.z+0.6*b.r+(cos(timer*1/40)),0)
-	if player[1]!=nil then
-	if timer-b.t>b.ti then
-		line(b.x-0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
-		line(b.x+0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
+	local t={}
+	if winner()!=true then
+		t[1]="you've come this way "..dget(route-1).." times"
+		t[2]="find a new route tiny mortal"
+		if dget(route-1)>1 then
+			--b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
+		else
+			t[1]="you completed route "..route
+			t[2]=b.dial[route]
+			--b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
+		end
+		if player[1]!=nil then
+		if timer-b.t>b.ti then
+			line(b.x-0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
+			line(b.x+0.3*b.r,b.z,player[1].x,player[1].y+player[1].z,4)
+		end
+		end
+	else
+		t[1]="noooooooo0000000000000000"
+		t[2]="you're god of parkour now"
 	end
-	end
---	if timescore>0 then
---		print("time: "..timescore,b.x,b.z,8)
---	end
+	b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
 end
 
 function drawmenu(m)
@@ -973,8 +990,8 @@ end
 
 function _init()
 	cartdata("ap_tinyp")
-	win=winner()
-	for a=0,10 do dset(a,0) end
+--	for a=0,10 do dset(a,0) end
+--	for a=1,10 do dset(a,1) end
 	rooms={}
 	room=1
 	makeroom(127,31,6,12,1,0x2000,0x0000,4096,60,20)--intro
@@ -1074,13 +1091,13 @@ function _draw()
 		print(p.x,10,cam+r.h-30+doff,11)
 		print(p.y,25,cam+r.h-30+doff,11)
 		print(p.z,35,cam+r.h-30+doff,11)
-		print("f "..p.fall,80,cam+r.h-30+doff,11)
+--		print("f "..p.fall,80,cam+r.h-30+doff,11)
 		end
 		print("sc "..score,r.w/2-10,cam+r.h-40+doff,11)
 		print("rt "..route,r.w/2-10,cam+r.h-30+doff,11)
-		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)
+--		print("rtimer "..rtimer,10,cam+r.h-20+doff,11)
 		print("deaths "..deaths,53,cam+r.h-20+doff,11)
-		print(win,53,cam+r.h-10+doff,11)
+--		print(win,53,cam+r.h-10+doff,11)
 --		print("timescore "..timescore,53,cam+r.h-10+doff,11)		
 		print("d "..dget(63),100,cam+r.h-30+doff,11)
 --		print(#items,10,-10,11)
@@ -1110,11 +1127,7 @@ function _update()
 			if timer<500 then
 			if parts[1]==nil then
 			if timer%flr(rnd(120))==0 then
-				local x=flr(rnd(127)) local y=flr(rnd(30)-40)
-				for a=1,30 do
-					sfx(20,0,-1)
-					makepart(x,y,4,4,flr(rnd(15)))
-				end
+				makefireworks(127,0,30,-40)
 			end
 			end
 			end
