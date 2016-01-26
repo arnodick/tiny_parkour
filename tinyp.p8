@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -776,6 +776,7 @@ function doboss(b)
 				for k,v in pairs(player) do player[k]=nil end
 			end
 		else
+			if parts[1]==nil then
 			b.r-=1
 			if b.r<=0 then
 				room=3
@@ -783,12 +784,21 @@ function doboss(b)
 				changeroom(room)
 				for b=0,127 do for a=0,31 do mset(b,a,0) end end	
 			end
+			end
 		end
 	else
 		b.r=20
-		b.z+=0.1
+		b.z+=0.09
 		if parts[1]==nil then
 			makefireworks(40,b.x-20,40,b.z-20)
+		end
+		if b.z>-70 then
+			timescore=timer
+			for k,v in pairs(player) do player[k]=nil end
+			room=3
+			makeroom(127,31,0,0,0,0x2000,0x0000,4096,0,0)--menu
+			changeroom(room)
+			for b=0,127 do for a=0,31 do mset(b,a,0) end end	
 		end
 	end
 end
@@ -848,17 +858,10 @@ end
 
 function drawsky(r)
 	if r==1 then
---	if start==0 then
 		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,tut_bot,tut_top,start)
---	else
---		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,4,10,start)
---	end
 	end
 	if r==2 then
-		--if finish[1]!=nil then
-			for a=1,100 do if timer%(a*5)==0 then pset(star1[a],star2[a]-200,12+flr(rnd(2))) end end
-		--end
-
+		for a=1,100 do if timer%(a*5)==0 then pset(star1[a],star2[a]-200,12+flr(rnd(2))) end end
 		circfill(100,-40,10,6)
 		for a=1,30 do pset(moon1[a],moon2[a],5) end
 
@@ -959,14 +962,12 @@ function drawboss(b)
 	rectfill(b.x-0.2*b.r,b.z+0.4*b.r,b.x+0.2*b.r,b.z+0.6*b.r+(cos(timer*1/40)),0)
 	local t={}
 	if winner()!=true then
-		t[1]="you've come this way "..dget(route-1).." times"
-		t[2]="find a new route tiny mortal"
 		if dget(route-1)>1 then
-			--b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
+			t[1]="you've come this way "..dget(route-1).." times"
+			t[2]="find a new route tiny mortal"
 		else
 			t[1]="you completed route "..route
 			t[2]=b.dial[route]
-			--b.text_c=drawtext(t,(128-#t[1]/2)-timer%255,b.z+30,b.text_c,1,2,1)
 		end
 		if player[1]!=nil then
 		if timer-b.t>b.ti then
