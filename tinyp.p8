@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -183,9 +183,9 @@ if r==1 then
 	tut_top=3
 	tut_c=1
 	tut={}
-	tut[1]="hold button 1 to jump"
-	tut[2]="hold button 2 to walk"
-	tut[3]="d pad + button 1 or 2 to move"
+	tut[1]="d pad to move"
+	tut[2]="button 1 to jump"
+	tut[3]="be careful!"
 	tut[4]="welcome to tiny parkour!"
 	tut[5]="everyone forgot how to parkour"
 	tut[6]="so god of parkour is enraged.."
@@ -430,14 +430,23 @@ function doplayer(p)
 	local r=rooms[room]
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(p.x,p.y)
-	if(btn (5,p.id) or btn(4,p.id)) then
-	if btn(5,p.id) then p.speed=0.3 else p.speed=0.5 end
-		if(btn (0,p.id))then p.xspeed=-p.speed end
-		if(btn (1,p.id))then p.xspeed=p.speed end
-		if(btn (2,p.id))then p.yspeed=-p.speed end
-		if(btn (3,p.id))then p.yspeed=p.speed end
-	else p.x=flr(p.x) p.y=flr(p.y)
-	end
+--	if(btn (5,p.id) or btn(4,p.id)) then
+--		if btn(5,p.id) then p.speed=0.3 else p.speed=0.5 end 
+		if btn (0,p.id) or btn(1,p.id) or btn(2,p.id) or btn(3,p.id) then
+			if btn (4,p.id) then --p.speed=0.5 else p.speed=0.33	end
+				if btn (0,p.id) then p.xspeed=-p.speed end
+				if btn (1,p.id) then p.xspeed=p.speed end
+				if btn (2,p.id) then p.yspeed=-p.speed end
+				if btn (3,p.id) then p.yspeed=p.speed end
+			else
+				if btnp(0,p.id) then p.xspeed=-1 end
+				if btnp(1,p.id) then p.xspeed=1 end
+				if btnp(2,p.id) then p.yspeed=-1 end
+				if btnp(3,p.id) then p.yspeed=1 end
+			end
+		else p.x=flr(p.x) p.y=flr(p.y)
+		end
+--	else p.x=flr(p.x) p.y=flr(p.y)
 	--if on the ground then
 	if p.z>=-gh then
 	 --can jump
@@ -1221,8 +1230,8 @@ function _update()
 	foreach(boss,doboss)
 	foreach(menus,domenu)
 	if p!=nil then
-	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y) end
---	if p.z>=-120 then cam=-r.h camera(0,cam) end
+--	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y) end
+	if p.z>=-120 then cam=-r.h camera(0,cam) end
 	if p.z<-120 then cam=-r.h*2 camera(0,cam) end
 	if p.z<-190 then cam=-r.h*3.5 camera(0,cam) end
 	if room==1 then cam=-r.h*2 camera(0,cam) end
