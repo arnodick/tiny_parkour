@@ -399,17 +399,17 @@ function makeboss(x,y,z)
 	b.tk=360
 	b.text_c=1
 	b.dial={}
-	b.dial[1] ="find more routes, mortal"
-	b.dial[2] ="well done... now die"
-	b.dial[3] ="i may be impressed..."
-	b.dial[4] ="where did you learn parkour?"
-	b.dial[5] ="better than most mortals, mortal"
-	b.dial[6] ="few have come this far, mortal"
-	b.dial[7] ="powerful parkour skills .."
-	b.dial[8] ="you've come a long way, mortal ..."
-	b.dial[9] ="no one has ever found this route..."
-	b.dial[10]="maybe you should stop trying"
-	b.dial[11]="impossible...."
+	b.dial[1] ="find  more  routes,       mortal"
+	b.dial[2] ="well done  ... ... now  you  die"
+	b.dial[3] ="i may be impressed ... ... ... ."
+	b.dial[4] ="where  did  you  learn  parkour?"
+	b.dial[5] ="there are   11    routes, mortal"
+	b.dial[6] ="few have come this far ...mortal"
+	b.dial[7] ="powerful   parkour   skills   .."
+	b.dial[8] ="better than most mortals, mortal"
+	b.dial[9] ="no one has ever found this route"
+	b.dial[10]="maybe you should stop trying...."
+	b.dial[11]="impossible......................"
 	add(boss,b)
 end
 
@@ -724,10 +724,10 @@ function doprogress(s,i)--i:add ethereal flames
 	makebutton(97,59,-16,0,13,5,96,59,h+2,2,1,false)
 	makebutton(97,59,-16,0,13,5,98,58,h+2,2,1,false)
 	makebutton(97,59,-16,0,13,5,96,58,h+2,2,1,false)	
-	makebutton(97,59,-16,0,13,5,95,56,h+55,2,1,false)
-	makebutton(97,59,-16,0,13,5,99,56,h+55,2,1,false)
-	makebutton(97,59,-16,0,13,5,93,56,h+55,2,1,false)
-	makebutton(97,59,-16,0,13,5,101,56,h+55,2,1,false)
+	makebutton(97,59,-16,0,13,5,95,56,h+60,2,1,false)
+	makebutton(97,59,-16,0,13,5,99,56,h+60,2,1,false)
+	makebutton(97,59,-16,0,13,5,93,56,h+60,2,1,false)
+	makebutton(97,59,-16,0,13,5,101,56,h+60,2,1,false)
 	end
 end
 
@@ -1004,7 +1004,7 @@ end
 
 function _init()
 	cartdata("ap_tinyp")
---	for a=0,10 do dset(a,0) end
+--	for a=0,63 do dset(a,0) end
 --	for a=1,10 do dset(a,1) end
 	rooms={}
 	room=1
