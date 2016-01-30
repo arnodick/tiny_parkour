@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -36,7 +36,7 @@ makeitem_s(101, 0,-13,1,12,10,99, 0, 4,24, 0, 0,0,11)--26 top innaccess
 makeitem_s( 16,45, -3,1, 8, 9, 3,39, 4,32, 0, 0,1)--27 s route
 	makeitem( 	87,26, -4,1, 8, 9,       4,30, 0, 0,0)--28 pilar challenge
 	makeitem( 	18,32, -3,1,10,14,       8,34, 0, 0,3,8)--29 s route secret
-makeitem_s(117,21, -5,1, 8, 9,111,21,0,17, 0, 0,0)--30 
+makeitem_s(117,21, -5,1, 8, 9,111,21,0,38, 0, 0,0)--30 
 	makeitem(	121,35, -5,1, 8, 9,       2, 0, 0, 0,1)--31 crossroad
 makeitem_s( 85,61, -4,1, 8, 9,83,61,14, 0, 0, 0,1)--32 s puzzle final
 	makeitem( 	58,48,  0,1, 8, 9,       0,32, 0, 0,1,5)--33 mid secret reveal
@@ -44,6 +44,7 @@ makeitem_s( 36,49, -3,1, 8, 9,38,63, 0,32, 0, 0,0)--34 indy bridge
 makeitem_s(116,11,  0,1, 8, 9,125,11,0, 0, 0, 0,2)--35 inv bridge
 	makeitem(60,20,   	0,1, 8, 9,       0,31, 0, 0,1)--36 top to mid end
 	makeitem(116,2,   -4,1, 8,12,       4,0,  0, 0,1,10)--37 top standard
+ makeitem(85 ,21,  -5,1, 8, 9,       0,17, 0, 0,0)--38 
 		
 	add(items,item_list[8])
 	add(items,item_list[18])
@@ -413,15 +414,15 @@ function makeboss(x,y,z)
 	add(boss,b)
 end
 
-function makemenu()
-	local m={}
-	m.opt={}
-	m.opt[1]="continue"
-	m.opt[2]="restart"
-	m.opt[3]="quit"
-	m.sel=0
-	add(menus,m)
-end
+--function makemenu()
+--	local m={}
+--	m.opt={}
+--	m.opt[1]="continue"
+--	m.opt[2]="restart"
+--	m.opt[3]="quit"
+--	m.sel=0
+--	add(menus,m)
+--end
 
 function doplayer(p)
 	if p.z==-15 then music(0,0,1) end
@@ -792,58 +793,72 @@ function doboss(b)
 	end
 end
 
-function domenu(m)
-	if btnp(2) then m.sel-=1 end
-	if btnp(3) then m.sel+=1 end
-	m.sel=m.sel%3
-	local r=rooms[room]
-	if btnp(4) then
-		if m.sel==0 then--continue
-			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
-			sfx(12)
-			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
-	 	reload(r.dest,r.src,r.len)
-	 	for k,v in pairs(finish) do finish[k]=nil end
-	 	for k,v in pairs(ending) do ending[k]=nil end
-	 	for k,v in pairs(boss) do boss[k]=nil end
-	 	for k,v in pairs(buttons) do buttons[k]=nil end
-	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
-	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
-	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
-	 	for k,v in pairs(teles) do teles[k]=nil end
-	 	buttons_i(room)
-	 	doprogress(score,false)
-	 	for k,v in pairs(menus) do menus[k]=nil end
-	 end
-	 if m.sel==1 then--restart
-	 	score=0 route=0 timer=0 deaths=0
-	 	r.px=17 r.py=1
-	 	changeroom(2)
-	 	for k,v in pairs(menus) do menus[k]=nil end
-	 end
-	 if m.sel==2 then--quit
-	 	score=0 route=0 timer=0 start=0 deaths=0
-	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
-	 	room=1
-			rooms[room].gen=true	 	
-	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
-	 	changeroom(room)
+--function domenu(m)
+--	if btnp(2) then m.sel-=1 end
+--	if btnp(3) then m.sel+=1 end
+--	m.sel=m.sel%3
+--	local r=rooms[room]
+--	if btnp(4) then
+--		if m.sel==0 then--continue
+--			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+--			sfx(12)
+--			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
+--	 	reload(r.dest,r.src,r.len)
+--	 	for k,v in pairs(finish) do finish[k]=nil end
+--	 	for k,v in pairs(ending) do ending[k]=nil end
+--	 	for k,v in pairs(boss) do boss[k]=nil end
+--	 	for k,v in pairs(buttons) do buttons[k]=nil end
+--	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+--	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+--	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+--	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+--	 	for k,v in pairs(teles) do teles[k]=nil end
 --	 	buttons_i(room)
-	 	for k,v in pairs(menus) do menus[k]=nil end
-	 end
-	end
-end
+--	 	doprogress(score,false)
+--	 	for k,v in pairs(menus) do menus[k]=nil end
+--	 end
+--	 if m.sel==1 then--restart
+--	 	score=0 route=0 timer=0 deaths=0
+--	 	r.px=17 r.py=1
+--	 	changeroom(2)
+--	 	for k,v in pairs(menus) do menus[k]=nil end
+--	 end
+--	 if m.sel==2 then--quit
+--	 	score=0 route=0 timer=0 start=0 deaths=0
+--	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
+--	 	room=1
+--			rooms[room].gen=true	 	
+--	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
+--	 	changeroom(room)
+--	 	buttons_i(room)
+--	 	for k,v in pairs(menus) do menus[k]=nil end
+--	 end
+--	end
+--end
 
 function drawactor(a)
 if a.vis!=false then
--- pset(a.x,a.y-mget(a.x,a.y),5)
--- pset(a.x,a.y+a.z,a.c2)
--- pset(a.x,a.y-1+a.z,a.c1)
 
- pset(a.x,a.y-mget(a.x,a.y),5)
- line(a.x,a.y+a.z,a.x,a.y+a.z-a.w,a.c2)
- pset(a.x,a.y+a.z-(a.w+1),a.c1)
+-- pset(a.x,a.y-mget(a.x,a.y),5)
+-- line(a.x,a.y+a.z,a.x,a.y+a.z-a.w,a.c2)
+-- pset(a.x,a.y+a.z-(a.w+1),a.c1)
+	local sc=scale
+	local fl=-mget(a.x,a.y)*sc
+	local xd=a.x*sc
+	local yd=(a.y+a.z)*sc
+
+	rectfill(xd,a.y*sc+fl-sc+1,xd+sc-1,a.y*sc+fl,5)
+	rectfill(xd,yd,xd+sc-1,yd-(a.w*sc),a.c2)
+ rectfill(xd,yd-((a.w+1)*sc),xd+sc-1,yd-((a.w+1)*sc)+scale-1,a.c1)
+
+ if debug==true then
+ 	if a.n!=nil then
+		print(a.n+1,a.x,a.y,4)
+		print(a.v,a.x+8,a.y,3)
+		print(a.r,a.x,a.y+6,3)
+		end
+	end
+
 end
 end
 
@@ -1024,6 +1039,7 @@ function _init()
 	deaths=0
 	ps=0.5
 	
+	scale=1
 	cam=-rooms[room].h
 	camera(0,cam)
 
@@ -1063,15 +1079,21 @@ function _draw()
 	local p=player[1]
 --	local p2=player[2]
 	cls()
-	if r.flc!=0 then rectfill(0,0,r.w,r.h,r.flc) end
+	if r.flc!=0 then rectfill(0,0,r.w*scale,r.h*scale,r.flc) end
 --	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
 	drawsky(room)	
 	for y=0,r.h do	--loop through every map cell
 		for x=0,r.w do
+			local sc=scale
 		 local h=mget(x,y)
+		 local hd=h*sc
 			if h>0 then--draw each map cell
-				pset(x,y-h,r.c1+h%2)--floors
-				line(x,y-h+1,x,y,(r.c2+(y%2)))--walls
+				local xd=x*sc
+				local yd=y*sc
+				rectfill(xd,yd-hd,xd+sc-1,yd-hd+sc-1,r.c1+h%2)
+				rectfill(xd,yd-hd+1*sc,xd+sc-1,yd,r.c2+(y%2))
+--				pset(x,y-h,r.c1+h%2)--floors
+--				line(x,y-h+1,x,y,(r.c2+(y%2)))--walls
 			end
 		end
 		if p!=nil then
@@ -1176,8 +1198,23 @@ function _update()
 			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end	
 		end
 		if rtimer>0 then
-		if timer-rtimer==30 then
-			makemenu()
+		if timer-rtimer==21 then
+			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
+			sfx(12)
+			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
+	 	reload(r.dest,r.src,r.len)
+	 	for k,v in pairs(finish) do finish[k]=nil end
+	 	for k,v in pairs(ending) do ending[k]=nil end
+	 	for k,v in pairs(boss) do boss[k]=nil end
+	 	for k,v in pairs(buttons) do buttons[k]=nil end
+	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+	 	for k,v in pairs(teles) do teles[k]=nil end
+	 	buttons_i(room)
+	 	doprogress(score,false)
+			--makemenu()
 			rtimer=0
 		end
 		end
@@ -1199,8 +1236,8 @@ function _update()
 	foreach(boss,doboss)
 	foreach(menus,domenu)
 	if p!=nil then
---	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y+p.z) end
-	if p.z>=-120 then cam=-r.h camera(0,cam) end
+	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y+p.z) end
+--	if p.z>=-120 then cam=-r.h camera(0,cam) end
 	if p.z<-120 then cam=-r.h*2 camera(0,cam) end
 	if p.z<-190 then cam=-r.h*3.5 camera(0,cam) end
 	if room==1 then cam=-r.h*2 camera(0,cam) end
