@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=true
+debug=false
 doff=0
 function items_i(r)
 if r==2 then
@@ -839,17 +839,9 @@ end
 function drawactor(a)
 if a.vis!=false then
 
--- pset(a.x,a.y-mget(a.x,a.y),5)
--- line(a.x,a.y+a.z,a.x,a.y+a.z-a.w,a.c2)
--- pset(a.x,a.y+a.z-(a.w+1),a.c1)
-	local sc=scale
-	local fl=-mget(a.x,a.y)*sc
-	local xd=a.x*sc
-	local yd=(a.y+a.z)*sc
-
-	rectfill(xd,a.y*sc+fl-sc+1,xd+sc-1,a.y*sc+fl,5)
-	rectfill(xd,yd,xd+sc-1,yd-(a.w*sc),a.c2)
- rectfill(xd,yd-((a.w+1)*sc),xd+sc-1,yd-((a.w+1)*sc)+scale-1,a.c1)
+ pset(a.x,a.y-mget(a.x,a.y),5)
+ line(a.x,a.y+a.z,a.x,a.y+a.z-a.w,a.c2)
+ pset(a.x,a.y+a.z-(a.w+1),a.c1)
 
  if debug==true then
  	if a.n!=nil then
@@ -1084,16 +1076,10 @@ function _draw()
 	drawsky(room)	
 	for y=0,r.h do	--loop through every map cell
 		for x=0,r.w do
-			local sc=scale
 		 local h=mget(x,y)
-		 local hd=h*sc
 			if h>0 then--draw each map cell
-				local xd=x*sc
-				local yd=y*sc
-				rectfill(xd,yd-hd,xd+sc-1,yd-hd+sc-1,r.c1+h%2)
-				rectfill(xd,yd-hd+1*sc,xd+sc-1,yd,r.c2+(y%2))
---				pset(x,y-h,r.c1+h%2)--floors
---				line(x,y-h+1,x,y,(r.c2+(y%2)))--walls
+				pset(x,y-h,r.c1+h%2)--floors
+				line(x,y-h+1,x,y,(r.c2+(y%2)))--walls
 			end
 		end
 		if p!=nil then
@@ -1236,7 +1222,7 @@ function _update()
 	foreach(boss,doboss)
 	foreach(menus,domenu)
 	if p!=nil then
-	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y+p.z) end
+	if p.z>=-120 then cam=-r.h camera(p.x-64,cam+p.y) end
 --	if p.z>=-120 then cam=-r.h camera(0,cam) end
 	if p.z<-120 then cam=-r.h*2 camera(0,cam) end
 	if p.z<-190 then cam=-r.h*3.5 camera(0,cam) end
