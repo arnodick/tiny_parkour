@@ -1031,7 +1031,6 @@ function _init()
 	deaths=0
 	ps=0.5
 	
-	scale=1
 	cam=-rooms[room].h
 	camera(0,cam)
 
@@ -1071,7 +1070,7 @@ function _draw()
 	local p=player[1]
 --	local p2=player[2]
 	cls()
-	if r.flc!=0 then rectfill(0,0,r.w*scale,r.h*scale,r.flc) end
+	if r.flc!=0 then rectfill(0,0,r.w,r.h,r.flc) end
 --	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
 	drawsky(room)	
 	for y=0,r.h do	--loop through every map cell
