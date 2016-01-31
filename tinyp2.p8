@@ -1129,7 +1129,7 @@ function _draw()
 	if debug==true then
 --		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
 --		for a=1,11 do print(dget(10+a),r.w/2-55+a*8,cam+r.h-30+doff+a*8,11) end
---		print(timer,r.w-20,cam+r.h-50+doff,11)
+		print(timer,r.w-20,cam+r.h-50+doff,11)
 		print(stat(0),10,cam+r.h-40+doff,11)
 		print(stat(1),r.w-27,cam+r.h-40+doff,11)
 --		print("room: "..room,r.w-27,cam+r.h-20+doff,11)
@@ -1249,7 +1249,7 @@ function _update()
 	if room==3 then cam=-31 camera(0,cam) end
 	end
 	
-	timer+=1
+	if timer < 32767 then timer+=1 end
 end
 __gfx__
 c0c0e0e00101e0e0c0c0e0e001012121414121210101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0c0c0e0e00101e0e0
