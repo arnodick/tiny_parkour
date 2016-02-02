@@ -86,7 +86,6 @@ if r==2 then
 	for b=0,2 do
 		for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
 	end
---	for a=1,2 do makebutton(45, 2, -4,  0,13,5,49, a,22,5,1,true) end
 	makebutton(97,58, -203, 0,13,5,97,58,203,1,1,true)
 	makebutton(101, 0,-mget(101,0), 0,13,5,101,0,22,1,1,false)
 	makebutton(85, 0, -mget(85,0),  0,13,5,78, 0,22,4,1,false)
@@ -100,14 +99,12 @@ if r==2 then
 	
 	makebutton(18, 32,-3, 0,13,5,36,49,3, 1, 1,false)
 	makebutton(64, 11,-mget(64,11), 0,13,5,72,11,8,4, 1,false)
-	--makebutton(64, 11,-mget(64,11), 1,13,5,68,11,7,4, 1,false)
 	makebutton(72, 11,-8, 0,13,5,76,11,8,4, 1,false)
 	makebutton(72, 11,-8, 0,13,5,75,11,0,1,-1,false)
 	makebutton(72, 11,-8, 0,13,5,77,11,0,1,-1,false)
 	makebutton(76, 11,-8, 0,13,5,80,11,8,1, 1,false)
 	makebutton(22, 25,-mget(23,25), 0,13,5,23,25,2,30,1,true)
 	makebutton(85, 21,-mget(85,21), 0,13,5,85,15,9,10,1,false)
---	makebutton(117, 26,-mget(117,26), 0,13,5,117,21,5,10,1,true)
 	
 	for a=0,2 do makebutton(92,1,-8,2,13,5,96+a,1,12,1, 1,false) end
 	
@@ -239,7 +236,6 @@ end
 
 function makeplayer(x,y,z,w,c1,c2,s)
 	local p=makeactor(x,y,z,w,c1,c2)
-	p.speedi=s
 	p.speed=s
 	p.xspeed=0
 	p.yspeed=0
@@ -248,7 +244,6 @@ function makeplayer(x,y,z,w,c1,c2,s)
 	p.fall=0
 	p.ground=0
 	p.dpress=0
-	p.zl=0
 	p.id=#player
 	add(player,p)
 end
@@ -282,10 +277,6 @@ function makefireworks(x,xo,y,yo)
 		makepart(x,y,4,4,flr(rnd(15)))
 	end
 end
-
---function makeflame(x,y,z,w,c1,c2)
---	local f=makeactor(x,y,z,w,c1,c2)
---end
 
 function makebubble(x,y,s,c)
 	local b={}
@@ -416,26 +407,12 @@ function makeboss(x,y,z)
 	add(boss,b)
 end
 
---function makemenu()
---	local m={}
---	m.opt={}
---	m.opt[1]="continue"
---	m.opt[2]="restart"
---	m.opt[3]="quit"
---	m.sel=0
---	add(menus,m)
---end
-
 function doplayer(p)
 --	if btnp(5,p.id) then timer=32000 end
 --	if btnp(5,p.id) then cstore(0x2000,0x2000,0x1000,"tinype.p8") end
-	if p.z==-15  then music(0,0,1) end
-	--if p.z>15 then music(-1,0,1) end
 	local r=rooms[room]
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(flr(p.x),flr(p.y))
---	if(btn (5,p.id) or btn(4,p.id)) then
---		if btn(5,p.id) then p.speed=0.3 else p.speed=0.5 end 
 		if btn (0,p.id) or btn(1,p.id) or btn(2,p.id) or btn(3,p.id) then
 			if btn (4,p.id) then --p.speed=0.5 else p.speed=0.33	end
 				if btn (0,p.id) then p.xspeed=-p.speed end
@@ -443,33 +420,26 @@ function doplayer(p)
 				if btn (2,p.id) then p.yspeed=-p.speed end
 				if btn (3,p.id) then p.yspeed=p.speed end
 			else
-				--if p.dpress>0 then
 				if p.dpress==2 or (p.dpress>4 and p.dpress%4==0) then
 				if btn (0,p.id) then p.xspeed=-1 sfx(17) end
 				if btn (1,p.id) then p.xspeed=1 sfx(17) end
 				if btn (2,p.id) then p.yspeed=-1 sfx(17) end
 				if btn (3,p.id) then p.yspeed=1 sfx(17) end
 				end
-				--end
 			end
 			p.dpress+=1
 		else p.x=flr(p.x) p.y=flr(p.y) p.dpress=0
 		end
---	else p.x=flr(p.x) p.y=flr(p.y)
-	--if on the ground then
-	if p.z>=-gh then
-	 --can jump
-	 if p.ground>0 then
+	if p.z>=-gh then--if on the ground then
+	 if p.ground>0 then--can jump
 			if(btnp(4,p.id)) then p.zspeed=p.speed sfx(3) end
 		end
-		--if hit bottom, die
-		if r.flc==0 then
+		if r.flc==0 then--if hit bottom, die
 			if gh==0 then
 				deaths+=1
 				dset(63,dget(63)+1)
 				sfx(2)
 				if #bubbles>bubblei+6 then while #bubbles>bubblei do bubbles[#bubbles]=nil end end
-				--if #bubbles>bubblei+6 then while #bubbles>bubblei do del(bubbles,bubbles[#bubbles]) end end
 				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c1)
 				for a=0,1 do makebubble(p.x,p.y,rnd(0.1)+0.1,p.c2) end
  			
@@ -496,7 +466,6 @@ function doplayer(p)
 	--if not, stand at map's height
 	else p.z=-mget(p.x,p.y) if p.ground==1 then sfx(21) end --fall=0
 	end
-	p.zl=p.z
 end
 
 function doitem(i)
@@ -520,7 +489,7 @@ function doitem(i)
 				if ic[a]!=0 then items[#items].c1=rc[1] items[#items].c2=rc[2] end
 			end
 		end
-		doprogress(score,true)
+		doprogress(score)
 	else
 		i.z=(-abs(cos(timer*1/40))*i.b)-mget(i.x,i.y)
 		if timer%19==0 then
@@ -609,8 +578,7 @@ function dobutton_s(b)
 end
 
 function dobutton_p(b)
-	local p=dobuttonpress(b)
-	if p==true then
+		if dobuttonpress(b)==true then
 		if b.v==-1 then switchy=0
 		else
 			switchy=bxor(switchy,2^b.v)
@@ -652,8 +620,7 @@ function dobutton_l(b)
 end
 
 function dotele(t)
-	local b=dobuttonpress(t)
-	if b==true then
+		if dobuttonpress(t)==true then
 		local p=player[1]
 		sfx(12)
 		p.x=t.xt p.y=t.yt p.z=-100
@@ -682,7 +649,6 @@ function changeroom(ro)
 		room=ro
 		if room>#rooms then room=#rooms end
 		local r=rooms[room]
---		for b=0,127 do for a=0,63 do mset(a,b,0) end end
 		for k,v in pairs(exits) do exits[k]=nil end
 		for k,v in pairs(finish) do finish[k]=nil end
 		for k,v in pairs(ending) do ending[k]=nil end
@@ -699,13 +665,9 @@ function changeroom(ro)
 		--for k,v in pairs(bubbles) do bubbles[k]=nil end
 		reload(r.dest,r.src,r.len)
 		cam=-r.h camera(0,cam)
---				makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3,ps) --0.5
---		player[1].x=r.px player[1].y=r.py
 		items_i(room)
 		buttons_i(room)
 		sky_i(room)
---	 	doprogress(score,false)
--- end
 end
 
 function doexit(e)
@@ -719,7 +681,7 @@ function doexit(e)
 	end
 end
 
-function doprogress(s,i)--i:add ethereal flames
+function doprogress(s)
 	if score>0 then
 		local s=score
 		if s>5 then s=5 end
@@ -729,9 +691,6 @@ function doprogress(s,i)--i:add ethereal flames
 				mset(82+b*2,a,b*2-1)
 				mset(112-b*2,a,b*2-1)
 				mset(113-b*2,a,b*2)
-			end
-			if i==true then
---				add(items,item_list[#item_list-5+b])
 			end
 		end
 	end
@@ -813,49 +772,6 @@ function doboss(b)
 	end
 end
 
---function domenu(m)
---	if btnp(2) then m.sel-=1 end
---	if btnp(3) then m.sel+=1 end
---	m.sel=m.sel%3
---	local r=rooms[room]
---	if btnp(4) then
---		if m.sel==0 then--continue
---			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
---			sfx(12)
---			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
---	 	reload(r.dest,r.src,r.len)
---	 	for k,v in pairs(finish) do finish[k]=nil end
---	 	for k,v in pairs(ending) do ending[k]=nil end
---	 	for k,v in pairs(boss) do boss[k]=nil end
---	 	for k,v in pairs(buttons) do buttons[k]=nil end
---	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
---	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
---	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
---	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
---	 	for k,v in pairs(teles) do teles[k]=nil end
---	 	buttons_i(room)
---	 	doprogress(score,false)
---	 	for k,v in pairs(menus) do menus[k]=nil end
---	 end
---	 if m.sel==1 then--restart
---	 	score=0 route=0 timer=0 deaths=0
---	 	r.px=17 r.py=1
---	 	changeroom(2)
---	 	for k,v in pairs(menus) do menus[k]=nil end
---	 end
---	 if m.sel==2 then--quit
---	 	score=0 route=0 timer=0 start=0 deaths=0
---	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
---	 	room=1
---			rooms[room].gen=true	 	
---	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
---	 	changeroom(room)
---	 	buttons_i(room)
---	 	for k,v in pairs(menus) do menus[k]=nil end
---	 end
---	end
---end
-
 function drawactor(a)
 if a.vis!=false then
 
@@ -909,15 +825,9 @@ function drawsky(r)
 		if timer%thunder==0 then pal(0,7,-1) sfx(13) thunder=200+flr(rnd(1000))--thunder
 		else pal()
 		end
-		--for a=0,4 do line(93+a*2,i+52-(a%2)*2,93+a*2,i-47,12) end
-		--for a=1,score do line(93+a*2,-52,93+a*2,-47,3) end
 	end
 	if r==3 then
---		local m=flr((timescore/30)/60)
---		local s=(timescore/30)-m*60
---		local z="" if s<10 then z="0" end
 		print("route "..route,20,21,7)
---		print("time: "..m..":"..z..s,20,31,7)
 		print("time: "..inttotime(timescore),20,31,7)
 		print("best time: "..inttotime(dget(10+route)),20,41,7)
 		print("deaths: "..deaths,20,51,7)
@@ -943,33 +853,9 @@ function drawtext(t,x,y,c,mi,ma,w)
 	return c
 end
 
---function drawbutton(b)
---	if b.vis==true then
---		pset(b.x,b.y+b.z-1,b.c1)
---		pset(b.x,b.y+b.z,b.c2)
---	end
---end
-
 function drawpart(p)
 	pset(p.x,p.y,p.c)
 end
-
---function drawitem(i)
--- pset(i.x,i.y-mget(i.x,i.y),5)
--- line(i.x,i.y+i.z-1,i.x,i.y+i.z+i.w-1,i.c1)
--- pset(i.x,i.y-i.w-1+i.z,i.c2)
- 
--- pset(i.x,i.y-mget(i.x,i.y),5)
--- line(i.x,i.y+i.z,i.x,i.y+i.z-i.w,i.c2)
--- pset(i.x,i.y+i.z-i.w,i.c1)
- --pset(i.x,i.y+i.z,i.c2)
-
--- if debug==true then
---	print(i.n+1,i.x,i.y,4)
---	print(i.v,i.x+8,i.y,3)
---	print(i.r,i.x,i.y+6,3)
---	end
---end
 
 function drawfinish(e)
 	local i=-mget(97,59)
@@ -977,11 +863,7 @@ function drawfinish(e)
 	pal(12,12-(timer%3)*2,1)
 	end
 	for a=0,4 do line(93+a*2,i+52-(a%2)*2,93+a*2,i-47,12) end
-	--if timer%5==0 then pal(12,13,1) else pal() end
 	for a=1,score do
---			line(91+a*2,37+(a%2)*2,(91+a*2+cos(timer/30)*1.5),33+(a%2)*2,3)
---			line(90+a*2,36+(a%2)*2,(91+a*2+cos(timer/30)*1.5),33+(a%2)*2,11)
---			line(92+a*2,36+(a%2)*2,(91+a*2+cos(timer/30)*1.5),33+(a%2)*2,11)
 		local yp=56 if a==3 then yp+=2 end
 		local x=91+a*2 local y=yp-3-mget(91+a*2,yp)
 		local sway=cos(timer/30)*1.1
@@ -1088,10 +970,8 @@ end
 function _draw()
 	local r=rooms[room]
 	local p=player[1]
---	local p2=player[2]
 	cls()
 	if r.flc!=0 then rectfill(0,0,r.w,r.h,r.flc) end
---	if timer%3==0 then pal(12,12+rnd(2)-1,1) end
 	drawsky(room)	
 	for y=0,r.h do	--loop through every map cell
 		for x=0,r.w do
@@ -1103,26 +983,15 @@ function _draw()
 		end
 		if p!=nil then
 		if flr(p.y)==y then
-			--drawactor(p)
 			drawactor(p)
 		end
 		end
---		if p2!=nil then
---		if flr(p2.y)==y then
---			drawactor(p2)
---		end
---	end
 	end
 
-
---	foreach(buttons,drawbutton)
 	foreach(buttons,drawactor)
 	foreach(buttons_l,drawactor)
---	foreach(items,drawitem)
 	foreach(items,drawactor)
 	foreach(finish,drawfinish)
---	if room==2 then
---	end
 	foreach(boss,drawboss)
 	foreach(parts,drawpart)
 	foreach(menus,drawmenu)
@@ -1194,9 +1063,7 @@ function _update()
 				room=room+1
 				del(rooms,rooms[2])
 				makeroom(127,63,6, 1,0,0x1000,0x1000,0x2000,17,1)--main
-				--rooms[room].gen=true
 				changeroom(room)
-				--rooms[room].gen=true
 			end
 		end
 	end
@@ -1207,7 +1074,6 @@ function _update()
 			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 			for a=1,40 do makepart(r.px,r.py-4,1,1,flr(rnd(6))) end	
 		end
---		if timer==300 then music(0,0,1) end
 		if rtimer>0 then
 		if timer-rtimer==21 then
 			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
@@ -1224,15 +1090,13 @@ function _update()
 	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
 	 	for k,v in pairs(teles) do teles[k]=nil end
 	 	buttons_i(room)
-	 	doprogress(score,false)
-			--makemenu()
+	 	doprogress(score)
 			rtimer=0
 		end
 		end
 	end
 		
 	foreach(player,doplayer)
---	for p in all(player) do doplayer(p,rooms[room]) end
 	foreach(ending,doending)
 	foreach(items,doitem)
 	foreach(parts,dopart)
@@ -1269,7 +1133,6 @@ function _update()
 	 changeroom(room)
 	 buttons_i(room)
 	 end
---	 	for k,v in pairs(menus) do menus[k]=nil end
 	else timer+=1 end
 end
 __gfx__
@@ -1443,7 +1306,7 @@ __sfx__
 000200002c1702c1702b1702a1702a1702a17029170281702717026170231702417022170201701d1701a1701717013170101700c1700a1700617003170011000310002100011000000000000000000000000000
 000300000d1400f1401114014140171401b1402014021140161001b10020100211000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000400002477025770287702777036770367703677000000367703670036770367003677000000000002970038300373003730028700000000000000000000000000000000000000000000000000000000000000
-000400000a6400c6400d6400a6400a640096400764003640036400364016600016000f60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000400000a6300c6300d6300a6300a630096300763003630036300363016600016000f60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000100001365011650286500c650296500a6500965028650076000000014650196501f650266503e650206503d650106503f65000000000000000000000000000000000000000000000000000000000000000000
 00030000013700137001370013700337003370053700537006370063700737007370083700737008370093700a3700b3700c3700c3700d3700e370103701137012370133701437016370183701a3701b3701e370
 0003000005370053700537005370053700537006370073700837008370093700a3700b3700b3700c3700d3700f37010370113701237012370143701737018370193701b3701c3701d3701f370213702337027370
