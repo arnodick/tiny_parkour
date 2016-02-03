@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -411,7 +411,7 @@ function doplayer(p)
 --	if btnp(5,p.id) then timer=32000 end
 --	if btnp(5,p.id) then cstore(0x2000,0x2000,0x1000,"tinype.p8") end
 --	if btnp(5,p.id) then cstore(0x2000,0x0000,0x1000,"tinype2.p8") end
-	if btnp(5,p.id) then cstore(0x1000,0x1000,0x2000,"tinype2.p8") end
+--	if btnp(5,p.id) then cstore(0x1000,0x1000,0x2000,"tinype2.p8") end
 	local r=rooms[room]
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(flr(p.x),flr(p.y))
@@ -668,12 +668,11 @@ function changeroom(ro)
 		if room>#rooms then room=#rooms end
 		local r=rooms[room]	
 		
-		reset(r)
-		
 		for k,v in pairs(exits) do exits[k]=nil end		
 		for k,v in pairs(items) do items[k]=nil end
 	 for k,v in pairs(item_list) do item_list[k]=nil end	 	
 		for k,v in pairs(parts) do parts[k]=nil end
+		reset(r)
 
 		cam=-r.h camera(0,cam)
 		items_i(room)
@@ -833,19 +832,24 @@ function drawsky(r)
 		end
 	end
 	if r==3 then
-		print("route "..route,20,21,7)
-		print("time: "..inttotime(timescore),20,31,7)
-		print("best time: "..inttotime(dget(10+route)),20,41,7)
-		print("deaths: "..deaths,20,51,7)
-		print("press button to continue",20,61,8)
-		if btnp(4) then
-			del(rooms,rooms[3])
-			score=0 route=0 timer=0 start=0 deaths=0
-	 	for k,v in pairs(bubbles) do bubbles[k]=nil end
-	 	room=1
-			rooms[room].gen=true	 	
-	 	makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
-	 	changeroom(room)
+		if winner() and rtimer==0 then 
+			print("and so you became god\nof parkour\nnow you get to screw with\nthe people of parkour land\nand make them do\nweird challenes and stuff\ngood job\n\npress button to continue",20,128-(timer/2)%265,7)
+			if btnp(4) then rtimer=timer end
+		else
+			print("route "..route,20,21,7)
+			print("time: "..inttotime(timescore),20,31,7)
+			print("best time: "..inttotime(dget(10+route)),20,41,7)
+			print("deaths: "..deaths,20,51,7)
+			print("press button to continue",20,61,8)
+			if btnp(4) then
+				del(rooms,rooms[3])
+				score=0 route=0 timer=0 start=0 deaths=0
+	 		for k,v in pairs(bubbles) do bubbles[k]=nil end
+	 		room=1
+				rooms[room].gen=true	 	
+	 		makeplayer(rooms[room].px,rooms[room].py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5			
+	 		changeroom(room)
+	 	end
 	 end
 	end
 end
@@ -1008,8 +1012,8 @@ function _draw()
 	
 	--debug
 	if debug==true then
---		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
---		for a=1,11 do print(dget(10+a),r.w/2-55+a*8,cam+r.h-30+doff+a*8,11) end
+		for a=0,10 do print(dget(a),r.w/2-55+a*8,cam+r.h-50+doff,11) end
+		for a=1,11 do print(dget(10+a),r.w/2-55+a*8,cam+r.h-30+doff+a*8,11) end
 		print(timer,r.w-20,cam+r.h-50+doff,11)
 		print(stat(0),10,cam+r.h-40+doff,11)
 		print(stat(1),r.w-27,cam+r.h-40+doff,11)
