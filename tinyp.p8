@@ -3,7 +3,7 @@ version 5
 __lua__
 --tiny parkour
 --by ashley pringle
-debug=false
+debug=true
 doff=0
 function items_i(r)
 if r==2 then
@@ -86,7 +86,7 @@ if r==2 then
 	for b=0,2 do
 		for a=0,2 do makebutton(49, 20,-11,0,13,5,57+b,37-a,0,8,-1,true) end
 	end
-	makebutton(97,58, -203, 0,13,5,97,58,203,1,1,true)
+--	makebutton(97,58, -203, 0,13,5,97,58,203,1,1,true)
 	makebutton(101, 0,-mget(101,0), 0,13,5,101,0,22,1,1,false)
 	makebutton(85, 0, -mget(85,0),  0,13,5,78, 0,22,4,1,false)
 	makebutton(87, 0, -mget(85,0),  0,13,5,71, 0,25,6,1,false)
@@ -410,6 +410,8 @@ end
 function doplayer(p)
 --	if btnp(5,p.id) then timer=32000 end
 --	if btnp(5,p.id) then cstore(0x2000,0x2000,0x1000,"tinype.p8") end
+--	if btnp(5,p.id) then cstore(0x2000,0x0000,0x1000,"tinype2.p8") end
+	if btnp(5,p.id) then cstore(0x2000,0x0000,0x1000,"tinype2.p8") end
 	local r=rooms[room]
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(flr(p.x),flr(p.y))
@@ -421,10 +423,11 @@ function doplayer(p)
 				if btn (3,p.id) then p.yspeed=p.speed end
 			else
 				if p.dpress==2 or (p.dpress>4 and p.dpress%4==0) then
-				if btn (0,p.id) then p.xspeed=-1 sfx(17) end
-				if btn (1,p.id) then p.xspeed=1 sfx(17) end
-				if btn (2,p.id) then p.yspeed=-1 sfx(17) end
-				if btn (3,p.id) then p.yspeed=1 sfx(17) end
+				if p.ground>0 then sfx(17)	end
+				if btn (0,p.id) then p.xspeed=-1 end
+				if btn (1,p.id) then p.xspeed=1 end
+				if btn (2,p.id) then p.yspeed=-1 end
+				if btn (3,p.id) then p.yspeed=1 end
 				end
 			end
 			p.dpress+=1
@@ -437,7 +440,7 @@ function doplayer(p)
 		if r.flc==0 then--if hit bottom, die
 			if gh==0 then
 				deaths+=1
-				dset(63,dget(63)+1)
+				--dset(63,dget(63)+1)
 				sfx(2)
 				if #bubbles>bubblei+6 then while #bubbles>bubblei do bubbles[#bubbles]=nil end end
 				makebubble(p.x,p.y,rnd(0.1)+0.1,p.c1)
@@ -671,8 +674,7 @@ function changeroom(ro)
 end
 
 function doexit(e)
-	p=dobuttonpress(e)
-	if p==true then
+	if dobuttonpress(e)==true then
 		sfx(12)
 		for k,v in pairs(parts) do parts[k]=nil end
 		for a=1,20 do makepart(e.x,e.y-20,1,1,flr(rnd(6))) end	
@@ -697,25 +699,24 @@ function doprogress(s)
 	if score==5 then
 	local h=200
 	makefinish(97,59,-16)
-	makeending(97,58,-203)
+	makeending(97,59,-200)
 	makebutton(97,59,-16,0,13,5,97,59,h,  2,1,false)
 	makebutton(97,59,-16,0,13,5,97,58,h+3,2,1,false)
 	makebutton(97,59,-16,0,13,5,98,59,h+2,2,1,false)
 	makebutton(97,59,-16,0,13,5,96,59,h+2,2,1,false)
 	makebutton(97,59,-16,0,13,5,98,58,h+2,2,1,false)
 	makebutton(97,59,-16,0,13,5,96,58,h+2,2,1,false)	
-	makebutton(97,59,-16,0,13,5,95,56,h+60,2,1,false)
-	makebutton(97,59,-16,0,13,5,99,56,h+60,2,1,false)
-	makebutton(97,59,-16,0,13,5,93,56,h+60,2,1,false)
-	makebutton(97,59,-16,0,13,5,101,56,h+60,2,1,false)
+	makebutton(97,59,-16,0,13,5,95,56,h+2,2,1,false)
+	makebutton(97,59,-16,0,13,5,99,56,h+2,2,1,false)
+	makebutton(97,59,-16,0,13,5,93,56,h,2,1,false)
+	makebutton(97,59,-16,0,13,5,101,56,h,2,1,false)
 	end
 end
 
 function doending(e)
 	local r=rooms[room]
-	local p=dobuttonpress(e)
-	if p==true then
-		for k,v in pairs(items) do items[k]=nil end
+	if dobuttonpress(e)==true then
+--		for k,v in pairs(items) do items[k]=nil end
 		dset(route-1,dget(route-1)+1)
 		timescore=timer
 		local hs=dget(10+route)
@@ -1037,6 +1038,9 @@ function _update()
 	if room==1 then
 		if p!=nil then
 		if p.y<1 then p.y=1 end
+		if p.y>r.h-1 then p.y=r.h-1 end
+		if p.x<1 then p.x=1 end
+		if p.x>r.w-1 then p.x=r.w-1 end
 		end
 		if start==0 then
 			if flr(p.x)==70 and flr(p.y)==20 and flr(p.z)==0 then
