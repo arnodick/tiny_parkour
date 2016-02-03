@@ -241,7 +241,7 @@ function makeplayer(x,y,z,w,c1,c2,s)
 	p.yspeed=0
 	p.zspeed=0
 	p.xs=17 p.ys=1
-	p.fall=0
+--	p.fall=0
 	p.ground=0
 	p.dpress=0
 	p.id=#player
@@ -411,7 +411,7 @@ function doplayer(p)
 --	if btnp(5,p.id) then timer=32000 end
 --	if btnp(5,p.id) then cstore(0x2000,0x2000,0x1000,"tinype.p8") end
 --	if btnp(5,p.id) then cstore(0x2000,0x0000,0x1000,"tinype2.p8") end
-	if btnp(5,p.id) then cstore(0x2000,0x2000,0x1000,"tinype2.p8") end
+	if btnp(5,p.id) then cstore(0x1000,0x1000,0x2000,"tinype2.p8") end
 	local r=rooms[room]
 	p.xspeed=0 p.yspeed=0
 	local gh=mget(flr(p.x),flr(p.y))
@@ -453,7 +453,8 @@ function doplayer(p)
 	 		rtimer=timer
 			end
 		end
-		p.fall=0 p.ground+=1
+		--p.fall=0 
+		p.ground+=1
 	end	
 	
 	--if not next to a wall, move
@@ -465,7 +466,7 @@ function doplayer(p)
 	
 	--if in the air, fall
 	if(p.z<-mget(p.x,p.y)) then p.zspeed-=0.09 p.ground=0
-		if p.zspeed<0 then p.fall+=1 p.speed=0.5 end
+		if p.zspeed<0 then p.speed=0.5 end--p.fall+=1
 	--if not, stand at map's height
 	else p.z=-mget(p.x,p.y) if p.ground==1 then sfx(21) end --fall=0
 	end
@@ -647,29 +648,35 @@ function inttotime(t)
 	return m..":"..z..s
 end
 
+function reset(r)
+	for k,v in pairs(finish) do finish[k]=nil end
+	for k,v in pairs(ending) do ending[k]=nil end
+	for k,v in pairs(boss) do boss[k]=nil end
+	for k,v in pairs(buttons) do buttons[k]=nil end
+	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+	for k,v in pairs(teles) do teles[k]=nil end	 		
+	reload(r.dest,r.src,r.len)
+	buttons_i(room)
+end
+
 function changeroom(ro)
 		rtimer=0
 		room=ro
 		if room>#rooms then room=#rooms end
-		local r=rooms[room]
-		for k,v in pairs(exits) do exits[k]=nil end
-		for k,v in pairs(finish) do finish[k]=nil end
-		for k,v in pairs(ending) do ending[k]=nil end
-		for k,v in pairs(boss) do boss[k]=nil end
+		local r=rooms[room]	
+		
+		reset(r)
+		
+		for k,v in pairs(exits) do exits[k]=nil end		
 		for k,v in pairs(items) do items[k]=nil end
 	 for k,v in pairs(item_list) do item_list[k]=nil end	 	
-		for k,v in pairs(buttons) do buttons[k]=nil end
-		for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-		for k,v in pairs(buttons_p) do buttons_p[k]=nil end
-		for k,v in pairs(buttons_c) do buttons_c[k]=nil end
-		for k,v in pairs(buttons_l) do buttons_l[k]=nil end
-		for k,v in pairs(teles) do teles[k]=nil end	 		
 		for k,v in pairs(parts) do parts[k]=nil end
-		--for k,v in pairs(bubbles) do bubbles[k]=nil end
-		reload(r.dest,r.src,r.len)
+
 		cam=-r.h camera(0,cam)
 		items_i(room)
-		buttons_i(room)
 		sky_i(room)
 end
 
@@ -803,10 +810,8 @@ function drawsky(r)
 		local cdist=180
 		local sp=4
 		for a=1,#cloudy do
-		line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a],5)
-		line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a]-1,5)
-		end	
-		line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,5)
+			for b=0,1 do line((timer/clouds[a])%cdist,cloudy[a],(timer/clouds[a])%cdist-30,cloudy[a]-cloudh[a]-b,5) end
+		end
 		
 		local sp=3
 		line(((timer/sp)%cdist)+8-40,-41,((timer/sp)%cdist)-8,-40,7)
@@ -815,11 +820,11 @@ function drawsky(r)
 	
 		sp=2
 		line(((timer/sp)%cdist)+6-20,-43,((timer/sp)%cdist)-6,-43,7)
-		line(((timer/sp)%cdist)+3-20,-42,((timer/sp)%cdist),-42,7)
+		line(((timer/sp)%cdist)+3-20,-42,((timer/sp)%cdist)  ,-42,7)
 		line(((timer/sp)%cdist)+5-20,-41,((timer/sp)%cdist)-5,-41,6)
 	
 		sp=2.5
-		line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist),-39,7)
+		line(((timer/sp)%cdist)+3-15,-39,((timer/sp)%cdist)  ,-39,7)
 		line(((timer/sp)%cdist)+5-15,-38,((timer/sp)%cdist)-5,-38,6)
 	
 		foreach(bubbles,drawpart)--disintegrating sea
@@ -1083,17 +1088,20 @@ function _update()
 			makeplayer(r.px,r.py,10,1,14-flr(rnd(2))*10,3+flr(rnd(2))*9,ps) --0.5
 			sfx(12)
 			for a=1,40 do makepart(player[1].x,player[1].y-mget(player[1].x,player[1].y),1,1,flr(rnd(6))) end
-	 	reload(r.dest,r.src,r.len)
-	 	for k,v in pairs(finish) do finish[k]=nil end
-	 	for k,v in pairs(ending) do ending[k]=nil end
-	 	for k,v in pairs(boss) do boss[k]=nil end
-	 	for k,v in pairs(buttons) do buttons[k]=nil end
-	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
-	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
-	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
-	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
-	 	for k,v in pairs(teles) do teles[k]=nil end
-	 	buttons_i(room)
+			
+			reset(r)
+--	 	reload(r.dest,r.src,r.len)
+-- 		for k,v in pairs(finish) do finish[k]=nil end
+--	 	for k,v in pairs(ending) do ending[k]=nil end
+--	 	for k,v in pairs(boss) do boss[k]=nil end
+--	 	for k,v in pairs(buttons) do buttons[k]=nil end
+--	 	for k,v in pairs(buttons_s) do buttons_s[k]=nil end
+--	 	for k,v in pairs(buttons_p) do buttons_p[k]=nil end
+--	 	for k,v in pairs(buttons_c) do buttons_c[k]=nil end
+--	 	for k,v in pairs(buttons_l) do buttons_l[k]=nil end
+--	 	for k,v in pairs(teles) do teles[k]=nil end
+--	 	buttons_i(room)
+	 	
 	 	doprogress(score)
 			rtimer=0
 		end
