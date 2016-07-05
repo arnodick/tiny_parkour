@@ -1,5 +1,5 @@
 pico-8 cartridge // http://www.pico-8.com
-version 5
+version 8
 __lua__
 --tiny parkour
 --by ashley pringle
@@ -178,19 +178,20 @@ end
 function sky_i(r)
 if r==1 then
 	tut_bot=1
-	tut_top=3
+	tut_top=4
 	tut_c=1
 	tut={}
-	tut[1]="button 1 to jump"
-	tut[2]="d pad to move"
-	tut[3]="be careful!"
-	tut[4]="welcome to tiny parkour!"
-	tut[5]="everyone forgot how to parkour"
-	tut[6]="so god of parkour is enraged.."
-	tut[7]="we send our   best   parkourer"	
-	tut[8]="you are ... ... the chosen one"
-	tut[9]="defeat   the parkour challenge"
-	tut[10]="become   champion of parkour!"
+	tut[1]="Ž  to jump"
+	tut[2]="” ƒ ‹ ‘  to move"
+	tut[3]="—  to zoom in"
+	tut[4]="be careful!"
+	tut[5]="welcome to tiny parkour!"
+	tut[6]="everyone forgot how to parkour"
+	tut[7]="so god of parkour is enraged.."
+	tut[8]="we send our   best   parkourer"	
+	tut[9]="you are ... ... the chosen one"
+	tut[10]="defeat   the parkour challenge"
+	tut[11]="become   champion of parkour!"
 end
 if r==2 then
 	star1={} star2={}
@@ -471,6 +472,10 @@ function doplayer(p)
 	--if not, stand at map's height
 	else p.z=-mget(p.x,p.y) if p.ground==1 then sfx(21) end --fall=0
 	end
+	if btnp(5) then
+		screen=bxor(screen,0x1)
+		poke(0x5f2c,screen*3)
+	end
 end
 
 function doitem(i)
@@ -677,6 +682,7 @@ function changeroom(ro)
 	reset(r)
 
 	cam=-r.h camera(0,cam)
+	screen=0
 	items_i(room)
 	sky_i(room)
 end
@@ -802,6 +808,9 @@ end
 function drawsky(r)
 	if r==1 then
 		tut_c=drawtext(tut,(128-#tut[tut_c]/2)-timer%256,46,tut_c,tut_bot,tut_top,start)
+		if start==1 then
+			print("@ashleypringle",35,cam,6)
+		end
 	end
 	if r==2 then
 		for a=1,100 do if timer%(a*5)==0 then pset(star1[a],star2[a]-200,12+flr(rnd(2))) end end
@@ -946,6 +955,7 @@ function _init()
 	ps=0.5
 	
 	cam=-rooms[room].h
+	screen=0
 	camera(0,cam)
 
 	player={}
@@ -981,7 +991,7 @@ end
 
 function _draw()
 	local r=rooms[room]
-	local p=player[1]
+	local p=player[1]		
 	cls()
 	if r.flc!=0 then rectfill(0,0,r.w,r.h,r.flc) end
 	drawsky(room)	
@@ -1058,7 +1068,7 @@ function _update()
 				music(4,0,7)
 				reload(r.dest,r.src,r.len)
 				start=1
-				tut_bot=4 tut_top=10
+				tut_bot=5 tut_top=11
 				tut_c=tut_bot		
 				add(items,makeitem(17,1,-20,1,8,9,4,0,0,0,0,0))
 				maketele(56,2,0,3,61,5)
@@ -1136,6 +1146,7 @@ function _update()
 	if p.z<-190 then cam=-r.h*3.5 camera(0,cam) end
 	if room==1 then cam=-r.h*2 camera(0,cam) end
 	if room==3 then cam=-31 camera(0,cam) end
+	if screen==1 then camera(p.x-32,cam+p.y+32) end
 	end
 	
 	if timer==32767 then
